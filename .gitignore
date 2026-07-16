@@ -1,0 +1,35 @@
+# Dependencies
+mannyam-cms/node_modules/
+
+# Next.js build output and caching
+mannyam-cms/.next/
+mannyam-cms/out/
+mannyam-cms/build/
+mannyam-cms/*.tsbuildinfo
+mannyam-cms/next-env.d.ts
+
+# Local environment files (containing database keys and secrets)
+mannyam-cms/.env*.local
+
+# Custom HTML files (interactive build guide)
+builder.html
+
+# Documentation and sequence planning files
+execution-sequence.txt
+tech-stack-and-plan.txt
+
+# Editor / Agent configuration and metadata
+.agents/
+.kiro/
+.vscode/
+
+# Backup and workspace building blocks folders
+Base_created/
+Building Blocks/
+
+# Logging
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*

@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles using the custom colour palette */
+body {
+  background-color: #fbf7f0; /* cream */
+  color: #393e29; /* olive */
+}
+
+/* Tiptap Rich Text Editor styles to override Tailwind resets */
+.ProseMirror {
+  outline: none;
+}
+.ProseMirror strong {
+  font-weight: bold !important;
+}
+.ProseMirror em {
+  font-style: italic !important;
+}
+.ProseMirror h2 {
+  font-size: 1.5rem !important;
+  font-weight: bold !important;
+  margin-top: 1rem !important;
+  margin-bottom: 0.5rem !important;
+}
+.ProseMirror h3 {
+  font-size: 1.25rem !important;
+  font-weight: bold !important;
+  margin-top: 0.75rem !important;
+  margin-bottom: 0.375rem !important;
+}
+.ProseMirror ul {
+  list-style-type: disc !important;
+  padding-left: 1.5rem !important;
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+.ProseMirror ol {
+  list-style-type: decimal !important;
+  padding-left: 1.5rem !important;
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+.ProseMirror li {
+  margin-bottom: 0.25rem !important;
+}
+.ProseMirror a {
+  color: #ba8838 !important; /* gold */
+  text-decoration: underline !important;
+}
+.ProseMirror hr {
+  border: 0 !important;
+  border-top: 1px solid rgba(57, 62, 41, 0.15) !important;
+  margin: 1.5rem 0 !important;
+}
+.ProseMirror p.is-editor-empty::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #adb5bd;
+  pointer-events: none;
+  height: 0;
+}

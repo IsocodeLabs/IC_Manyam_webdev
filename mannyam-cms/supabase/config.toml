@@ -1,0 +1,11 @@
+# Supabase local configuration stub (for reference only)
+
+project_id = "mannyam-cms"
+
+[api]
+port = 54321
+schemas = ["public"]
+
+[db]
+port = 54322
+shadow_port = 54320
