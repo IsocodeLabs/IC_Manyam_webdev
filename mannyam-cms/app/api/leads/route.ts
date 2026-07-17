@@ -48,8 +48,7 @@ export async function POST(req: NextRequest) {
 
   if (record) {
     if (now > record.expiresAt) {
-      // Limit window expired, reset count and set new expiration
-      rateLimitMap.set(ip, { count: 1, expiresAt: now + limitWindow });
+      // Limit window expired, will reset count on successful insert
     } else if (record.count >= 5) {
       // Exceeded limit (max 5 submissions per hour)
       return Response.json(
@@ -61,12 +60,7 @@ export async function POST(req: NextRequest) {
           },
         }
       );
-    } else {
-      record.count += 1;
     }
-  } else {
-    // New IP entry
-    rateLimitMap.set(ip, { count: 1, expiresAt: now + limitWindow });
   }
 
   // 2. Parse and Validate Request Body
@@ -94,14 +88,14 @@ export async function POST(req: NextRequest) {
     // Determine custom error messages based on validation failures
     const hasSourceError = issues.some((e) => e.path.includes("source"));
     const hasSourcePageError = issues.some((e) => e.path.includes("source_page"));
-    const hasEmailError = issues.some((e) => e.path.includes("email"));
+    const hasEmailFormatError = issues.some((e) => e.path.includes("email") && e.code === "invalid_format");
 
     let errorMsg = "Validation failed";
     if (hasSourceError) {
       errorMsg = "Source must be exactly 'Contact Form' or 'AI Chat'";
     } else if (hasSourcePageError) {
       errorMsg = "Source page must start with /";
-    } else if (hasEmailError) {
+    } else if (hasEmailFormatError) {
       errorMsg = "Invalid email format";
     }
 
@@ -143,6 +137,18 @@ export async function POST(req: NextRequest) {
         },
       }
     );
+  }
+
+  // Increment rate limit count upon successful submission
+  const currentRecord = rateLimitMap.get(ip);
+  if (currentRecord) {
+    if (now > currentRecord.expiresAt) {
+      rateLimitMap.set(ip, { count: 1, expiresAt: now + limitWindow });
+    } else {
+      currentRecord.count += 1;
+    }
+  } else {
+    rateLimitMap.set(ip, { count: 1, expiresAt: now + limitWindow });
   }
 
   // 4. Trigger Email Notification (non-blocking)
