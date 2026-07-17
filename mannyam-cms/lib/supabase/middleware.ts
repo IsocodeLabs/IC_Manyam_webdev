@@ -68,9 +68,30 @@ export async function updateSession(request: NextRequest) {
     return redirectWithSessionCookies("/login");
   }
 
-  if (user && isLoginRoute) {
-    return redirectWithSessionCookies("/dashboard");
+  if (user) {
+    // Fetch the user's role to distinguish staff and customers
+    const { data: profile } = await supabase
+      .from("users")
+      .select("role")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    const userRole = profile?.role; // 'Admin', 'Marketer', 'Content Manager', or undefined (customer)
+    const isStaff = userRole && ["Admin", "Marketer", "Content Manager"].includes(userRole);
+
+    if (isDashboardRoute && !isStaff) {
+      return redirectWithSessionCookies("/account");
+    }
+
+    if (isLoginRoute) {
+      if (isStaff) {
+        return redirectWithSessionCookies("/dashboard");
+      } else {
+        return redirectWithSessionCookies("/account");
+      }
+    }
   }
 
   return supabaseResponse;
 }
+

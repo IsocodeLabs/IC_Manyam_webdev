@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { CurrencySelector } from "./CurrencySelector";
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -42,8 +43,9 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Right Action Button */}
-        <div className="hidden md:block">
+        {/* Right Action Button with Currency Selector */}
+        <div className="hidden md:flex items-center gap-6">
+          <CurrencySelector />
           <Link
             href="/enquire"
             className="font-sans text-xs font-semibold uppercase tracking-wider text-ivory bg-gold hover:bg-gold/90 px-6 py-3.5 rounded-sm transition-all duration-300 hover:shadow-md hover:shadow-gold/10 inline-block active:scale-95"
@@ -95,7 +97,11 @@ export function Header() {
               {link.label}
             </Link>
           ))}
-          <div className="pt-2 border-t border-olive/10">
+          <div className="pt-4 border-t border-olive/10 flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <span className="font-sans text-xs font-medium uppercase tracking-wider text-olive/60">Currency</span>
+              <CurrencySelector />
+            </div>
             <Link
               href="/enquire"
               onClick={() => setIsMobileMenuOpen(false)}

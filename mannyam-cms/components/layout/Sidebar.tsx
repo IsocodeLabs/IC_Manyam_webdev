@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import {
   LayoutDashboard,
   BookOpen,
@@ -16,6 +17,8 @@ import {
   Settings,
   Users,
   LogOut,
+  CalendarCheck,
+  Percent,
 } from "lucide-react";
 
 import { canAccess } from "@/lib/rbac/permissions";
@@ -109,6 +112,18 @@ export function Sidebar({ role, userName }: SidebarProps) {
       visible: canAccess(role, "leads"),
     },
     {
+      name: "Bookings",
+      href: "/dashboard/bookings",
+      icon: CalendarCheck,
+      visible: canAccess(role, "bookings"),
+    },
+    {
+      name: "Discounts",
+      href: "/dashboard/discounts",
+      icon: Percent,
+      visible: canAccess(role, "discounts"),
+    },
+    {
       name: "Settings",
       href: "/settings",
       icon: Settings,
@@ -162,7 +177,7 @@ export function Sidebar({ role, userName }: SidebarProps) {
                 {/* Sublink for Settings > Users under Admin role */}
                 {item.name === "Settings" && showUsersSublink && (
                   <div className="pl-7 mt-1 space-y-1">
-                    <a
+                    <Link
                       href="/settings/users"
                       className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-sans transition-all duration-200 ${
                         pathname === "/settings/users"
@@ -172,7 +187,7 @@ export function Sidebar({ role, userName }: SidebarProps) {
                     >
                       <Users className="w-3.5 h-3.5" />
                       <span>Users & Team</span>
-                    </a>
+                    </Link>
                   </div>
                 )}
               </div>

@@ -1,19 +1,24 @@
 import Link from "next/link";
 import { getPublishedPostsPaginated, getCategories } from "@/lib/data/public";
+import { SectionHeading } from "@/components/public/ui/SectionHeading";
+import { PostCard } from "@/components/public/ui/PostCard";
+import { buildMetadata } from "@/lib/seo/buildMetadata";
+import type { Metadata } from "next";
 
-export const revalidate = 0; // Dynamic server rendering
+export const revalidate = 3600; // Time-based ISR fallback
+
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    seoMeta: null,
+    fallbackTitle: "The Journal | MANNYAM Studio",
+    fallbackDescription: "Guides, stories, and cultural dispatches from our travel specialists. Immerse yourself in the extraordinary colour, devotion, and heritage of India.",
+    path: "/journal",
+  });
+}
 
 type PageProps = {
   searchParams: Promise<{ page?: string }>;
 };
-
-function getExcerpt(htmlContent: string | null): string {
-  if (!htmlContent) return "";
-  const stripped = htmlContent.replace(/<[^>]*>/g, "");
-  const trimmed = stripped.trim().replace(/\s+/g, " ");
-  if (trimmed.length <= 160) return trimmed;
-  return trimmed.slice(0, 160) + "...";
-}
 
 export default async function JournalPage({ searchParams }: PageProps) {
   const resolvedParams = await searchParams;
@@ -33,17 +38,11 @@ export default async function JournalPage({ searchParams }: PageProps) {
       
       {/* Header section */}
       <header className="bg-cream/40 border-b border-olive/10 py-16 px-6 text-center">
-        <div className="max-w-4xl mx-auto space-y-4">
-          <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.25em] text-gold">
-            Travel Chronicles
-          </span>
-          <h1 className="font-display text-4xl sm:text-5xl font-bold text-olive">
-            The Journal
-          </h1>
-          <p className="font-display text-base text-olive/75 italic max-w-xl mx-auto font-light leading-relaxed">
-            Guides, stories, and cultural dispatches from our travel specialists.
-          </p>
-        </div>
+        <SectionHeading
+          eyebrow="Travel Chronicles"
+          heading="The Journal"
+          intro="Guides, stories, and cultural dispatches from our travel specialists."
+        />
       </header>
 
       {/* Categories Filter Tabs */}
@@ -78,68 +77,9 @@ export default async function JournalPage({ searchParams }: PageProps) {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {posts.map((post) => {
-              const categoryName = post.categories && !Array.isArray(post.categories)
-                ? (post.categories as { name: string }).name
-                : "Travelogue";
-
-              const seoMeta = (post.seo_meta as Record<string, string | null | undefined>) || {};
-              const featuredImage = seoMeta.og_image || seoMeta.featuredImageUrl || "";
-
-              const formattedDate = post.published_at
-                ? new Date(post.published_at).toLocaleDateString("en-GB", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })
-                : "Recently Published";
-
-              return (
-                <article
-                  key={post.id}
-                  className="bg-cream/15 border border-olive/5 hover:border-gold/20 rounded-sm overflow-hidden flex flex-col group hover:shadow-xl hover:shadow-olive/5 transition-all duration-500"
-                >
-                  <div className="aspect-[16/9] bg-olive/5 relative overflow-hidden">
-                    {featuredImage ? (
-                      <img
-                        src={featuredImage}
-                        alt={post.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-olive/20 font-display italic text-lg bg-olive/5">
-                        No Image Available
-                      </div>
-                    )}
-                    <span className="absolute top-4 left-4 bg-ink/80 text-ivory text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 backdrop-blur-sm rounded-sm">
-                      {categoryName}
-                    </span>
-                  </div>
-
-                  <div className="p-8 flex flex-col flex-grow justify-between space-y-6">
-                    <div className="space-y-3">
-                      <div className="text-[10px] text-olive/45 font-semibold uppercase tracking-wider">
-                        {formattedDate}
-                      </div>
-                      <h2 className="font-display text-2xl font-bold text-olive group-hover:text-gold transition-colors duration-300">
-                        {post.title}
-                      </h2>
-                      <p className="font-sans text-xs text-olive/75 leading-relaxed font-light line-clamp-3">
-                        {getExcerpt(post.content)}
-                      </p>
-                    </div>
-                    <div className="pt-2">
-                      <Link
-                        href={`/journal/${post.slug}`}
-                        className="font-sans text-[11px] font-bold uppercase tracking-wider text-gold hover:text-olive transition-colors flex items-center gap-1.5"
-                      >
-                        Read Story &rarr;
-                      </Link>
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
+            {posts.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
           </div>
         )}
 

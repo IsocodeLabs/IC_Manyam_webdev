@@ -2,16 +2,18 @@ import React from "react";
 import Link from "next/link";
 import { getPublishedPackages, type Package } from "@/lib/data/public";
 import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo/buildMetadata";
 
-export const revalidate = 0; // Ensure fresh server-side renders
+export const revalidate = 3600; // Time-based ISR fallback
 
-export const metadata: Metadata = {
-  title: "India's Great Festivals | MANNYAM Studio",
-  description: "Immerse yourself in the extraordinary colour, devotion, and heritage of India's most iconic celebrations.",
-  alternates: {
-    canonical: "https://mannyam.in/festivals",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    seoMeta: null,
+    fallbackTitle: "India's Great Festivals | MANNYAM Studio",
+    fallbackDescription: "Immerse yourself in the extraordinary colour, devotion, and heritage of India's most iconic celebrations.",
+    path: "/festivals",
+  });
+}
 
 // British English spelling and season ordering helpers
 const SEASONS_ORDER = ["Spring", "Summer", "Monsoon", "Autumn", "Winter"];

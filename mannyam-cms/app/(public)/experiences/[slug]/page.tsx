@@ -3,8 +3,13 @@ import Link from "next/link";
 import DOMPurify from "isomorphic-dompurify";
 import { getPackageBySlug, getPublishedPackages } from "@/lib/data/public";
 import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo/buildMetadata";
+import { generateTourSchema } from "@/lib/seo/generateJsonLd";
+import { BookDepartureButton } from "@/components/commerce/BookDepartureButton";
+import { supabaseAdmin } from "@/lib/supabase/admin";
+import { AddToBooking } from "@/components/public/AddToBooking";
 
-export const revalidate = 0; // Ensure fresh server-side renders
+export const revalidate = 3600; // Time-based ISR fallback
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -20,34 +25,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const meta = (pkg.seo_meta as Record<string, string | null | undefined>) || {};
-  const metaTitle = meta.title || `${pkg.title} | MANNYAM Studio`;
-  const metaDesc = meta.description || pkg.description || "Explore curations of heritage, culture, and nature.";
-  const canonicalUrl = meta.canonical_url || `https://mannyam.in/experiences/${pkg.slug}`;
-  const ogTitle = meta.og_title || metaTitle;
-  const ogDesc = meta.og_description || metaDesc;
-  const ogImage = meta.og_image || pkg.featured_image_url || "";
-
-  return {
-    title: metaTitle,
-    description: metaDesc.slice(0, 160),
-    alternates: {
-      canonical: canonicalUrl,
-    },
-    openGraph: {
-      title: ogTitle,
-      description: ogDesc,
-      url: canonicalUrl,
-      images: ogImage ? [{ url: ogImage }] : undefined,
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: ogTitle,
-      description: ogDesc,
-      images: ogImage ? [ogImage] : undefined,
-    },
-  };
+  return buildMetadata({
+    seoMeta: pkg.seo_meta,
+    fallbackTitle: `${pkg.title} | MANNYAM Studio`,
+    fallbackDescription: pkg.description,
+    fallbackImage: pkg.featured_image_url,
+    path: `/experiences/${pkg.slug}`,
+  });
 }
 
 export async function generateStaticParams() {
@@ -90,6 +74,13 @@ export default async function ExperienceDetailPage({ params }: Props) {
     notFound();
   }
 
+  // Fetch pricing row (bypassing RLS with supabaseAdmin)
+  const { data: pricing } = await supabaseAdmin
+    .from("pricing")
+    .select("id, currency, base_amount, deposit_amount")
+    .eq("package_id", pkg.id)
+    .maybeSingle();
+
   if (pkg.type === "Festival") {
     redirect(`/festivals/${pkg.slug}`);
   }
@@ -120,8 +111,14 @@ export default async function ExperienceDetailPage({ params }: Props) {
   const allRelated = await getPublishedPackages(pkg.type);
   const related = allRelated.filter((item) => item.id !== pkg.id).slice(0, 3);
 
+  const tourSchema = generateTourSchema(pkg);
+
   return (
     <div className="pb-24 font-sans bg-ivory text-ink selection:bg-gold/20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(tourSchema) }}
+      />
       
       {/* Hero Header */}
       <section className="relative h-[65vh] min-h-[450px] w-full flex items-end overflow-hidden bg-olive">
@@ -223,7 +220,7 @@ export default async function ExperienceDetailPage({ params }: Props) {
                     return (
                       <div 
                         key={idx}
-                        className="flex items-center justify-between pb-3 border-b border-olive/5 last:border-b-0 last:pb-0"
+                        className="flex items-center justify-between pb-3 border-b border-olive/5 last:border-b-0 last:pb-0 gap-4"
                       >
                         <div className="space-y-0.5">
                           <span className="font-sans text-xs font-semibold text-olive block">
@@ -235,9 +232,18 @@ export default async function ExperienceDetailPage({ params }: Props) {
                             </span>
                           )}
                         </div>
-                        <span className={`font-sans text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm ${badgeClass}`}>
-                          {displayStatus}
-                        </span>
+                        <div className="flex flex-col items-end gap-1.5">
+                          <span className={`font-sans text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm ${badgeClass}`}>
+                            {displayStatus}
+                          </span>
+                          {!isPast && displayStatus === "Available" && entry.date && (
+                            <BookDepartureButton
+                              packageId={pkg.id}
+                              departureDate={entry.date}
+                              disabled={false}
+                            />
+                          )}
+                        </div>
                       </div>
                     );
                   })}
@@ -245,29 +251,14 @@ export default async function ExperienceDetailPage({ params }: Props) {
               )}
             </div>
 
-            {/* Concierge CTA Box */}
-            <div className="bg-ink text-ivory p-8 rounded-sm text-center space-y-6 shadow-md relative overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-olive/30 via-transparent to-transparent pointer-events-none" />
-              <div className="space-y-2 relative">
-                <span className="font-sans text-[9px] font-bold uppercase tracking-[0.2em] text-gold">
-                  Bespoke Curation
-                </span>
-                <h3 className="font-display text-2xl font-bold text-gold">
-                  Begin Your Story
-                </h3>
-                <p className="font-sans text-xs text-ivory/70 font-light leading-relaxed">
-                  Connect with a dedicated travel specialist to custom design this journey or reserve your departure.
-                </p>
-              </div>
-              <div className="relative pt-2">
-                <Link
-                  href={`/enquire?journey=${pkg.slug}`}
-                  className="w-full font-sans text-xs font-semibold uppercase tracking-wider text-ink bg-gold hover:bg-gold/90 py-3.5 rounded-sm transition-all duration-300 block hover:shadow-lg hover:shadow-gold/15 active:scale-95"
-                >
-                  Enquire About This Journey
-                </Link>
-              </div>
-            </div>
+            <AddToBooking
+              packageId={pkg.id}
+              slug={pkg.slug}
+              title={pkg.title}
+              type={pkg.type}
+              availability={rawAvailability}
+              pricing={pricing}
+            />
 
           </div>
 

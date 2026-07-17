@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { triggerRevalidation } from "@/lib/revalidate";
 import { createClient } from "@/lib/supabase/server";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import type { Json } from "@/types/database.types";
@@ -70,12 +71,18 @@ export async function createPage(input: PageInput) {
   if (error) throw new Error(error.code === "23505" ? "This URL is already in use" : error.message);
   revalidatePath("/pages-cms");
   revalidatePath("/api/sitemap");
+
+  if (input.status === "Published") {
+    await triggerRevalidation({ type: "page", slug: normaliseSlug(input.slug) });
+  }
+
   return { id: data.id };
 }
 
 export async function updatePage(id: string, input: PageInput) {
   await requireEditor();
   validateInput(input);
+  const { data: current } = await supabaseAdmin.from("pages").select("slug, status").eq("id", id).single();
   const { error } = await supabaseAdmin.from("pages").update({
     title: input.title.trim(),
     slug: normaliseSlug(input.slug),
@@ -89,16 +96,30 @@ export async function updatePage(id: string, input: PageInput) {
   revalidatePath("/pages-cms");
   revalidatePath(`/pages-cms/${id}/edit`);
   revalidatePath("/api/sitemap");
+
+  if (input.status === "Published") {
+    await triggerRevalidation({ type: "page", slug: normaliseSlug(input.slug) });
+    if (current && current.status === "Published" && current.slug && current.slug !== normaliseSlug(input.slug)) {
+      await triggerRevalidation({ type: "page", slug: current.slug });
+    }
+  }
+
   return { id };
 }
 
 export async function deletePage(id: string) {
   try {
     await requireAdmin();
+    const { data: current } = await supabaseAdmin.from("pages").select("slug, status").eq("id", id).single();
     const { error } = await supabaseAdmin.from("pages").delete().eq("id", id);
     if (error) throw new Error(error.message);
     revalidatePath("/pages-cms");
     revalidatePath("/api/sitemap");
+
+    if (current && current.status === "Published" && current.slug) {
+      await triggerRevalidation({ type: "page", slug: current.slug });
+    }
+
     return { ok: true as const };
   } catch (error) {
     return { ok: false as const, error: error instanceof Error ? error.message : "Delete failed." };
@@ -107,10 +128,15 @@ export async function deletePage(id: string) {
 
 export async function publishPage(id: string) {
   await requireEditor();
+  const { data: current } = await supabaseAdmin.from("pages").select("slug").eq("id", id).single();
   const { error } = await supabaseAdmin.from("pages").update({ status: "Published" }).eq("id", id);
   if (error) throw new Error(error.message);
   revalidatePath("/pages-cms");
   revalidatePath(`/pages-cms/${id}/preview`);
   revalidatePath("/api/sitemap");
+
+  if (current?.slug) {
+    await triggerRevalidation({ type: "page", slug: current.slug });
+  }
 }
 

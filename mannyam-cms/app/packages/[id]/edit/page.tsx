@@ -24,6 +24,17 @@ export default async function EditPackagePage({ params }: { params: Promise<{ id
 
   if (!pkg) notFound();
 
+  // Securely load package pricing details if the user is an Admin
+  let pricing = null;
+  if (profile.role === "Admin") {
+    const { data: pricingData } = await supabase
+      .from("pricing")
+      .select("id, currency, base_amount, deposit_amount")
+      .eq("package_id", id)
+      .maybeSingle();
+    pricing = pricingData;
+  }
+
   const editorPackage = {
     id: pkg.id,
     title: pkg.title,
@@ -42,5 +53,12 @@ export default async function EditPackagePage({ params }: { params: Promise<{ id
     alt_text: item.alt_text ?? "",
   }));
 
-  return <PackageEditor pkg={editorPackage} media={mediaList} />;
+  return (
+    <PackageEditor 
+      pkg={editorPackage} 
+      media={mediaList} 
+      userRole={profile.role} 
+      initialPricing={pricing}
+    />
+  );
 }

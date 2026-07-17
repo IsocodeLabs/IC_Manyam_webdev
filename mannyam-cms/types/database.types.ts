@@ -34,6 +34,80 @@ export interface Database {
         // The foreign key targets auth.users, which is outside the public schema.
         Relationships: []
       }
+      pricing: {
+        Row: {
+          id: string
+          package_id: string
+          currency: 'GBP' | 'USD' | 'EUR' | 'INR'
+          base_amount: number
+          deposit_amount: number | null
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          package_id: string
+          currency: 'GBP' | 'USD' | 'EUR' | 'INR'
+          base_amount: number
+          deposit_amount?: number | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          package_id?: string
+          currency?: 'GBP' | 'USD' | 'EUR' | 'INR'
+          base_amount?: number
+          deposit_amount?: number | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pricing_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: true
+            referencedRelation: "packages"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      discount_codes: {
+        Row: {
+          id: string
+          code: string
+          type: 'percent' | 'fixed'
+          value: number
+          active: boolean
+          expires_at: string | null
+          max_uses: number | null
+          times_used: number
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          code: string
+          type: 'percent' | 'fixed'
+          value: number
+          active?: boolean
+          expires_at?: string | null
+          max_uses?: number | null
+          times_used?: number
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          code?: string
+          type?: 'percent' | 'fixed'
+          value?: number
+          active?: boolean
+          expires_at?: string | null
+          max_uses?: number | null
+          times_used?: number
+          created_at?: string | null
+        }
+        Relationships: []
+      }
       categories: {
         Row: {
           id: string
@@ -569,6 +643,177 @@ export interface Database {
             columns: ["changed_by"]
             isOneToOne: false
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      bookings: {
+        Row: {
+          id: string
+          customer_id: string | null
+          status: string
+          currency: string
+          total_amount: number
+          amount_paid: number
+          refund_amount: number
+          payment_type: 'deposit' | 'full' | null
+          contact_name: string | null
+          contact_email: string | null
+          notes: string | null
+          created_at: string | null
+          razorpay_order_id: string | null
+          razorpay_payment_id: string | null
+          razorpay_signature: string | null
+        }
+        Insert: {
+          id?: string
+          customer_id?: string | null
+          status?: string
+          currency: string
+          total_amount: number
+          amount_paid?: number
+          refund_amount?: number
+          payment_type?: 'deposit' | 'full' | null
+          contact_name?: string | null
+          contact_email?: string | null
+          notes?: string | null
+          created_at?: string | null
+          razorpay_order_id?: string | null
+          razorpay_payment_id?: string | null
+          razorpay_signature?: string | null
+        }
+        Update: {
+          id?: string
+          customer_id?: string | null
+          status?: string
+          currency?: string
+          total_amount?: number
+          amount_paid?: number
+          refund_amount?: number
+          payment_type?: 'deposit' | 'full' | null
+          contact_name?: string | null
+          contact_email?: string | null
+          notes?: string | null
+          created_at?: string | null
+          razorpay_order_id?: string | null
+          razorpay_payment_id?: string | null
+          razorpay_signature?: string | null
+        }
+        Relationships: []
+      }
+      booking_items: {
+        Row: {
+          id: string
+          booking_id: string
+          package_id: string | null
+          package_title: string
+          departure_date: string | null
+          travellers: number
+          unit_amount: number
+          line_amount: number
+        }
+        Insert: {
+          id?: string
+          booking_id: string
+          package_id?: string | null
+          package_title: string
+          departure_date?: string | null
+          travellers: number
+          unit_amount: number
+          line_amount: number
+        }
+        Update: {
+          id?: string
+          booking_id?: string
+          package_id?: string | null
+          package_title?: string
+          departure_date?: string | null
+          travellers?: number
+          unit_amount?: number
+          line_amount?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "booking_items_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      booking_notes: {
+        Row: {
+          id: string
+          booking_id: string
+          note: string
+          created_by: string | null
+          created_by_name: string | null
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          booking_id: string
+          note: string
+          created_by?: string | null
+          created_by_name?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          booking_id?: string
+          note?: string
+          created_by?: string | null
+          created_by_name?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "booking_notes_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      booking_audit_logs: {
+        Row: {
+          id: string
+          booking_id: string
+          changed_by: string | null
+          changed_by_name: string | null
+          from_status: string | null
+          to_status: string
+          notes: string | null
+          changed_at: string | null
+        }
+        Insert: {
+          id?: string
+          booking_id: string
+          changed_by?: string | null
+          changed_by_name?: string | null
+          from_status?: string | null
+          to_status: string
+          notes?: string | null
+          changed_at?: string | null
+        }
+        Update: {
+          id?: string
+          booking_id?: string
+          changed_by?: string | null
+          changed_by_name?: string | null
+          from_status?: string | null
+          to_status?: string
+          notes?: string | null
+          changed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "booking_audit_logs_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
             referencedColumns: ["id"]
           }
         ]

@@ -8,6 +8,8 @@ export const PERMISSIONS = {
   'clusters':   { Admin: true,  ContentManager: true,  Marketer: false },
   'analytics':  { Admin: true,  ContentManager: false, Marketer: true  },
   'leads':      { Admin: true,  ContentManager: false, Marketer: true  },
+  'bookings':   { Admin: true,  ContentManager: false, Marketer: true  },
+  'discounts':  { Admin: true,  ContentManager: false, Marketer: true  },
   'settings':   { Admin: true,  ContentManager: false, Marketer: false },
 } as const;
 

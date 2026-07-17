@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { triggerRevalidation } from "@/lib/revalidate";
 import { createClient } from "@/lib/supabase/server";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 
@@ -62,10 +63,14 @@ async function syncTags(postId: string, tagNames: string[]) {
 export async function deletePost(id: string) {
   try {
     await requireEditor();
+    const { data: post } = await supabaseAdmin.from("posts").select("slug, status").eq("id", id).single();
     const { error } = await supabaseAdmin.from("posts").delete().eq("id", id);
     if (error) throw new Error(error.message);
     revalidatePath("/journal");
     revalidatePath("/api/sitemap");
+    if (post && post.status === "Published" && post.slug) {
+      await triggerRevalidation({ type: "post", slug: post.slug });
+    }
     return { ok: true as const };
   } catch (error) {
     return { ok: false as const, error: error instanceof Error ? error.message : "Delete failed." };
@@ -90,13 +95,16 @@ export async function createPost(input: PostInput) {
   await syncTags(data.id, input.tagNames);
   revalidatePath("/journal");
   revalidatePath("/api/sitemap");
+  if (input.status === "Published") {
+    await triggerRevalidation({ type: "post", slug: normaliseSlug(input.slug) });
+  }
   return { id: data.id };
 }
 
 export async function updatePost(id: string, input: PostInput) {
   await requireEditor();
   validateInput(input);
-  const { data: current } = await supabaseAdmin.from("posts").select("published_at").eq("id", id).single();
+  const { data: current } = await supabaseAdmin.from("posts").select("published_at, slug, status").eq("id", id).single();
   const publishedAt = input.status === "Published" ? current?.published_at ?? new Date().toISOString() : null;
   const { error } = await supabaseAdmin.from("posts").update({ title: input.title.trim(), slug: normaliseSlug(input.slug), content: input.content, category_id: input.categoryId, status: input.status, scheduled_at: input.status === "Scheduled" ? input.scheduledAt : null, published_at: publishedAt, seo_meta: input.seoMeta }).eq("id", id);
   if (error) throw new Error(error.code === "23505" ? "This URL is already in use" : error.message);
@@ -105,14 +113,25 @@ export async function updatePost(id: string, input: PostInput) {
   revalidatePath(`/journal/${id}/edit`);
   revalidatePath(`/journal/${id}/preview`);
   revalidatePath("/api/sitemap");
+
+  if (input.status === "Published") {
+    await triggerRevalidation({ type: "post", slug: normaliseSlug(input.slug) });
+    if (current && current.status === "Published" && current.slug && current.slug !== normaliseSlug(input.slug)) {
+      await triggerRevalidation({ type: "post", slug: current.slug });
+    }
+  }
   return { id };
 }
 
 export async function publishPost(id: string) {
   await requireEditor();
+  const { data: post } = await supabaseAdmin.from("posts").select("slug").eq("id", id).single();
   const { error } = await supabaseAdmin.from("posts").update({ status: "Published", published_at: new Date().toISOString(), scheduled_at: null }).eq("id", id);
   if (error) throw new Error(error.message);
   revalidatePath("/journal");
   revalidatePath(`/journal/${id}/preview`);
   revalidatePath("/api/sitemap");
+  if (post?.slug) {
+    await triggerRevalidation({ type: "post", slug: post.slug });
+  }
 }

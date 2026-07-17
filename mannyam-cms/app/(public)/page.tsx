@@ -1,7 +1,23 @@
 import Link from "next/link";
-import { getPublishedPackages, getPublishedPosts } from "@/lib/data/public";
+import { getPublishedPackages, getPublishedPosts, Post } from "@/lib/data/public";
+import { SectionHeading } from "@/components/public/ui/SectionHeading";
+import { PackageCard } from "@/components/public/ui/PackageCard";
+import { PostCard } from "@/components/public/ui/PostCard";
+import { Button } from "@/components/public/ui/Button";
 
-export const revalidate = 0; // Ensure fresh server-side renders
+import { buildMetadata } from "@/lib/seo/buildMetadata";
+import { Metadata } from "next";
+
+export const revalidate = 3600; // Time-based ISR fallback
+
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    seoMeta: null,
+    fallbackTitle: "MANNYAM | Bespoke Journeys and Curated Travel Across India",
+    fallbackDescription: "Crafting stories of heritage, culture, and nature for the discerning traveller. Discover bespoke travel itineraries and cultural chronicles by MANNYAM.",
+    path: "/",
+  });
+}
 
 export default async function PublicHomePage() {
   const [packages, posts] = await Promise.all([
@@ -9,8 +25,21 @@ export default async function PublicHomePage() {
     getPublishedPosts(3),
   ]);
 
+  const orgSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "MANNYAM",
+    "url": process.env.NEXT_PUBLIC_SITE_URL || "https://mannyam.in",
+    "logo": `${process.env.NEXT_PUBLIC_SITE_URL || "https://mannyam.in"}/logo.png`,
+    "description": "Crafting stories of heritage, culture, and nature for the discerning traveller."
+  };
+
   return (
     <div className="space-y-24 pb-24 font-sans bg-ivory text-ink selection:bg-gold/20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
+      />
       
       {/* Hero Section */}
       <section className="relative min-h-[85vh] flex items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cream via-ivory to-cream border-b border-olive/10 overflow-hidden px-6 py-20">
@@ -26,18 +55,12 @@ export default async function PublicHomePage() {
             Crafting stories of heritage, culture, and nature for the discerning traveller.
           </p>
           <div className="pt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/experiences"
-              className="w-full sm:w-auto font-sans text-xs font-semibold uppercase tracking-wider text-ivory bg-gold hover:bg-gold/90 px-8 py-4 rounded-sm transition-all duration-300 hover:shadow-lg hover:shadow-gold/10 text-center"
-            >
+            <Button href="/experiences" variant="gold" className="w-full sm:w-auto">
               Explore Journeys
-            </Link>
-            <Link
-              href="/enquire"
-              className="w-full sm:w-auto font-sans text-xs font-semibold uppercase tracking-wider text-olive hover:text-gold border border-olive/30 hover:border-gold px-8 py-4 rounded-sm transition-all duration-300 text-center"
-            >
+            </Button>
+            <Button href="/enquire" variant="ghost" className="w-full sm:w-auto">
               Plan Your Trip
-            </Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -45,14 +68,11 @@ export default async function PublicHomePage() {
       {/* Featured Packages (Journeys) Section */}
       <section className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-          <div className="space-y-2">
-            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-gold block">
-              Curated Itineraries
-            </span>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold text-olive">
-              Featured Journeys
-            </h2>
-          </div>
+          <SectionHeading
+            eyebrow="Curated Itineraries"
+            heading="Featured Journeys"
+            align="left"
+          />
           <Link
             href="/experiences"
             className="font-sans text-xs font-semibold uppercase tracking-wider text-gold hover:text-olive transition-colors flex items-center gap-2 group"
@@ -70,43 +90,7 @@ export default async function PublicHomePage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {packages.map((pkg) => (
-              <article
-                key={pkg.id}
-                className="bg-cream/30 border border-olive/10 hover:border-gold/30 rounded-sm overflow-hidden flex flex-col group hover:shadow-xl hover:shadow-olive/5 transition-all duration-500"
-              >
-                <div className="aspect-[4/3] bg-olive/5 relative overflow-hidden">
-                  {pkg.featured_image_url ? (
-                    <img
-                      src={pkg.featured_image_url}
-                      alt={pkg.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-olive/20 font-display italic text-lg bg-olive/5">
-                      No Image Available
-                    </div>
-                  )}
-                  <span className="absolute top-4 left-4 bg-ink/80 text-ivory text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 backdrop-blur-sm rounded-sm">
-                    {pkg.type}
-                  </span>
-                </div>
-                <div className="p-6 flex flex-col flex-grow justify-between space-y-6">
-                  <div className="space-y-2">
-                    <h3 className="font-display text-xl font-bold text-olive group-hover:text-gold transition-colors duration-300">
-                      {pkg.title}
-                    </h3>
-                    <p className="font-sans text-xs text-olive/75 line-clamp-3 font-light leading-relaxed">
-                      {pkg.description}
-                    </p>
-                  </div>
-                  <Link
-                    href={`/experiences/${pkg.slug}`}
-                    className="font-sans text-[11px] font-bold uppercase tracking-wider text-gold hover:text-olive transition-colors flex items-center gap-1.5 pt-2"
-                  >
-                    Explore Itinerary &rarr;
-                  </Link>
-                </div>
-              </article>
+              <PackageCard key={pkg.id} pkg={pkg} />
             ))}
           </div>
         )}
@@ -115,14 +99,11 @@ export default async function PublicHomePage() {
       {/* Journal Section */}
       <section className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-          <div className="space-y-2">
-            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-gold block">
-              Travel Chronicles
-            </span>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold text-olive">
-              From the Journal
-            </h2>
-          </div>
+          <SectionHeading
+            eyebrow="Travel Chronicles"
+            heading="From the Journal"
+            align="left"
+          />
           <Link
             href="/journal"
             className="font-sans text-xs font-semibold uppercase tracking-wider text-gold hover:text-olive transition-colors flex items-center gap-2 group"
@@ -139,50 +120,9 @@ export default async function PublicHomePage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {posts.map((post) => {
-              // Extract category name
-              const category = post.categories && !Array.isArray(post.categories) 
-                ? (post.categories as { name: string }).name 
-                : "Travelogue";
-
-              const formattedDate = post.published_at 
-                ? new Date(post.published_at).toLocaleDateString("en-GB", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })
-                : "Recently Published";
-
-              return (
-                <article
-                  key={post.id}
-                  className="bg-cream/10 border border-olive/5 hover:border-gold/20 rounded-sm p-6 flex flex-col justify-between group hover:shadow-lg hover:shadow-olive/5 transition-all duration-300"
-                >
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between text-[9px] font-bold uppercase tracking-wider text-gold">
-                      <span>{category}</span>
-                      <time className="text-olive/45 font-light">{formattedDate}</time>
-                    </div>
-                    <div className="space-y-2">
-                      <h3 className="font-display text-lg font-bold text-olive group-hover:text-gold transition-colors duration-300">
-                        {post.title}
-                      </h3>
-                      {post.content && (
-                        <p className="font-sans text-xs text-olive/70 line-clamp-3 font-light leading-relaxed">
-                          {post.content.replace(/<[^>]*>/g, "")}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <Link
-                    href={`/journal/${post.slug}`}
-                    className="font-sans text-[11px] font-bold uppercase tracking-wider text-gold hover:text-olive transition-colors flex items-center gap-1.5 pt-6"
-                  >
-                    Read Story &rarr;
-                  </Link>
-                </article>
-              );
-            })}
+            {posts.map((post) => (
+              <PostCard key={post.id} post={post as Post & { categories: { name: string; slug: string } | null }} />
+            ))}
           </div>
         )}
       </section>
@@ -203,12 +143,9 @@ export default async function PublicHomePage() {
             </p>
           </div>
           <div className="relative">
-            <Link
-              href="/enquire"
-              className="font-sans text-xs font-semibold uppercase tracking-wider text-ink bg-gold hover:bg-gold/90 px-8 py-4.5 rounded-sm transition-all duration-300 hover:shadow-lg hover:shadow-gold/20 block text-center whitespace-nowrap active:scale-95"
-            >
+            <Button href="/enquire" variant="amber">
               Begin Your Story
-            </Link>
+            </Button>
           </div>
         </div>
       </section>

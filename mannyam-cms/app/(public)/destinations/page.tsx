@@ -1,7 +1,9 @@
-import Link from "next/link";
 import { getPublishedPackages } from "@/lib/data/public";
+import { SectionHeading } from "@/components/public/ui/SectionHeading";
+import { PackageCard } from "@/components/public/ui/PackageCard";
+import { Button } from "@/components/public/ui/Button";
 
-export const revalidate = 0; // Ensure fresh server-side renders
+export const revalidate = 3600; // Time-based ISR fallback
 
 export default async function DestinationsPage() {
   const packages = await getPublishedPackages("Destination");
@@ -11,17 +13,11 @@ export default async function DestinationsPage() {
       
       {/* Header section */}
       <section className="bg-cream/40 border-b border-olive/10 py-16 sm:py-24 px-6">
-        <div className="max-w-7xl mx-auto text-center space-y-4">
-          <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.3em] text-gold block">
-            Custom Curations
-          </span>
-          <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-olive tracking-tight leading-tight">
-            Our Destinations
-          </h1>
-          <p className="font-display text-base sm:text-lg text-olive/75 italic max-w-2xl mx-auto font-light leading-relaxed">
-            From the grand palaces of Rajasthan to the serene backwaters of Kerala, discover the stories of India.
-          </p>
-        </div>
+        <SectionHeading
+          eyebrow="Custom Curations"
+          heading="Our Destinations"
+          intro="From the grand palaces of Rajasthan to the serene backwaters of Kerala, discover the stories of India."
+        />
       </section>
 
       {/* Grid listing */}
@@ -33,54 +29,15 @@ export default async function DestinationsPage() {
               We are currently designing new bespoke destination routes. Please contact our curators to build yours.
             </p>
             <div className="mt-6">
-              <Link
-                href="/enquire"
-                className="inline-block font-sans text-xs font-semibold uppercase tracking-wider text-ivory bg-gold hover:bg-gold/90 px-8 py-4 rounded-sm transition-all duration-300"
-              >
+              <Button href="/enquire" variant="amber">
                 Plan Your Trip
-              </Link>
+              </Button>
             </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {packages.map((pkg) => (
-              <article
-                key={pkg.id}
-                className="bg-cream/30 border border-olive/10 hover:border-gold/30 rounded-sm overflow-hidden flex flex-col group hover:shadow-xl hover:shadow-olive/5 transition-all duration-500"
-              >
-                <div className="aspect-[4/3] bg-olive/5 relative overflow-hidden">
-                  {pkg.featured_image_url ? (
-                    <img
-                      src={pkg.featured_image_url}
-                      alt={pkg.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-olive/20 font-display italic text-lg bg-olive/5">
-                      No Image Available
-                    </div>
-                  )}
-                  <span className="absolute top-4 left-4 bg-ink/80 text-ivory text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 backdrop-blur-sm rounded-sm">
-                    {pkg.type}
-                  </span>
-                </div>
-                <div className="p-6 flex flex-col flex-grow justify-between space-y-6">
-                  <div className="space-y-2">
-                    <h3 className="font-display text-xl font-bold text-olive group-hover:text-gold transition-colors duration-300">
-                      {pkg.title}
-                    </h3>
-                    <p className="font-sans text-xs text-olive/75 line-clamp-3 font-light leading-relaxed">
-                      {pkg.description}
-                    </p>
-                  </div>
-                  <Link
-                    href={`/experiences/${pkg.slug}`}
-                    className="font-sans text-[11px] font-bold uppercase tracking-wider text-gold hover:text-olive transition-colors flex items-center gap-1.5 pt-2"
-                  >
-                    Explore Itinerary &rarr;
-                  </Link>
-                </div>
-              </article>
+              <PackageCard key={pkg.id} pkg={pkg} />
             ))}
           </div>
         )}

@@ -4,8 +4,9 @@ import DOMPurify from "isomorphic-dompurify";
 import { getPostBySlug, getPublishedPosts, getRelatedPosts } from "@/lib/data/public";
 import { generateArticleSchema } from "@/lib/seo/generateJsonLd";
 import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo/buildMetadata";
 
-export const revalidate = 0; // Dynamic server rendering
+export const revalidate = 3600; // Time-based ISR fallback
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -41,19 +42,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const post = await getPostBySlug(resolvedParams.slug);
   if (!post) return {};
 
-  const seo = (post.seo_meta as SeoMeta) || {};
-  return {
-    title: seo.title || `${post.title} | MANNYAM Journal`,
-    description: seo.description || "",
-    alternates: {
-      canonical: seo.canonical_url || `https://mannyam.in/journal/${post.slug}`,
-    },
-    openGraph: {
-      title: seo.og_title || seo.title || post.title,
-      description: seo.og_description || seo.description || "",
-      images: seo.og_image ? [{ url: seo.og_image }] : [],
-    },
-  };
+  const seoMeta = (post.seo_meta as SeoMeta) || {};
+  const featuredImage = seoMeta.og_image || seoMeta.featuredImageUrl || "";
+
+  return buildMetadata({
+    seoMeta,
+    fallbackTitle: `${post.title} | MANNYAM Journal`,
+    fallbackDescription: post.content ? post.content.replace(/<[^>]*>/g, "") : "",
+    fallbackImage: featuredImage,
+    path: `/journal/${post.slug}`,
+    type: "article",
+  });
 }
 
 export async function generateStaticParams() {

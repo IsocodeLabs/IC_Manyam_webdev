@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPublishedPostsPaginated, getCategories, getCategoryBySlug } from "@/lib/data/public";
 
-export const revalidate = 0; // Dynamic server rendering
+export const revalidate = 3600; // Time-based ISR fallback
 
 type PageProps = {
   params: Promise<{ slug: string }>;
