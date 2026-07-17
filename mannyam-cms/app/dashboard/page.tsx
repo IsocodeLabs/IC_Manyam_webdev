@@ -1,5 +1,7 @@
 import React from "react";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { getSearchConsoleData } from "@/lib/analytics/searchConsole";
 import type { Database } from "@/types/database.types";
 
 type Lead = Database["public"]["Tables"]["leads"]["Row"];
@@ -27,18 +29,103 @@ export default async function DashboardPage() {
     return null; // Layout will handle profile missing state
   }
 
-  // 1. Fetch exact counts from the Supabase tables for KPI cards
-  const [pagesRes, postsRes, leadsRes, packagesRes] = await Promise.all([
+  // Calculate start of current month
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+
+  // 1. Fetch exact counts from the Supabase tables for KPI cards & summaries in parallel
+  const [
+    pagesRes,
+    postsRes,
+    leadsRes,
+    packagesRes,
+    ga4SettingsRes,
+    postsPublishedThisMonthRes,
+    pagesPublishedRes,
+    leadsThisMonthRes,
+  ] = await Promise.all([
     supabase.from("pages").select("*", { count: "exact", head: true }),
     supabase.from("posts").select("*", { count: "exact", head: true }),
     supabase.from("leads").select("*", { count: "exact", head: true }),
     supabase.from("packages").select("*", { count: "exact", head: true }),
+    supabase.from("site_settings").select("value").eq("key", "ga4_measurement_id").limit(1),
+    supabase.from("posts").select("*", { count: "exact", head: true }).eq("status", "Published").gte("published_at", startOfMonth),
+    supabase.from("pages").select("*", { count: "exact", head: true }).eq("status", "Published"),
+    supabase.from("leads").select("*", { count: "exact", head: true }).gte("created_at", startOfMonth),
   ]);
 
   const totalPages = pagesRes.count || 0;
   const totalPosts = postsRes.count || 0;
   const totalLeads = leadsRes.count || 0;
   const totalPackages = packagesRes.count || 0;
+
+  const ga4Id = ga4SettingsRes.data?.[0]?.value || "";
+  const postsPublishedThisMonth = postsPublishedThisMonthRes.count || 0;
+  const pagesPublished = pagesPublishedRes.count || 0;
+  const leadsThisMonth = leadsThisMonthRes.count || 0;
+
+  // 2. Fetch GSC data if both GA4 & GSC are configured
+  const gscEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  const gscPrivateKey = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY;
+  const gscSiteUrl = process.env.GSC_SITE_URL || "";
+  const isGscConfigured = !!(gscEmail && gscPrivateKey && gscSiteUrl);
+  const isAnalyticsConnected = !!(ga4Id && isGscConfigured);
+
+  let gscData = null;
+  if (isAnalyticsConnected) {
+    try {
+      gscData = await getSearchConsoleData("7d");
+    } catch (err) {
+      console.error("Dashboard failed to fetch Search Console data:", err);
+    }
+  }
+
+  // Parse GSC top values
+  let topQuery = "—";
+  let topPage = "—";
+
+  if (gscData && gscData.rows.length > 0) {
+    const queriesMap = new Map<string, number>();
+    const pagesMap = new Map<string, number>();
+
+    for (const row of gscData.rows) {
+      if (row.query) {
+        queriesMap.set(row.query, (queriesMap.get(row.query) || 0) + row.clicks);
+      }
+      if (row.page) {
+        pagesMap.set(row.page, (pagesMap.get(row.page) || 0) + row.clicks);
+      }
+    }
+
+    let maxQueryClicks = -1;
+    for (const [q, clicks] of Array.from(queriesMap.entries())) {
+      if (clicks > maxQueryClicks) {
+        maxQueryClicks = clicks;
+        topQuery = q;
+      }
+    }
+
+    let maxPageClicks = -1;
+    let rawTopPage = "";
+    for (const [p, clicks] of Array.from(pagesMap.entries())) {
+      if (clicks > maxPageClicks) {
+        maxPageClicks = clicks;
+        rawTopPage = p;
+      }
+    }
+
+    if (rawTopPage) {
+      try {
+        const parsed = new URL(rawTopPage);
+        topPage = parsed.pathname;
+      } catch {
+        const domain = gscSiteUrl.replace(/^sc-domain:/, "").replace(/^https?:\/\//, "");
+        topPage = rawTopPage.replace(new RegExp(`^(https?:\\/\\/)?(www\\.)?${domain}`), "");
+      }
+      if (!topPage.startsWith("/")) topPage = "/" + topPage;
+      if (topPage.length > 1 && topPage.endsWith("/")) topPage = topPage.slice(0, -1);
+    }
+  }
 
   // 2. Fetch 5 most recent posts
   const { data: postsData } = await supabase
@@ -108,6 +195,80 @@ export default async function DashboardPage() {
           <p className="font-display text-4xl text-gold font-semibold">
             {totalPackages}
           </p>
+        </div>
+      </div>
+
+      {/* Analytics Overview Section */}
+      <div className="bg-paper p-6 rounded-lg shadow-sm border border-ivory/50">
+        <h3 className="font-display text-lg font-semibold text-olive mb-4 flex items-center gap-2">
+          <span>📈</span> Analytics Overview <span className="font-sans text-xs font-normal text-olive/50">(Last 7 Days)</span>
+        </h3>
+
+        {isAnalyticsConnected && gscData ? (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="bg-cream/40 p-4 rounded-md border border-ivory/40">
+              <span className="text-xs text-olive/50 font-medium">Total Clicks</span>
+              <p className="font-display text-2xl font-semibold text-olive mt-1">
+                {gscData.totals.clicks}
+              </p>
+            </div>
+            <div className="bg-cream/40 p-4 rounded-md border border-ivory/40">
+              <span className="text-xs text-olive/50 font-medium">Avg Position</span>
+              <p className="font-display text-2xl font-semibold text-olive mt-1">
+                {gscData.totals.position.toFixed(1)}
+              </p>
+            </div>
+            <div className="bg-cream/40 p-4 rounded-md border border-ivory/40 overflow-hidden">
+              <span className="text-xs text-olive/50 font-medium block">Top Search Query</span>
+              <p className="font-sans text-sm font-semibold text-olive mt-1 truncate" title={topQuery}>
+                {topQuery}
+              </p>
+            </div>
+            <div className="bg-cream/40 p-4 rounded-md border border-ivory/40 overflow-hidden">
+              <span className="text-xs text-olive/50 font-medium block">Top Performing Page</span>
+              <p className="font-sans text-sm font-semibold text-olive mt-1 truncate" title={topPage}>
+                {topPage}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-cream/40 p-6 rounded-lg border border-dashed border-olive/15 text-center sm:text-left">
+            <div>
+              <h4 className="font-display text-base font-semibold text-olive">Connect Analytics to see performance data</h4>
+              <p className="font-sans text-xs text-olive/60 mt-1">Setup Google Search Console and GA4 to view site traffic here.</p>
+            </div>
+            <Link
+              href="/settings/analytics"
+              className="rounded-md bg-gold px-5 py-2.5 font-sans text-xs font-medium text-olive hover:bg-gold/90 transition whitespace-nowrap"
+            >
+              Go to Settings
+            </Link>
+          </div>
+        )}
+      </div>
+
+      {/* Content Summary Section */}
+      <div className="bg-paper p-6 rounded-lg shadow-sm border border-ivory/50">
+        <h3 className="font-display text-lg font-semibold text-olive mb-4">
+          📊 Content &amp; Leads Summary
+        </h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="space-y-1">
+            <span className="text-xs text-olive/50 font-medium block">Posts published this month</span>
+            <p className="font-display text-2xl font-bold text-olive">{postsPublishedThisMonth}</p>
+          </div>
+          <div className="space-y-1">
+            <span className="text-xs text-olive/50 font-medium block">Pages published</span>
+            <p className="font-display text-2xl font-bold text-olive">{pagesPublished}</p>
+          </div>
+          <div className="space-y-1">
+            <span className="text-xs text-olive/50 font-medium block">New leads this month</span>
+            <p className="font-display text-2xl font-bold text-olive">{leadsThisMonth}</p>
+          </div>
+          <div className="space-y-1">
+            <span className="text-xs text-olive/50 font-medium block">Packages available</span>
+            <p className="font-display text-2xl font-bold text-olive">{totalPackages}</p>
+          </div>
         </div>
       </div>
 

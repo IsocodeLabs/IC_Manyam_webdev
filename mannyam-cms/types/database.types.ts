@@ -489,6 +489,90 @@ export interface Database {
         }
         Relationships: []
       }
+      lead_notes: {
+        Row: {
+          id: string
+          lead_id: string
+          note: string
+          created_by: string | null
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          lead_id: string
+          note: string
+          created_by?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          lead_id?: string
+          note?: string
+          created_by?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_notes_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lead_notes_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      lead_audit_log: {
+        Row: {
+          id: string
+          lead_id: string
+          changed_by: string | null
+          changed_by_name: string | null
+          from_status: string | null
+          to_status: string
+          changed_at: string | null
+        }
+        Insert: {
+          id?: string
+          lead_id: string
+          changed_by?: string | null
+          changed_by_name?: string | null
+          from_status?: string | null
+          to_status: string
+          changed_at?: string | null
+        }
+        Update: {
+          id?: string
+          lead_id?: string
+          changed_by?: string | null
+          changed_by_name?: string | null
+          from_status?: string | null
+          to_status?: string
+          changed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_audit_log_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lead_audit_log_changed_by_fkey"
+            columns: ["changed_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never
