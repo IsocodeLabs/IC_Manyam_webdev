@@ -210,3 +210,22 @@ export async function getPageBySlug(slug: string) {
   }
   return data || null;
 }
+
+/**
+ * Fetch published pages whose slug starts with a given prefix.
+ * Used by listing pages to show category pages (experience-*, festival-*, destination-*).
+ */
+export async function getPublishedPagesBySlugPrefix(prefix: string) {
+  const supabase = await createPublicClient();
+  const { data, error } = await supabase
+    .from("pages")
+    .select("*")
+    .eq("status", "Published")
+    .like("slug", `${prefix}%`)
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    console.error(`Error fetching pages with prefix ${prefix}:`, error);
+  }
+  return data || [];
+}
