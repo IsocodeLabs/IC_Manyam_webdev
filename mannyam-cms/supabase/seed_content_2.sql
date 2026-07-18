@@ -147,7 +147,7 @@ $${"title":"Ganesh Chaturthi | MANNYAM","description":"Mumbai's biggest celebrat
 
 ('Pongal and Onam', 'festival-harvest', 'Category', 'Published',
 $$[
-{"id":"f7-hero","type":"Hero","data":{"headline":"Pongal and Onam","subheadline":"The south gives thanks. Floral carpets, boat races and feasts on banana leaves.","backgroundImage":"https://images.unsplash.com/photo-1593693411515-c20261bcad6e?auto=format&fit=crop&w=1200&q=75","ctaText":"Plan My Journey","ctaLink":"/enquire"}},
+{"id":"f7-hero","type":"Hero","data":{"headline":"Pongal and Onam","subheadline":"The south gives thanks. Floral carpets, boat races and feasts on banana leaves.","backgroundImage":"https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=75","ctaText":"Plan My Journey","ctaLink":"/enquire"}},
 {"id":"f7-facts","type":"Fact Bar","data":{"facts":[{"label":"When","value":"January (Pongal) and August (Onam)"},{"label":"Where","value":"Tamil Nadu and Kerala"}]}},
 {"id":"f7-tiles","type":"Tiles","data":{"heading":"How we celebrate it with you","tiles":[{"title":"Onam feast","description":"The grand Sadhya, dish after dish on a fresh banana leaf."},{"title":"Flower carpets","description":"Intricate Pookalam laid out across doorways and courtyards."},{"title":"Snake boats","description":"The thunder of Kerala's long racing boats on the water."}]}},
 {"id":"f7-cta","type":"CTA Banner","data":{"headline":"Harvest and gratitude","body":"The south's most joyful celebrations, arranged for you.","buttonLabel":"Plan my journey","buttonLink":"/enquire"}}

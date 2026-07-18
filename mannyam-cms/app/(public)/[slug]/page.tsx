@@ -10,6 +10,7 @@ interface PageProps {
 }
 
 const RESERVED_SLUGS = [
+  "journeys",
   "experiences",
   "festivals",
   "destinations",
