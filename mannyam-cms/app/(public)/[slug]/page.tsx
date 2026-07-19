@@ -1,11 +1,34 @@
 import React from "react";
 import { notFound } from "next/navigation";
-import { getPageBySlug, getPublishedPages } from "@/lib/data/public";
+import { getPageBySlug, getPublishedPages, getPublishedPackages } from "@/lib/data/public";
 import { BlockRenderer, ContentBlock } from "@/components/public/blocks/BlockRenderer";
 import { buildMetadata } from "@/lib/seo/buildMetadata";
 import { Button } from "@/components/public/ui/Button";
+import { PackageCard } from "@/components/public/ui/PackageCard";
 import Link from "next/link";
 import type { Metadata } from "next";
+
+async function RelatedJourneysSection({ pkgType }: { pkgType?: 'Festival' | 'Destination' | 'Honeymoon' | 'Wildlife' | 'Wellness' }) {
+  const packages = await getPublishedPackages(pkgType, 3);
+  if (!packages || packages.length === 0) return null;
+
+  return (
+    <section className="bg-cream/40 border-t border-b border-olive/10 py-16 sm:py-24 px-6 overflow-hidden mt-12 mb-12">
+      <div className="max-w-[1200px] mx-auto">
+        <h3 className="font-display text-[26px] md:text-[36px] mb-8 text-olive">
+          Related Journeys
+        </h3>
+        <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-3">
+          {packages.map((pkg) => (
+            <div key={pkg.id} className="w-[85vw] md:w-auto flex-none snap-center">
+              <PackageCard pkg={pkg} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -163,6 +186,13 @@ export default async function DynamicPage({ params }: PageProps) {
               </div>
             )}
 
+            {/* Lede Paragraph */}
+            {heroData.subheadline && (
+              <p className="text-[15px] text-olive/70 leading-[1.7] mb-8 font-light max-w-prose">
+                {heroData.subheadline}
+              </p>
+            )}
+
             {/* Tiles (moments/activities) */}
             {tilesBlock && (
               <div className="mb-8">
@@ -228,6 +258,17 @@ export default async function DynamicPage({ params }: PageProps) {
           </aside>
         </div>
       </div>
+
+      {/* Related Journeys Section */}
+      {(() => {
+        let pkgType: "Festival" | "Destination" | "Honeymoon" | "Wildlife" | "Wellness" | undefined;
+        if (slug.startsWith("festival-")) pkgType = "Festival";
+        if (slug.startsWith("destination-")) pkgType = "Destination";
+
+        return (
+          <RelatedJourneysSection pkgType={pkgType} />
+        );
+      })()}
 
       {/* FAQ Section */}
       {faqBlock && (

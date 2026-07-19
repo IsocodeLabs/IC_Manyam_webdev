@@ -46,7 +46,7 @@ export default async function DestinationsPage() {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-12">
             {pages.map((page) => (
               <PageCard key={page.id} page={page} />
             ))}

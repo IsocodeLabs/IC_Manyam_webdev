@@ -1,9 +1,9 @@
-﻿import React from "react";
+import React from "react";
 import { ConciergeForm } from "@/components/public/ConciergeForm";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { CtaSection } from "@/components/public/CtaSection";
+
 
 export const revalidate = 0; // Ensure fresh server-side renders
 
@@ -131,7 +131,21 @@ export default async function EnquirePage({ searchParams }: EnquirePageProps) {
       </section>
 
       {/* Dark Closing CTA Section */}
-      <CtaSection />
+      <section className="bg-ink text-ivory py-20 px-6 mt-16 text-center">
+        <div className="max-w-3xl mx-auto space-y-6">
+          <h2 className="font-display text-3xl sm:text-4xl font-bold">
+            Ready to shape your journey?
+          </h2>
+          <p className="font-sans text-ivory/70 font-light leading-relaxed text-sm sm:text-base max-w-lg mx-auto">
+            Our curators are standing by to help you design a private, tailor-made experience across India.
+          </p>
+          <div className="pt-4">
+            <Link href="/" className="inline-flex items-center gap-2 font-sans font-medium text-xs tracking-widest uppercase bg-gold text-ink px-8 py-4 rounded-full transition-all hover:bg-ivory hover:text-ink">
+              Back to Home
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

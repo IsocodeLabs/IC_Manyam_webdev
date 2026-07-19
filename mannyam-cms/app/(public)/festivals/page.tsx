@@ -46,10 +46,22 @@ export default async function FestivalsPage() {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {pages.map((page) => (
-              <PageCard key={page.id} page={page} />
-            ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-12">
+            {pages.map((page) => {
+              let whenStr = undefined;
+              if (Array.isArray(page.content)) {
+                const factBlock = page.content.find(
+                  (b: any) => b?.type === "FactBar"
+                ) as any;
+                if (factBlock?.data?.facts) {
+                  const whenFact = factBlock.data.facts.find(
+                    (f: any) => f.label?.toLowerCase() === "when"
+                  );
+                  if (whenFact) whenStr = whenFact.value;
+                }
+              }
+              return <PageCard key={page.id} page={page} when={whenStr} />;
+            })}
           </div>
         )}
       </section>
