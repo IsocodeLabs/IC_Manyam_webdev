@@ -56,6 +56,8 @@ const DIFF = [
   { h: "Real access, not a script", p: "Private temple openings, festival vantage points and dinners in family homes.", icon: "M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5L12 3Z" },
   { h: "Seamless and safe", p: "Vetted drivers, support around the clock and every transfer handled.", icon: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" },
   { h: "Unhurried by design", p: "Fewer places and more depth, with slow mornings and room to wander built in.", icon: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM12 7v5l3 2" },
+  { h: "Honest advice", p: "We tell you what a place is really like, the right season and where the crowds will be.", icon: "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" },
+  { h: "Yours to shape", p: "Every journey is designed around you and can be reimagined to suit your pace and purpose.", icon: "M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" },
 ];
 
 const STEPS = [
@@ -216,7 +218,7 @@ export default async function PublicHomePage() {
       {/* ═══ THE MANNYAM DIFFERENCE ═══ */}
       <section className="py-12 md:py-20 max-w-7xl mx-auto px-6">
         <SectionHeading eyebrow="The MANNYAM difference" heading="Effortless for you. Rooted for real." intro="The two things our guests ask for most are complete ease and the genuine thing. We refuse to trade one for the other." />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-6">
           {DIFF.map((d, i) => (
             <div key={i} className="bg-paper border border-olive/8 rounded-[14px] p-5 transition-all duration-300 hover:border-gold/30 hover:translate-y-[-3px] hover:shadow-lg">
               <svg className="w-[34px] h-[34px] text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d={d.icon} /></svg>
