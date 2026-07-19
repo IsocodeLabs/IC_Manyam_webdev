@@ -38,10 +38,21 @@ const DESTINATIONS_ITEMS = [
   { title: "Gujarat", desc: "Salt deserts and wild lions", href: "/destination-gujarat" },
 ];
 
+const JOURNEYS_ITEMS = [
+  { title: "Palaces of the North", desc: "12 days", href: "/experiences/palaces-of-the-north" },
+  { title: "Green Kerala and the Ghats", desc: "9 days", href: "/experiences/green-kerala" },
+  { title: "Ladakh and the High Passes", desc: "10 days", href: "/experiences/ladakh-high-passes" },
+  { title: "The Ganges and Beyond", desc: "7 days", href: "/experiences/ganges-and-beyond" },
+  { title: "Colours of Holi", desc: "8 days, Holi", href: "/festivals/colours-of-holi" },
+  { title: "Lights of Diwali", desc: "9 days, Diwali", href: "/festivals/lights-of-diwali" },
+  { title: "Royal Dussehra of Mysuru", desc: "6 days, Dussehra", href: "/festivals/royal-dussehra" },
+];
+
 const FEATURED_IMAGES: Record<string, string> = {
   experiences: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=600&q=75",
   festivals: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=75",
   destinations: "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=600&q=75",
+  journeys: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=600&q=75",
 };
 
 // ─── Component ───────────────────────────────────────────────────────────────
@@ -190,10 +201,45 @@ export function Header() {
             )}
           </div>
 
+          {/* Journeys (mega) */}
+          <div
+            className="relative"
+            onMouseEnter={() => handleMegaEnter("journeys")}
+            onMouseLeave={handleMegaLeave}
+          >
+            <button className={`font-sans text-[12px] tracking-[0.13em] uppercase font-normal px-3 py-5 transition-colors duration-200 flex items-center gap-1.5 ${openMega === "journeys" ? "text-gold" : "text-olive/88 hover:text-gold"}`}>
+              Journeys
+              <svg className={`w-[7px] h-[7px] transition-transform duration-200 ${openMega === "journeys" ? "rotate-180" : ""}`} viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+            </button>
+            {openMega === "journeys" && (
+              <div className="absolute top-full left-1/2 -translate-x-1/2 w-[840px] bg-paper border border-gold/25 rounded-[18px] shadow-[0_18px_48px_-24px_rgba(30,35,25,.26)] p-[22px] z-50 animate-fade-in">
+                <div className="grid grid-cols-[1.4fr_1fr] gap-5">
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                    {JOURNEYS_ITEMS.map((item) => (
+                      <Link key={item.href} href={item.href} className="block px-2.5 py-2.5 rounded-[10px] transition-colors hover:bg-cream" onClick={() => setOpenMega(null)}>
+                        <div className="font-display text-[17px] text-olive">{item.title}</div>
+                        <div className="text-[11px] text-olive/50">{item.desc}</div>
+                      </Link>
+                    ))}
+                    <Link href="/journeys" className="block px-2.5 py-2.5 rounded-[10px] transition-colors hover:bg-cream" onClick={() => setOpenMega(null)}>
+                      <div className="font-display text-[17px] text-gold">View all</div>
+                      <div className="text-[11px] text-olive/50">See everything</div>
+                    </Link>
+                  </div>
+                  <div className="rounded-[14px] overflow-hidden relative min-h-[150px] bg-olive/10">
+                    <img src={FEATURED_IMAGES.journeys} alt="Signature Journey" className="absolute inset-0 w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
+                    <div className="absolute left-3.5 right-3.5 bottom-3 text-ivory z-10">
+                      <div className="text-[9.5px] uppercase tracking-[0.24em] text-sand/80">Signature</div>
+                      <div className="font-display text-[20px] mt-0.5">Palaces of the North</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
           {/* Plain links */}
-          <Link href="/journeys" className="font-sans text-[12px] tracking-[0.13em] uppercase font-normal px-3 py-5 text-olive/88 hover:text-gold transition-colors duration-200">
-            Journeys
-          </Link>
           <Link href="/journal" className="font-sans text-[12px] tracking-[0.13em] uppercase font-normal px-3 py-5 text-olive/88 hover:text-gold transition-colors duration-200">
             Journal
           </Link>
@@ -244,8 +290,8 @@ export function Header() {
           <MobileAccordion title="Experiences" items={EXPERIENCES_ITEMS} onClose={() => setIsMobileMenuOpen(false)} />
           <MobileAccordion title="Festivals" items={FESTIVALS_ITEMS} onClose={() => setIsMobileMenuOpen(false)} />
           <MobileAccordion title="Destinations" items={DESTINATIONS_ITEMS} onClose={() => setIsMobileMenuOpen(false)} />
+          <MobileAccordion title="Journeys" items={JOURNEYS_ITEMS} onClose={() => setIsMobileMenuOpen(false)} />
 
-          <Link href="/journeys" onClick={() => setIsMobileMenuOpen(false)} className="block font-display text-[21px] py-3 border-t border-white/10">Journeys</Link>
           <Link href="/journal" onClick={() => setIsMobileMenuOpen(false)} className="block font-display text-[21px] py-3 border-t border-white/10">Journal</Link>
           <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="block font-display text-[21px] py-3 border-t border-white/10">About</Link>
         </div>
