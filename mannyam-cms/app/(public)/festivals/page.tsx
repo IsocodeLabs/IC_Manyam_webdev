@@ -4,6 +4,31 @@ import { PageCard } from "@/components/public/ui/PageCard";
 import { Button } from "@/components/public/ui/Button";
 import { buildMetadata } from "@/lib/seo/buildMetadata";
 import type { Metadata } from "next";
+import { ListingFaq } from "@/components/public/ListingFaq";
+import { ClosingCta } from "@/components/public/ClosingCta";
+
+const festivalFaqs = [
+  {
+    question: "Which festivals can I plan a trip around in India?",
+    answer: "We arrange private journeys around Holi, Diwali, Dussehra, Durga Puja, Navratri, Ganesh Chaturthi, harvest festivals and year-round celebration shows."
+  },
+  {
+    question: "When do India's main festivals take place?",
+    answer: "Holi in March, Diwali and Dussehra in October-November, Navratri in October, Ganesh Chaturthi from August, harvest festivals in January and August. Dates shift each year."
+  },
+  {
+    question: "Is it safe to attend Indian festivals as a foreign visitor?",
+    answer: "Yes. We arrange trusted local hosts and calm, safe vantage points so you enjoy the celebration in comfort."
+  },
+  {
+    question: "How early should I book a festival journey?",
+    answer: "Festival dates draw crowds and the best stays fill early. We recommend planning several months in advance."
+  },
+  {
+    question: "Can a festival be part of a longer India journey?",
+    answer: "Absolutely. We pair the festival with palaces, backwaters or wildlife so the celebration becomes the heart of a longer trip."
+  }
+];
 
 export const revalidate = 3600;
 
@@ -65,6 +90,14 @@ export default async function FestivalsPage() {
           </div>
         )}
       </section>
+
+      <ListingFaq
+        heading="Questions, answered simply"
+        subtitle="How private India experiences work, answered in plain language."
+        items={festivalFaqs}
+      />
+
+      <ClosingCta />
     </div>
   );
 }
