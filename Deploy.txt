@@ -1,0 +1,233 @@
+================================================================================
+MANNYAM CMS — FINAL DEPLOYMENT GUIDE (Hostinger VPS)
+================================================================================
+Build: PASSED ✓ (all routes compiled, static pages generated)
+Remaining: Caddy setup, DNS, PM2, and the `api.mannyam.in` ENOTFOUND fix.
+
+The build succeeded. The "ENOTFOUND api.mannyam.in" warnings during page data
+collection are NOT fatal — they happened because Caddy is not yet serving
+api.mannyam.in on this VPS. Once Caddy is configured (Part 2 below), those
+errors disappear and the pages will fetch live data at runtime.
+
+================================================================================
+PART 1 — START THE APP WITH PM2
+================================================================================
+
+  cd /var/www/mannyam-cms/mannyam-cms
+
+  # Install PM2 globally (if not installed)
+  npm install -g pm2
+
+  # Start the Next.js production server on port 3000
+  pm2 start npm --name mannyam-cms -- start
+
+  # Save the process list so it restarts on reboot
+  pm2 save
+  pm2 startup
+  # ^ Run whatever command it prints (usually a systemctl enable line)
+
+  # Verify it's running:
+  pm2 status
+  curl http://localhost:3000   # should return HTML
+
+================================================================================
+PART 2 — CONFIGURE CADDY (HTTPS + REVERSE PROXY)
+================================================================================
+
+Caddy serves two roles:
+  1. Reverse-proxies mannyam.in (public site + admin) to Next.js on port 3000
+  2. Reverse-proxies api.mannyam.in to Supabase Kong gateway on port 8000
+
+Install Caddy (if not installed):
+  sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
+  curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+  curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+  sudo apt update && sudo apt install caddy
+
+Edit the Caddyfile:
+  sudo nano /etc/caddy/Caddyfile
+
+Paste this (replace with your actual domain):
+
+────────────────────────────────────────────────────────────────────────────────
+mannyam.in, www.mannyam.in {
+    reverse_proxy localhost:3000
+}
+
+api.mannyam.in {
+    reverse_proxy localhost:8000
+}
+────────────────────────────────────────────────────────────────────────────────
+
+Reload Caddy:
+  sudo systemctl reload caddy
+
+Caddy auto-provisions Let's Encrypt HTTPS certificates. No manual cert setup.
+
+================================================================================
+PART 3 — DNS RECORDS (at your domain registrar)
+================================================================================
+
+Add these DNS records (replace <VPS_IP> with your Hostinger VPS IP):
+
+  Type    Name    Value           TTL
+  A       @       <VPS_IP>        300
+  A       www     <VPS_IP>        300
+  A       api     <VPS_IP>        300
+
+Wait for propagation (5-30 minutes). Check:
+  dig mannyam.in +short         # should show your VPS IP
+  dig api.mannyam.in +short     # same IP
+
+Once DNS resolves, Caddy will issue certs and everything starts working.
+
+================================================================================
+PART 4 — FIX THE .env.local (ENOTFOUND api.mannyam.in)
+================================================================================
+
+During build, `api.mannyam.in` was unreachable because Caddy wasn't set up yet.
+Now that Caddy is configured and DNS points correctly, the app will work at
+runtime. But to also make BUILDS work (for static page generation), add a
+local DNS override on the VPS so it can resolve its own domain:
+
+  echo "<VPS_IP> api.mannyam.in" >> /etc/hosts
+
+Replace <VPS_IP> with 127.0.0.1 (since Caddy is on localhost) or the actual VPS
+public IP. This ensures that during `npm run build` the server can reach Supabase.
+
+Your .env.local should now have:
+  NEXT_PUBLIC_SUPABASE_URL=https://api.mannyam.in
+
+This is the stable production URL. No more Cloudflare tunnel URL changes.
+
+================================================================================
+PART 5 — SUPABASE AUTH CONFIGURATION
+================================================================================
+
+In self-hosted Supabase Studio (http://localhost:8000 on the VPS):
+  1. Go to Authentication > URL Configuration
+  2. Set Site URL: https://mannyam.in
+  3. Add Redirect URLs:
+     - https://mannyam.in/auth/callback
+     - https://mannyam.in/account
+  4. Save
+
+OR edit the Docker Compose .env file:
+  SITE_URL=https://mannyam.in
+  ADDITIONAL_REDIRECT_URLS=https://mannyam.in/auth/callback
+Then restart the auth container:
+  cd /opt/supabase/docker && docker compose restart auth
+
+================================================================================
+PART 6 — REBUILD (now that api.mannyam.in resolves)
+================================================================================
+
+After DNS propagates and the /etc/hosts entry is in place:
+
+  cd /var/www/mannyam-cms/mannyam-cms
+  rm -rf .next
+  npm run build
+  pm2 restart mannyam-cms
+
+This time the build will fetch real data from Supabase during static generation
+(no ENOTFOUND errors).
+
+================================================================================
+PART 7 — VERIFY EVERYTHING WORKS
+================================================================================
+
+  [ ] https://mannyam.in loads the public homepage (HTTPS, valid cert)
+  [ ] https://mannyam.in/login shows the admin login page
+  [ ] Login with admin credentials works, redirects to /dashboard
+  [ ] https://api.mannyam.in returns the Supabase "Healthy" response
+  [ ] Published CMS content appears on the public site
+  [ ] /enquire form submits successfully (creates a lead in database)
+  [ ] Razorpay test checkout works (use test card 4111 1111 1111 1111)
+  [ ] PM2 status shows mannyam-cms as "online"
+  [ ] After VPS reboot, app auto-starts (pm2 startup configured)
+
+================================================================================
+PART 8 — ONGOING REDEPLOYMENT (every time you push new code)
+================================================================================
+
+  cd /var/www/mannyam-cms/mannyam-cms
+  git pull origin main
+  npm ci                  # only if package.json/lock changed
+  npm run build
+  pm2 restart mannyam-cms
+
+================================================================================
+PART 9 — REMAINING PRODUCTION TASKS (do after site is live)
+================================================================================
+
+1. RAZORPAY LIVE MODE (after KYC approval):
+   - Swap RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET to rzp_live_... keys
+   - Update NEXT_PUBLIC_RAZORPAY_KEY_ID to the live key
+   - Register webhook URL: https://mannyam.in/api/webhooks/razorpay
+   - Copy live webhook secret into RAZORPAY_WEBHOOK_SECRET
+   - Rebuild and restart PM2
+
+2. GOOGLE SEARCH CONSOLE:
+   - Add property https://mannyam.in in Search Console
+   - Verify via HTML file (put in public/) or DNS TXT record
+   - Add service account email as viewer
+   - Set GSC_SITE_URL=https://mannyam.in in .env.local
+   - Rebuild
+
+3. AUTOMATED BACKUPS:
+   - Create /opt/supabase/backup.sh:
+     #!/bin/bash
+     docker exec supabase-db pg_dumpall -U postgres > /opt/supabase/backups/db_$(date +%F).sql
+   - Install rclone, configure Backblaze B2
+   - Add to cron: 0 2 * * * /opt/supabase/backup.sh
+   - Verify: ls /opt/supabase/backups/
+
+4. NODE.JS UPGRADE (recommended, silences Supabase warnings):
+   - Current: Node 20. Supabase SDK wants Node 22+.
+   - Upgrade when convenient:
+     curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+     sudo apt install -y nodejs
+     node -v    # should show v22.x
+     npm run build && pm2 restart mannyam-cms
+
+5. DOCKER AUTO-RESTART (Supabase containers):
+   - In /opt/supabase/docker/docker-compose.yml, ensure every service has:
+     restart: unless-stopped
+   - Run: docker compose up -d
+
+================================================================================
+PART 10 — TROUBLESHOOTING
+================================================================================
+
+Problem                         Fix
+─────────────────────────────── ────────────────────────────────────────────────
+ENOTFOUND api.mannyam.in        DNS not propagated, or missing /etc/hosts entry
+502 Bad Gateway from Caddy      PM2 not running; run: pm2 start mannyam-cms
+Cert not issued                 DNS A record not pointing to VPS yet
+Login redirects to wrong URL    Supabase Auth Site URL not set (Part 5)
+Build type error admin.ts       Stale nested folder; find + remove (see below)
+Razorpay modal not opening      NEXT_PUBLIC_RAZORPAY_KEY_ID missing in .env.local
+Webhook not firing              Webhook URL not registered in Razorpay dashboard
+
+If the type error ever comes back:
+  find . -path '*/supabase/admin.ts' | head -5
+  # Delete any copies that are NOT ./lib/supabase/admin.ts
+  rm -rf ./mannyam-cms   # if a nested stale copy exists
+
+================================================================================
+SUMMARY — WHAT YOU NEED TO DO RIGHT NOW
+================================================================================
+
+1. pm2 start npm --name mannyam-cms -- start
+2. Set up Caddy (Part 2 Caddyfile)
+3. Add DNS A records for @, www, api (Part 3)
+4. Add /etc/hosts entry: 127.0.0.1 api.mannyam.in (Part 4)
+5. Set Supabase Auth URLs (Part 5)
+6. Wait for DNS, then rebuild (Part 6)
+7. Verify (Part 7)
+
+Total time: ~30 minutes of work + DNS propagation wait.
+
+================================================================================
+END OF DEPLOY GUIDE
+================================================================================
