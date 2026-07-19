@@ -1,7 +1,9 @@
-import { getPublishedPagesBySlugPrefix } from "@/lib/data/public";
+﻿import { getPublishedPagesBySlugPrefix } from "@/lib/data/public";
 import { SectionHeading } from "@/components/public/ui/SectionHeading";
 import { PageCard } from "@/components/public/ui/PageCard";
 import { Button } from "@/components/public/ui/Button";
+import { ListingFaq } from "@/components/public/ListingFaq";
+import { ClosingCta } from "@/components/public/ClosingCta";
 import { buildMetadata } from "@/lib/seo/buildMetadata";
 import type { Metadata } from "next";
 
@@ -53,6 +55,36 @@ export default async function ExperiencesPage() {
           </div>
         )}
       </section>
+
+      <ListingFaq
+        heading="Questions, answered simply"
+        subtitle="How private India experiences work, answered in plain language."
+        items={[
+          {
+            question: "What kinds of experiences can I have in India?",
+            answer: "From culture and heritage to food, wildlife, spiritual travel, royal evenings and honeymoons. Each one is private and tailor-made."
+          },
+          {
+            question: "Can I combine different experiences in one trip?",
+            answer: "Yes, and most travellers do. We weave heritage, food, nature and quiet time into a single journey that flows at your pace."
+          },
+          {
+            question: "Are these India trips private or in a group?",
+            answer: "Every MANNYAM journey is private. You travel with your own curator, driver and guides."
+          },
+          {
+            question: "Which experience is best for a first trip to India?",
+            answer: "Culture and heritage paired with slow travel is a wonderful first taste. Tell us who is travelling and we will suggest the right mix."
+          },
+          {
+            question: "How do I plan a tailor-made experience?",
+            answer: "Use the concierge or our enquiry form. Describe what you love, and a curator replies within a day."
+          }
+        ]}
+      />
+
+      <ClosingCta />
     </div>
   );
 }
+
