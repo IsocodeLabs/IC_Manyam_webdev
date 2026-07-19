@@ -110,7 +110,7 @@ export function Header() {
               <svg className={`w-[7px] h-[7px] transition-transform duration-200 ${openMega === "experiences" ? "rotate-180" : ""}`} viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
             </button>
             {openMega === "experiences" && (
-              <div className="fixed top-[76px] left-1/2 -translate-x-1/2 w-[min(780px,calc(100vw-3rem))] bg-paper border border-gold/25 rounded-[18px] shadow-[0_18px_48px_-24px_rgba(30,35,25,.26)] p-5 z-50 animate-fade-in overflow-hidden">
+              <div className="fixed top-[76px] left-4 right-4 max-w-[780px] bg-paper border border-gold/25 rounded-[18px] shadow-[0_18px_48px_-24px_rgba(30,35,25,.26)] p-5 z-50 animate-fade-in overflow-hidden">
                 <div className="grid grid-cols-[1fr_200px] gap-4">
                   <div className="grid grid-cols-2 gap-x-4 gap-y-1">
                     {EXPERIENCES_ITEMS.map((item) => (
@@ -148,7 +148,7 @@ export function Header() {
               <svg className={`w-[7px] h-[7px] transition-transform duration-200 ${openMega === "festivals" ? "rotate-180" : ""}`} viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
             </button>
             {openMega === "festivals" && (
-              <div className="fixed top-[76px] left-1/2 -translate-x-1/2 w-[min(780px,calc(100vw-3rem))] bg-paper border border-gold/25 rounded-[18px] shadow-[0_18px_48px_-24px_rgba(30,35,25,.26)] p-5 z-50 animate-fade-in overflow-hidden">
+              <div className="fixed top-[76px] left-4 right-4 max-w-[780px] bg-paper border border-gold/25 rounded-[18px] shadow-[0_18px_48px_-24px_rgba(30,35,25,.26)] p-5 z-50 animate-fade-in overflow-hidden">
                 <div className="grid grid-cols-[1fr_200px] gap-4">
                   <div className="grid grid-cols-2 gap-x-4 gap-y-1">
                     {FESTIVALS_ITEMS.map((item) => (
@@ -186,7 +186,7 @@ export function Header() {
               <svg className={`w-[7px] h-[7px] transition-transform duration-200 ${openMega === "destinations" ? "rotate-180" : ""}`} viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
             </button>
             {openMega === "destinations" && (
-              <div className="fixed top-[76px] left-1/2 -translate-x-1/2 w-[min(780px,calc(100vw-3rem))] bg-paper border border-gold/25 rounded-[18px] shadow-[0_18px_48px_-24px_rgba(30,35,25,.26)] p-5 z-50 animate-fade-in overflow-hidden">
+              <div className="fixed top-[76px] left-4 right-4 max-w-[780px] bg-paper border border-gold/25 rounded-[18px] shadow-[0_18px_48px_-24px_rgba(30,35,25,.26)] p-5 z-50 animate-fade-in overflow-hidden">
                 <div className="grid grid-cols-[1fr_200px] gap-4">
                   <div className="grid grid-cols-2 gap-x-4 gap-y-1">
                     {DESTINATIONS_ITEMS.map((item) => (
@@ -224,7 +224,7 @@ export function Header() {
               <svg className={`w-[7px] h-[7px] transition-transform duration-200 ${openMega === "journeys" ? "rotate-180" : ""}`} viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
             </button>
             {openMega === "journeys" && (
-              <div className="fixed top-[76px] left-1/2 -translate-x-1/2 w-[min(780px,calc(100vw-3rem))] bg-paper border border-gold/25 rounded-[18px] shadow-[0_18px_48px_-24px_rgba(30,35,25,.26)] p-5 z-50 animate-fade-in overflow-hidden">
+              <div className="fixed top-[76px] left-4 right-4 max-w-[780px] bg-paper border border-gold/25 rounded-[18px] shadow-[0_18px_48px_-24px_rgba(30,35,25,.26)] p-5 z-50 animate-fade-in overflow-hidden">
                 <div className="grid grid-cols-[1fr_200px] gap-4">
                   <div className="grid grid-cols-2 gap-x-4 gap-y-1">
                     {JOURNEYS_ITEMS.map((item) => (
