@@ -14,16 +14,16 @@ image for Holi. Run this in the Supabase SQL Editor:
 
 UPDATE public.pages SET content = jsonb_set(
   content, '{0,data,backgroundImage}',
-  '"https://images.unsplash.com/photo-1553481187-be93c21490a9?auto=format&fit=crop&w=1200&q=75"'
+  '"https://unsplash.com/photos/rFP3OzmYH6M/download?w=1200&fm=jpg&fit=crop"'
 ) WHERE slug = 'festival-holi';
 
 UPDATE public.packages SET featured_image_url =
-  'https://images.unsplash.com/photo-1553481187-be93c21490a9?auto=format&fit=crop&w=1200&q=75'
+  'https://unsplash.com/photos/rFP3OzmYH6M/download?w=1200&fm=jpg&fit=crop'
 WHERE slug = 'colours-of-holi';
 
 UPDATE public.posts SET seo_meta = jsonb_set(
   COALESCE(seo_meta, '{}'::jsonb), '{og_image}',
-  '"https://images.unsplash.com/photo-1553481187-be93c21490a9?auto=format&fit=crop&w=1200&q=75"'
+  '"https://unsplash.com/photos/rFP3OzmYH6M/download?w=1200&fm=jpg&fit=crop"'
 ) WHERE slug = 'holi-mathura';
 
 Then restart PM2: pm2 restart mannyam-cms

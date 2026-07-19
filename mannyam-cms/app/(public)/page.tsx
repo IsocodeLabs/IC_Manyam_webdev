@@ -25,7 +25,7 @@ const HERO_IMG = "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?a
 const HERO_IMG2 = "https://images.unsplash.com/photo-1593693411515-c20261bcad6e?auto=format&fit=crop&w=600&q=75";
 
 const FESTIVALS_RAIL = [
-  { slug: "festival-holi", title: "Holi", when: "March", desc: "Festival of colour", img: "https://images.unsplash.com/photo-1553481187-be93c21490a9?auto=format&fit=crop&w=600&q=75" },
+  { slug: "festival-holi", title: "Holi", when: "March", desc: "Festival of colour", img: "https://unsplash.com/photos/rFP3OzmYH6M/download?w=860&fm=jpg&fit=crop" },
   { slug: "festival-diwali", title: "Diwali", when: "Oct-Nov", desc: "Festival of lights", img: "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=600&q=75" },
   { slug: "festival-dussehra", title: "Dussehra", when: "October", desc: "Triumph of good", img: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=600&q=75" },
   { slug: "festival-durga-puja", title: "Durga Puja", when: "October", desc: "Art and devotion", img: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=600&q=75" },

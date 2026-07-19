@@ -50,7 +50,7 @@ const JOURNEYS_ITEMS = [
 
 const FEATURED_IMAGES: Record<string, string> = {
   experiences: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=75",
-  festivals: "https://unsplash.com/photos/WTE7HKuXZlM/download?w=600&fm=jpg&fit=crop",
+  festivals: "https://unsplash.com/photos/rFP3OzmYH6M/download?w=600&fm=jpg&fit=crop",
   destinations: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=600&q=75",
   journeys: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=600&q=75",
 };
