@@ -1,6 +1,7 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 
 interface ConciergeFormProps {
   sourcePage?: string;
@@ -10,6 +11,10 @@ interface ConciergeFormProps {
 export function ConciergeForm({ sourcePage, journey: propJourney }: ConciergeFormProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [country, setCountry] = useState("");
+  const [travellers, setTravellers] = useState("");
+  const [whenDate, setWhenDate] = useState("");
+  const [howLong, setHowLong] = useState("");
   const [message, setMessage] = useState("");
   const [journey, setJourney] = useState(propJourney || "");
   const [honeypot, setHoneypot] = useState(""); // Spam protection
@@ -67,9 +72,9 @@ export function ConciergeForm({ sourcePage, journey: propJourney }: ConciergeFor
     }
 
     // Append journey details to message if present
-    let finalMessage = message.trim();
+    let assembledMessage = "Country: " + country + "\nTravellers: " + travellers + "\nWhen: " + whenDate + "\nHow long: " + howLong + "\n\n" + message.trim();
     if (journey.trim()) {
-      finalMessage = `[Journey Enquiry: ${journey.trim()}]\n\n${finalMessage}`;
+      assembledMessage = "[Journey Enquiry: " + journey.trim() + "]\n\n" + assembledMessage;
     }
 
     try {
@@ -83,7 +88,7 @@ export function ConciergeForm({ sourcePage, journey: propJourney }: ConciergeFor
           source_page: path,
           name: name.trim(),
           email: email.trim(),
-          message: finalMessage || null,
+          message: assembledMessage.trim(),
         }),
       });
 
@@ -94,9 +99,6 @@ export function ConciergeForm({ sourcePage, journey: propJourney }: ConciergeFor
       }
 
       setSuccess(true);
-      setName("");
-      setEmail("");
-      setMessage("");
     } catch (err: unknown) {
       const errorMsg = err instanceof Error ? err.message : "Something went wrong. Please check your connection and try again.";
       setError(errorMsg);
@@ -112,7 +114,7 @@ export function ConciergeForm({ sourcePage, journey: propJourney }: ConciergeFor
           ✓
         </div>
         <h3 className="font-display text-2xl font-bold text-olive">
-          Your enquiry has reached our curators
+          Thank you. Your story is with us.
         </h3>
         <p className="font-sans text-sm text-olive/75 leading-relaxed font-light">
           A dedicated curator will review your details and contact you within one working day with a bespoke journey outline.
@@ -122,14 +124,14 @@ export function ConciergeForm({ sourcePage, journey: propJourney }: ConciergeFor
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 font-sans max-w-xl mx-auto">
+    <form onSubmit={handleSubmit} className="space-y-6 font-sans">
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-sm text-xs font-medium">
           {error}
         </div>
       )}
 
-      {/* Honeypot field (hidden from screen readers & users) */}
+      {/* Honeypot field */}
       <div className="absolute opacity-0 w-0 h-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <label htmlFor="website_url">Do not fill this field</label>
         <input
@@ -156,7 +158,6 @@ export function ConciergeForm({ sourcePage, journey: propJourney }: ConciergeFor
             disabled={loading}
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="First and last name"
             className="w-full rounded-sm border border-olive/20 bg-cream/10 px-4 py-3 text-sm outline-none focus:border-gold disabled:opacity-50 transition-colors"
           />
         </div>
@@ -173,55 +174,117 @@ export function ConciergeForm({ sourcePage, journey: propJourney }: ConciergeFor
             disabled={loading}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@email.com"
+            className="w-full rounded-sm border border-olive/20 bg-cream/10 px-4 py-3 text-sm outline-none focus:border-gold disabled:opacity-50 transition-colors"
+          />
+        </div>
+
+        {/* Country */}
+        <div className="space-y-1.5">
+          <label htmlFor="en_country" className="block text-xs font-semibold uppercase tracking-wider text-olive/80">
+            Country of Residence
+          </label>
+          <select
+            id="en_country"
+            disabled={loading}
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+            className="w-full rounded-sm border border-olive/20 bg-cream/10 px-4 py-3 text-sm outline-none focus:border-gold disabled:opacity-50 transition-colors"
+          >
+            <option value="">Select a country...</option>
+            <option value="Ireland">Ireland</option>
+            <option value="Netherlands">Netherlands</option>
+            <option value="France">France</option>
+            <option value="Germany">Germany</option>
+            <option value="Switzerland">Switzerland</option>
+            <option value="Greece">Greece</option>
+            <option value="Spain">Spain</option>
+            <option value="Italy">Italy</option>
+            <option value="Sweden">Sweden</option>
+            <option value="United Kingdom">United Kingdom</option>
+            <option value="United States">United States</option>
+            <option value="South Africa">South Africa</option>
+            <option value="Singapore">Singapore</option>
+            <option value="Somewhere else">Somewhere else</option>
+          </select>
+        </div>
+
+        {/* Travellers */}
+        <div className="space-y-1.5">
+          <label htmlFor="en_travellers" className="block text-xs font-semibold uppercase tracking-wider text-olive/80">
+            Travellers
+          </label>
+          <input
+            id="en_travellers"
+            type="text"
+            disabled={loading}
+            value={travellers}
+            onChange={(e) => setTravellers(e.target.value)}
+            placeholder="e.g. 2 adults, 2 children"
+            className="w-full rounded-sm border border-olive/20 bg-cream/10 px-4 py-3 text-sm outline-none focus:border-gold disabled:opacity-50 transition-colors"
+          />
+        </div>
+
+        {/* When */}
+        <div className="space-y-1.5">
+          <label htmlFor="en_when" className="block text-xs font-semibold uppercase tracking-wider text-olive/80">
+            When
+          </label>
+          <input
+            id="en_when"
+            type="text"
+            disabled={loading}
+            value={whenDate}
+            onChange={(e) => setWhenDate(e.target.value)}
+            placeholder="e.g. February next year"
+            className="w-full rounded-sm border border-olive/20 bg-cream/10 px-4 py-3 text-sm outline-none focus:border-gold disabled:opacity-50 transition-colors"
+          />
+        </div>
+
+        {/* How long */}
+        <div className="space-y-1.5">
+          <label htmlFor="en_howlong" className="block text-xs font-semibold uppercase tracking-wider text-olive/80">
+            How long
+          </label>
+          <input
+            id="en_howlong"
+            type="text"
+            disabled={loading}
+            value={howLong}
+            onChange={(e) => setHowLong(e.target.value)}
+            placeholder="e.g. 14 days"
             className="w-full rounded-sm border border-olive/20 bg-cream/10 px-4 py-3 text-sm outline-none focus:border-gold disabled:opacity-50 transition-colors"
           />
         </div>
       </div>
 
-      {/* Pre-filled Journey (if present) */}
-      {journey && (
-        <div className="space-y-1.5">
-          <label htmlFor="en_journey" className="block text-xs font-semibold uppercase tracking-wider text-olive/80">
-            Selected Journey
-          </label>
-          <input
-            id="en_journey"
-            type="text"
-            readOnly
-            value={journey}
-            className="w-full rounded-sm border border-olive/15 bg-cream/30 text-olive/60 px-4 py-3 text-sm outline-none cursor-not-allowed select-none font-mono"
-            title="This journey enquiry is linked to your selection"
-          />
-        </div>
-      )}
-
-      {/* Message / Special Requirements */}
-      <div className="space-y-1.5">
+      {/* Message */}
+      <div className="space-y-1.5 mt-6">
         <label htmlFor="en_msg" className="block text-xs font-semibold uppercase tracking-wider text-olive/80">
-          Tell us your story
+          Message
         </label>
         <textarea
           id="en_msg"
-          rows={5}
+          rows={4}
           disabled={loading}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="The places or festivals you have in mind, the pace you prefer, and anything that would make it yours."
+          placeholder="Tell us a bit about what stirs you..."
           className="w-full rounded-sm border border-olive/20 bg-cream/10 px-4 py-3 text-sm outline-none resize-none focus:border-gold disabled:opacity-50 transition-colors"
         />
       </div>
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full font-sans text-xs font-semibold uppercase tracking-wider text-ivory bg-gold hover:bg-[#ba8838] py-4 rounded-sm transition-all duration-300 hover:shadow-lg hover:shadow-gold/15 active:scale-95 disabled:opacity-50"
-      >
-        {loading ? "Sending..." : "Send to a curator"}
-      </button>
+      <div className="mt-6">
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full font-sans text-xs font-semibold uppercase tracking-wider text-ivory bg-gold hover:bg-[#ba8838] py-4 rounded-sm transition-all duration-300 hover:shadow-lg hover:shadow-gold/15 active:scale-95 disabled:opacity-50"
+        >
+          {loading ? "Sending..." : "Send to a curator"}
+        </button>
+      </div>
 
-      <p className="text-[10px] text-olive/50 leading-relaxed text-center font-light">
-        Your details are encrypted, used only to plan your journey, and never sold.
+      <p className="text-[10px] text-olive/50 leading-relaxed text-center font-light mt-4">
+        Your details are encrypted, used only to plan your journey, and never sold. Read our <Link href="/privacy" className="underline hover:text-olive">privacy policy</Link>.
       </p>
     </form>
   );
