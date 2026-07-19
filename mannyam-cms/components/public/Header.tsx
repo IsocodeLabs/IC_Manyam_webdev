@@ -55,6 +55,41 @@ const FEATURED_IMAGES: Record<string, string> = {
   journeys: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=600&q=75",
 };
 
+const MEGA_MENU_DATA = {
+  experiences: {
+    items: EXPERIENCES_ITEMS,
+    allLink: "/experiences",
+    img: FEATURED_IMAGES.experiences,
+    imgAlt: "Experience India",
+    tag: "Romance",
+    title: "Honeymoon and Romance"
+  },
+  festivals: {
+    items: FESTIVALS_ITEMS,
+    allLink: "/festivals",
+    img: FEATURED_IMAGES.festivals,
+    imgAlt: "Festival India",
+    tag: "March",
+    title: "Colours of Holi"
+  },
+  destinations: {
+    items: DESTINATIONS_ITEMS,
+    allLink: "/destinations",
+    img: FEATURED_IMAGES.destinations,
+    imgAlt: "Destination India",
+    tag: "North-West",
+    title: "Rajasthan"
+  },
+  journeys: {
+    items: JOURNEYS_ITEMS,
+    allLink: "/journeys",
+    img: FEATURED_IMAGES.journeys,
+    imgAlt: "Signature Journey",
+    tag: "Signature",
+    title: "Palaces of the North"
+  }
+} as const;
+
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export function Header() {
