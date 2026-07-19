@@ -50,7 +50,7 @@ const JOURNEYS_ITEMS = [
 
 const FEATURED_IMAGES: Record<string, string> = {
   experiences: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=75",
-  festivals: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=75",
+  festivals: "https://unsplash.com/photos/WTE7HKuXZlM/download?w=600&fm=jpg&fit=crop",
   destinations: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=600&q=75",
   journeys: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=600&q=75",
 };
@@ -224,7 +224,7 @@ export function Header() {
               <svg className={`w-[7px] h-[7px] transition-transform duration-200 ${openMega === "journeys" ? "rotate-180" : ""}`} viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
             </button>
             {openMega === "journeys" && (
-              <div className="absolute top-full left-1/2 -translate-x-1/2 w-[840px] bg-paper border border-gold/25 rounded-[18px] shadow-[0_18px_48px_-24px_rgba(30,35,25,.26)] p-[22px] z-50 animate-fade-in">
+              <div className="absolute top-full right-0 w-[840px] bg-paper border border-gold/25 rounded-[18px] shadow-[0_18px_48px_-24px_rgba(30,35,25,.26)] p-[22px] z-50 animate-fade-in">
                 <div className="grid grid-cols-[1.4fr_1fr] gap-5">
                   <div className="grid grid-cols-2 gap-x-4 gap-y-1">
                     {JOURNEYS_ITEMS.map((item) => (
