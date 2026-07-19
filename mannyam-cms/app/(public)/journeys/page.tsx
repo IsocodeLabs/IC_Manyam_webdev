@@ -4,6 +4,8 @@ import { PackageCard } from "@/components/public/ui/PackageCard";
 import { Button } from "@/components/public/ui/Button";
 import { buildMetadata } from "@/lib/seo/buildMetadata";
 import type { Metadata } from "next";
+import { ClosingCta } from "@/components/public/ClosingCta";
+import { ListingFaq } from "@/components/public/ListingFaq";
 
 export const revalidate = 3600; // Time-based ISR fallback
 
@@ -56,6 +58,42 @@ export default async function JourneysPage() {
           </div>
         )}
       </section>
+
+      {/* FAQ Section */}
+      <ListingFaq
+        heading="Questions, answered simply"
+        subtitle="How private India experiences work, answered in plain language."
+        items={[
+          {
+            question: "What is a signature journey?",
+            answer:
+              "A signature journey is a hand-built private itinerary you can take as it is or reshape with us. Each one is planned end to end.",
+          },
+          {
+            question: "Can I customise a ready-made journey?",
+            answer:
+              "Yes. Every journey is a starting point. Adjust the route, pace, stays and experiences with your curator until it feels yours.",
+          },
+          {
+            question: "Are flights and hotels included?",
+            answer:
+              "Journeys include carefully chosen stays, private transport, guides and the experiences described. We can also arrange internal flights.",
+          },
+          {
+            question: "How long are your India journeys?",
+            answer:
+              "Most run from around six to twelve days, and we can shorten or extend any of them.",
+          },
+          {
+            question: "How do I book a journey?",
+            answer:
+              "Choose one that appeals, then send a note through our enquiry form. A curator replies within a day. No obligation.",
+          },
+        ]}
+      />
+
+      {/* Closing CTA */}
+      <ClosingCta />
     </div>
   );
 }
