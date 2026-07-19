@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { getPublishedPostsPaginated, getCategories } from "@/lib/data/public";
 import { SectionHeading } from "@/components/public/ui/SectionHeading";
 import { PostCard } from "@/components/public/ui/PostCard";
@@ -76,7 +76,7 @@ export default async function JournalPage({ searchParams }: PageProps) {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
             {posts.map((post) => (
               <PostCard key={post.id} post={post} />
             ))}
@@ -122,3 +122,4 @@ export default async function JournalPage({ searchParams }: PageProps) {
     </div>
   );
 }
+
