@@ -83,6 +83,8 @@ export async function generateStaticParams() {
     .map((page) => ({ slug: page.slug }));
 }
 
+import { ListingFaq } from "@/components/public/ListingFaq";
+
 export const revalidate = 3600;
 
 // Helper: extract data from specific block types
@@ -355,10 +357,22 @@ export default async function DynamicPage({ params }: PageProps) {
       })()}
 
       {/* FAQ Section */}
-      {faqBlock && (
+      {faqBlock ? (
         <div className="max-w-[1200px] mx-auto px-6 pb-12">
           <BlockRenderer blocks={[faqBlock]} />
         </div>
+      ) : (
+        <ListingFaq 
+          heading="Questions, answered simply"
+          subtitle={`Everything travellers ask about planning a ${page.title} trip in India, answered simply.`}
+          items={[
+            { question: "Which regions of India should I visit?", answer: "Favourite regions include Rajasthan, Kerala, the Himalayas, Tamil Nadu, Varanasi and the Ganges, the North-East and Gujarat. Each offers a very different India." },
+            { question: "When is the best time to visit India?", answer: "Broadly, October to March suits most of the country, while the Himalayas are best May to September. Your curator will advise." },
+            { question: "How many regions can I see in one trip?", answer: "For an unhurried journey we suggest one or two regions over a week or two. Fewer places, properly understood." },
+            { question: "Is India safe and comfortable to travel in?", answer: "With private transport, vetted drivers, carefully chosen stays and support around the clock, India is comfortable and safe." },
+            { question: "How do I plan a private India tour?", answer: "Pick a region or let the concierge suggest one, then send a note through our enquiry form. A curator replies within a day." }
+          ]}
+        />
       )}
 
       <ClosingCta />

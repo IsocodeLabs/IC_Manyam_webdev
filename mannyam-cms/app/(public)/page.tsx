@@ -70,7 +70,7 @@ const STEPS = [
 
 export default async function PublicHomePage() {
   const [packages, posts] = await Promise.all([
-    getPublishedPackages(undefined, 4),
+    getPublishedPackages(undefined, 10),
     getPublishedPosts(3),
   ]);
 
@@ -82,13 +82,35 @@ export default async function PublicHomePage() {
     description: "Private, unhurried journeys across India, shaped around you and planned end to end.",
   };
 
+  const slides = [];
+  for (let i = 0; i < packages.length; i += 2) {
+    const p1 = packages[i];
+    const p2 = packages[i + 1] || packages[0];
+    
+    // Attempt to extract background image from the Hero block of the packages
+    const hero1 = Array.isArray(p1.blocks) ? p1.blocks.find((b: any) => b.type === "Hero") : null;
+    const hero2 = Array.isArray(p2.blocks) ? p2.blocks.find((b: any) => b.type === "Hero") : null;
+    
+    const img1 = hero1?.data?.backgroundImage || "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=75";
+    const img2 = hero2?.data?.backgroundImage || "https://images.unsplash.com/photo-1593693411515-c20261bcad6e?auto=format&fit=crop&w=600&q=75";
+
+    slides.push({
+      large: img1,
+      small: img2,
+      largeLink: `/${p1.slug}`,
+      smallLink: `/${p2.slug}`,
+      largeLabel: p1.title,
+      smallLabel: p2.title,
+    });
+  }
+
   return (
     <div className="font-sans bg-ivory text-ink selection:bg-gold/20">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
 
       {/* ═══ HERO ═══ */}
       <section className="relative min-h-[100svh] flex items-end pb-10 md:items-center md:pb-0 overflow-hidden bg-[radial-gradient(130%_92%_at_80%_20%,#5d6747,#3a4128_46%,#23270f)]">
-        <HeroSlideshow />
+        <HeroSlideshow slides={slides} />
 
         <div className="relative z-10 text-ivory px-5 md:px-10 max-w-7xl mx-auto w-full">
           <div className="max-w-[600px] pt-[340px] md:pt-0">

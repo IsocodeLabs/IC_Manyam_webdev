@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 
@@ -54,6 +54,16 @@ export function ListingFaq({ heading, subtitle, items }: ListingFaqProps) {
               )}
             </details>
           ))}
+        </div>
+
+        {/* CTA Section below FAQ */}
+        <div className="mt-16 flex flex-col items-center justify-center text-center">
+          <p className="font-display italic text-olive/80 text-[19px] mb-6">
+            Make the celebration the heart of your trip.
+          </p>
+          <a href="/enquire" className="bg-[#3a4430] hover:bg-gold text-ivory px-7 py-3 rounded-full font-sans text-[11px] font-bold tracking-[0.2em] uppercase transition-colors flex items-center gap-2">
+            Plan my journey <span className="font-normal">&rarr;</span>
+          </a>
         </div>
       </div>
     </section>

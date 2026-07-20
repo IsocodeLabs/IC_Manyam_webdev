@@ -3,76 +3,29 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
-const SLIDES = [
-  {
-    large: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=75",
-    small: "https://images.unsplash.com/photo-1593693411515-c20261bcad6e?auto=format&fit=crop&w=600&q=75",
-    largeLink: "/destination-rajasthan",
-    smallLink: "/destination-kerala",
-    largeLabel: "Rajasthan",
-    smallLabel: "Kerala Backwaters"
-  },
-  {
-    large: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=1200&q=75",
-    small: "https://images.unsplash.com/photo-1545389336-cf090694435e?auto=format&fit=crop&w=600&q=75",
-    largeLink: "/experience-honeymoon",
-    smallLink: "/experience-spiritual",
-    largeLabel: "Honeymoon and Romance",
-    smallLabel: "Spiritual India"
-  },
-  {
-    large: "https://unsplash.com/photos/rFP3OzmYH6M/download?w=1200&fm=jpg&fit=crop",
-    small: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=600&q=75",
-    largeLink: "/festival-holi",
-    smallLink: "/destination-rajasthan",
-    largeLabel: "Colours of Holi",
-    smallLabel: "Desert Forts"
-  },
-  {
-    large: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=75",
-    small: "https://images.unsplash.com/photo-1615824996195-f780bba7cfab?auto=format&fit=crop&w=600&q=75",
-    largeLink: "/destination-himalayas",
-    smallLink: "/experience-wildlife",
-    largeLabel: "The Himalayas",
-    smallLabel: "Wildlife Safari"
-  },
-  {
-    large: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1200&q=75",
-    small: "https://images.unsplash.com/photo-1514222134-b57fbb8ce0ee?auto=format&fit=crop&w=600&q=75",
-    largeLink: "/destination-varanasi",
-    smallLink: "/experience-culture",
-    largeLabel: "Varanasi Ghats",
-    smallLabel: "Local Traditions"
-  },
-  {
-    large: "https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?auto=format&fit=crop&w=1200&q=75",
-    small: "https://images.unsplash.com/photo-1589301760014-d929f39ce9b1?auto=format&fit=crop&w=600&q=75",
-    largeLink: "/destination-tamil-nadu",
-    smallLink: "/experience-culinary",
-    largeLabel: "South Indian Temples",
-    smallLabel: "Culinary Stories"
-  },
-  {
-    large: "https://images.unsplash.com/photo-1576487248805-fcb0a43bb274?auto=format&fit=crop&w=1200&q=75",
-    small: "https://images.unsplash.com/photo-1582299778152-6ab5931215df?auto=format&fit=crop&w=600&q=75",
-    largeLink: "/festival-diwali",
-    smallLink: "/experience-wildlife",
-    largeLabel: "Diwali Lights",
-    smallLabel: "Bengal Tigers"
-  }
-];
+export interface HeroSlide {
+  large: string;
+  small: string;
+  largeLink: string;
+  smallLink: string;
+  largeLabel: string;
+  smallLabel: string;
+}
 
-export function HeroSlideshow() {
+export function HeroSlideshow({ slides }: { slides: HeroSlide[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     if (isHovered) return;
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % SLIDES.length);
+      if (!slides || slides.length === 0) return;
+      setCurrentIndex((prev) => (prev + 1) % slides.length);
     }, 3200);
     return () => clearInterval(interval);
-  }, [isHovered]);
+  }, [isHovered, slides]);
+
+  if (!slides || slides.length === 0) return null;
 
   return (
     <>
@@ -82,7 +35,7 @@ export function HeroSlideshow() {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {SLIDES.map((slide, index) => (
+        {slides.map((slide, index) => (
           <Link href={slide.largeLink} key={"large-" + index} className={"absolute inset-0 transition-opacity duration-[1500ms] ease-in-out " + (index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0")}>
             <img src={slide.large} alt={slide.largeLabel} className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -99,7 +52,7 @@ export function HeroSlideshow() {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {SLIDES.map((slide, index) => (
+        {slides.map((slide, index) => (
           <Link href={slide.smallLink} key={"small-" + index} className={"absolute inset-0 transition-opacity duration-[1500ms] ease-in-out " + (index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0")}>
             <img src={slide.small} alt={slide.smallLabel} className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
