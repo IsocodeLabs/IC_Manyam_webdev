@@ -70,7 +70,7 @@ export function HeroSlideshow({ slides }: { slides: HeroSlide[] }) {
       <div 
         className="absolute left-1/2 top-[34px] -translate-x-1/2 w-[74%] aspect-[100/124] rounded-[18px] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,.32)] md:hidden group"
       >
-        {SLIDES.map((slide, index) => (
+        {slides.map((slide, index) => (
           <Link href={slide.largeLink} key={"mobile-" + index} className={"absolute inset-0 transition-opacity duration-[1500ms] ease-in-out " + (index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0")}>
             <img src={slide.large} alt={slide.largeLabel} className="w-full h-full object-cover" />
           </Link>

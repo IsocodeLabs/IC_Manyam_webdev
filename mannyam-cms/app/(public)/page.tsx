@@ -87,12 +87,9 @@ export default async function PublicHomePage() {
     const p1 = packages[i];
     const p2 = packages[i + 1] || packages[0];
     
-    // Attempt to extract background image from the Hero block of the packages
-    const hero1 = Array.isArray(p1.blocks) ? p1.blocks.find((b: any) => b.type === "Hero") : null;
-    const hero2 = Array.isArray(p2.blocks) ? p2.blocks.find((b: any) => b.type === "Hero") : null;
-    
-    const img1 = hero1?.data?.backgroundImage || "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=75";
-    const img2 = hero2?.data?.backgroundImage || "https://images.unsplash.com/photo-1593693411515-c20261bcad6e?auto=format&fit=crop&w=600&q=75";
+    // Attempt to extract background image from the featured_image_url of the packages
+    const img1 = p1.featured_image_url || "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=75";
+    const img2 = p2.featured_image_url || "https://images.unsplash.com/photo-1593693411515-c20261bcad6e?auto=format&fit=crop&w=600&q=75";
 
     slides.push({
       large: img1,
