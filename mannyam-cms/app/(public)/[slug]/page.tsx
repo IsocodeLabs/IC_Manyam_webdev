@@ -136,9 +136,71 @@ export default async function DynamicPage({ params }: PageProps) {
               className="w-full h-auto object-cover" 
             />
           </section>
-          {/* Render any CMS content below the custom hero */}
-          <div className="max-w-[1200px] mx-auto py-12 px-6">
-            <BlockRenderer blocks={blocks} />
+          {/* Render Our Story static content */}
+          <div className="max-w-[1200px] mx-auto px-6 py-12 md:py-[54px]">
+            <div className="block md:grid md:grid-cols-[1.6fr_1fr] gap-12 items-start">
+              
+              {/* Left Column (Main Story) */}
+              <div>
+                <p className="text-[17px] text-[#4a4d3b] leading-[1.7] mt-6">
+                  We are a small team of planners who know India deeply and care about it greatly. We design private journeys for travellers from across Europe, the United States and beyond who want comfort and authenticity in the same breath.
+                </p>
+                <p className="text-[17px] text-[#4a4d3b] leading-[1.7] mt-[14px]">
+                  We believe the best travel is unhurried. It leaves room for a long lunch, an unplanned conversation and a quiet morning, and it treats local communities as hosts and partners.
+                </p>
+                
+                <h3 className="font-display text-[23px] md:text-[30px] mt-8 mb-4">What we hold to</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-[14px] md:gap-[30px] mt-[6px]">
+                  <div className="border-t border-olive/10 pt-4">
+                    <h4 className="font-display text-[20px] mb-2">Depth over distance</h4>
+                    <p className="text-[13px] text-olive/80 leading-[1.55]">Fewer places, properly understood.</p>
+                  </div>
+                  <div className="border-t border-olive/10 pt-4">
+                    <h4 className="font-display text-[20px] mb-2">Real, not staged</h4>
+                    <p className="text-[13px] text-olive/80 leading-[1.55]">Genuine encounters, arranged with respect on both sides.</p>
+                  </div>
+                  <div className="border-t border-olive/10 pt-4">
+                    <h4 className="font-display text-[20px] mb-2">Comfort throughout</h4>
+                    <p className="text-[13px] text-olive/80 leading-[1.55]">Thoughtful stays and support whenever you need it.</p>
+                  </div>
+                  <div className="border-t border-olive/10 pt-4">
+                    <h4 className="font-display text-[20px] mb-2">Honesty in everything</h4>
+                    <p className="text-[13px] text-olive/80 leading-[1.55]">Candid advice and no surprises.</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column (Sidebar) */}
+              <aside className="mt-12 md:mt-0">
+                <div className="border border-olive/10 rounded-2xl p-5 md:p-6 bg-white sticky top-[100px]">
+                  <span className="font-sans text-[10.5px] tracking-[0.4em] uppercase text-[#846017] font-medium block">
+                    Who we plan for
+                  </span>
+                  <ul className="mt-[14px] flex flex-col gap-[9px]">
+                    <li className="flex gap-[10px] text-[13.5px] text-[#4a4d3b] leading-[1.4]">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-[15px] h-[15px] text-gold mt-[3px] shrink-0"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                      Couples and honeymooners
+                    </li>
+                    <li className="flex gap-[10px] text-[13.5px] text-[#4a4d3b] leading-[1.4]">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-[15px] h-[15px] text-gold mt-[3px] shrink-0"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                      Families travelling together
+                    </li>
+                    <li className="flex gap-[10px] text-[13.5px] text-[#4a4d3b] leading-[1.4]">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-[15px] h-[15px] text-gold mt-[3px] shrink-0"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                      Friends and small private groups
+                    </li>
+                    <li className="flex gap-[10px] text-[13.5px] text-[#4a4d3b] leading-[1.4]">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-[15px] h-[15px] text-gold mt-[3px] shrink-0"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                      Companies planning a retreat
+                    </li>
+                  </ul>
+                  <Link href="/enquire" className="block w-full text-center mt-[16px] bg-olive hover:bg-gold text-ivory hover:text-ink px-5 py-[14px] rounded-full font-medium text-[11.5px] tracking-[0.16em] uppercase transition-colors">
+                    Speak to a curator
+                  </Link>
+                </div>
+              </aside>
+
+            </div>
           </div>
         </article>
       );
