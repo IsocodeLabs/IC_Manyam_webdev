@@ -119,7 +119,7 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-ivory/92 backdrop-blur-md border-b border-olive/10 transition-all duration-300">
+    <header className="sticky top-0 z-50 w-full bg-ivory backdrop-blur-md border-b border-olive/10 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-6 h-[76px] flex items-center justify-between">
 
         {/* Brand */}
@@ -161,8 +161,8 @@ export function Header() {
                   </div>
                   <div className="rounded-[14px] overflow-hidden relative min-h-[150px] bg-olive/10">
                     <img src={FEATURED_IMAGES.experiences} alt="Experience India" className="absolute inset-0 w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
-                    <div className="absolute left-3.5 right-3.5 bottom-3 text-ivory z-10">
+                    <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
+                    <div className="absolute left-3.5 right-3.5 bottom-3 text-ivory z-10 drop-shadow-md">
                       <div className="text-[9.5px] uppercase tracking-[0.24em] text-sand/80">Romance</div>
                       <div className="font-display text-[20px] mt-0.5">Honeymoon and Romance</div>
                     </div>
@@ -199,8 +199,8 @@ export function Header() {
                   </div>
                   <div className="rounded-[14px] overflow-hidden relative min-h-[150px] bg-olive/10">
                     <img src={FEATURED_IMAGES.festivals} alt="Festival India" className="absolute inset-0 w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
-                    <div className="absolute left-3.5 right-3.5 bottom-3 text-ivory z-10">
+                    <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
+                    <div className="absolute left-3.5 right-3.5 bottom-3 text-ivory z-10 drop-shadow-md">
                       <div className="text-[9.5px] uppercase tracking-[0.24em] text-sand/80">March</div>
                       <div className="font-display text-[20px] mt-0.5">Colours of Holi</div>
                     </div>
@@ -237,8 +237,8 @@ export function Header() {
                   </div>
                   <div className="rounded-[14px] overflow-hidden relative min-h-[150px] bg-olive/10">
                     <img src={FEATURED_IMAGES.destinations} alt="Destination India" className="absolute inset-0 w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
-                    <div className="absolute left-3.5 right-3.5 bottom-3 text-ivory z-10">
+                    <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
+                    <div className="absolute left-3.5 right-3.5 bottom-3 text-ivory z-10 drop-shadow-md">
                       <div className="text-[9.5px] uppercase tracking-[0.24em] text-sand/80">North-West</div>
                       <div className="font-display text-[20px] mt-0.5">Rajasthan</div>
                     </div>
@@ -275,8 +275,8 @@ export function Header() {
                   </div>
                   <div className="rounded-[14px] overflow-hidden relative min-h-[150px] bg-olive/10">
                     <img src={FEATURED_IMAGES.journeys} alt="Signature Journey" className="absolute inset-0 w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
-                    <div className="absolute left-3.5 right-3.5 bottom-3 text-ivory z-10">
+                    <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
+                    <div className="absolute left-3.5 right-3.5 bottom-3 text-ivory z-10 drop-shadow-md">
                       <div className="text-[9.5px] uppercase tracking-[0.24em] text-sand/80">Signature</div>
                       <div className="font-display text-[20px] mt-0.5">Palaces of the North</div>
                     </div>
