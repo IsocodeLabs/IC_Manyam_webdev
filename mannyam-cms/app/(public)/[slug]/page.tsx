@@ -125,6 +125,25 @@ export default async function DynamicPage({ params }: PageProps) {
   const isCategoryDetail = page.type === "Category";
 
   if (!isCategoryDetail) {
+    if (slug === "about") {
+      return (
+        <article className="min-h-screen bg-[#Fdf9f1]">
+          <section className="w-full relative bg-[#Fdf9f1]">
+            {/* The user-provided About page hero/background composition */}
+            <img 
+              src="/about-bg.png" 
+              alt="About MANNYAM" 
+              className="w-full h-auto object-cover" 
+            />
+          </section>
+          {/* Render any CMS content below the custom hero */}
+          <div className="max-w-[1200px] mx-auto py-12 px-6">
+            <BlockRenderer blocks={blocks} />
+          </div>
+        </article>
+      );
+    }
+
     // Standard/Legal/Landing pages: render blocks vertically (original behaviour)
     return (
       <article className="min-h-screen bg-ivory">
