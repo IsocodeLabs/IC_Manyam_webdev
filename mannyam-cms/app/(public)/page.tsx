@@ -8,6 +8,7 @@ import { buildMetadata } from "@/lib/seo/buildMetadata";
 import { Metadata } from "next";
 import { HomeConcierge } from "@/components/public/HomeConcierge";
 import { HomeTestimonials } from "@/components/public/HomeTestimonials";
+import { HeroSlideshow } from "@/components/public/HeroSlideshow";
 
 export const revalidate = 3600;
 
@@ -86,21 +87,7 @@ export default async function PublicHomePage() {
 
       {/* ═══ HERO ═══ */}
       <section className="relative min-h-[100svh] flex items-end pb-10 md:items-center md:pb-0 overflow-hidden bg-[radial-gradient(130%_92%_at_80%_20%,#5d6747,#3a4128_46%,#23270f)]">
-        {/* Arch image right */}
-        <div className="absolute right-[5%] top-1/2 -translate-y-1/2 w-[38%] max-w-[520px] aspect-[100/128] rounded-[20px] overflow-hidden shadow-[0_50px_90px_-30px_rgba(0,0,0,.55)] hidden md:block">
-          <img src={HERO_IMG} alt="India heritage" className="w-full h-full object-cover" />
-        </div>
-        {/* Second small image */}
-        <div className="absolute right-[30%] bottom-[9%] w-[16%] max-w-[220px] aspect-[100/120] rounded-[18px] overflow-hidden shadow-[0_30px_60px_-18px_rgba(0,0,0,.5)] hidden md:block z-[4]">
-          <img src={HERO_IMG2} alt="Kerala backwaters" className="w-full h-full object-cover" />
-        </div>
-        {/* Veil gradient */}
-        <div className="absolute inset-0 bg-[linear-gradient(100deg,rgba(28,32,14,.88)_0%,rgba(28,32,14,.5)_36%,rgba(28,32,14,0)_60%)] md:block hidden" />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent md:hidden" />
-        {/* Mobile arch */}
-        <div className="absolute left-1/2 top-[34px] -translate-x-1/2 w-[74%] aspect-[100/124] rounded-[18px] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,.32)] md:hidden">
-          <img src={HERO_IMG} alt="India" className="w-full h-full object-cover" />
-        </div>
+        <HeroSlideshow />
 
         <div className="relative z-10 text-ivory px-5 md:px-10 max-w-7xl mx-auto w-full">
           <div className="max-w-[600px] pt-[340px] md:pt-0">

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { LanguageSelector } from "./LanguageSelector";
+import { MegaFeaturedSlide } from "./MegaFeaturedSlide";
 
 // ─── Mega-menu data matching frontend.html ───────────────────────────────────
 
@@ -48,47 +49,26 @@ const JOURNEYS_ITEMS = [
   { title: "Royal Dussehra of Mysuru", desc: "6 days, Dussehra", href: "/festivals/royal-dussehra" },
 ];
 
-const FEATURED_IMAGES: Record<string, string> = {
-  experiences: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=75",
-  festivals: "https://unsplash.com/photos/rFP3OzmYH6M/download?w=600&fm=jpg&fit=crop",
-  destinations: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=600&q=75",
-  journeys: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=600&q=75",
-};
+const EXPERIENCES_SLIDES = [
+  { image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=75", label: "Honeymoon and Romance", subtitle: "ROMANCE", href: "/experience-honeymoon" },
+  { image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=600&q=75", label: "Culture and Heritage", subtitle: "CULTURE", href: "/experience-heritage" },
+  { image: "https://images.unsplash.com/photo-1615824996195-f780bba7cfab?auto=format&fit=crop&w=600&q=75", label: "Nature and Wildlife", subtitle: "WILD", href: "/experience-wildlife" },
+];
 
-const MEGA_MENU_DATA = {
-  experiences: {
-    items: EXPERIENCES_ITEMS,
-    allLink: "/experiences",
-    img: FEATURED_IMAGES.experiences,
-    imgAlt: "Experience India",
-    tag: "Romance",
-    title: "Honeymoon and Romance"
-  },
-  festivals: {
-    items: FESTIVALS_ITEMS,
-    allLink: "/festivals",
-    img: FEATURED_IMAGES.festivals,
-    imgAlt: "Festival India",
-    tag: "March",
-    title: "Colours of Holi"
-  },
-  destinations: {
-    items: DESTINATIONS_ITEMS,
-    allLink: "/destinations",
-    img: FEATURED_IMAGES.destinations,
-    imgAlt: "Destination India",
-    tag: "North-West",
-    title: "Rajasthan"
-  },
-  journeys: {
-    items: JOURNEYS_ITEMS,
-    allLink: "/journeys",
-    img: FEATURED_IMAGES.journeys,
-    imgAlt: "Signature Journey",
-    tag: "Signature",
-    title: "Palaces of the North"
-  }
-} as const;
+const FESTIVALS_SLIDES = [
+  { image: "https://unsplash.com/photos/rFP3OzmYH6M/download?w=600&fm=jpg&fit=crop", label: "Colours of Holi", subtitle: "MARCH", href: "/festival-holi" },
+  { image: "https://images.unsplash.com/photo-1605337222372-23c2a63d91c7?auto=format&fit=crop&w=600&q=75", label: "Lights of Diwali", subtitle: "OCTOBER", href: "/festival-diwali" },
+];
+
+const DESTINATIONS_SLIDES = [
+  { image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=600&q=75", label: "Rajasthan", subtitle: "NORTH-WEST", href: "/destination-rajasthan" },
+  { image: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=600&q=75", label: "Kerala", subtitle: "SOUTH", href: "/destination-kerala" },
+];
+
+const JOURNEYS_SLIDES = [
+  { image: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=600&q=75", label: "Palaces of the North", subtitle: "SIGNATURE", href: "/experiences/palaces-of-the-north" },
+  { image: "https://images.unsplash.com/photo-1582510003544-4d00b7f7415e?auto=format&fit=crop&w=600&q=75", label: "Green Kerala", subtitle: "SIGNATURE", href: "/experiences/green-kerala" },
+];
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
@@ -160,12 +140,7 @@ export function Header() {
                     </Link>
                   </div>
                   <div className="rounded-[14px] overflow-hidden relative min-h-[150px] bg-olive/10">
-                    <img src={FEATURED_IMAGES.experiences} alt="Experience India" className="absolute inset-0 w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
-                    <div className="absolute left-3.5 right-3.5 bottom-3 text-ivory z-10 drop-shadow-md">
-                      <div className="text-[9.5px] uppercase tracking-[0.24em] text-sand/80">Romance</div>
-                      <div className="font-display text-[20px] mt-0.5">Honeymoon and Romance</div>
-                    </div>
+                    <MegaFeaturedSlide slides={EXPERIENCES_SLIDES} />
                   </div>
                 </div>
               </div>
@@ -198,12 +173,7 @@ export function Header() {
                     </Link>
                   </div>
                   <div className="rounded-[14px] overflow-hidden relative min-h-[150px] bg-olive/10">
-                    <img src={FEATURED_IMAGES.festivals} alt="Festival India" className="absolute inset-0 w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
-                    <div className="absolute left-3.5 right-3.5 bottom-3 text-ivory z-10 drop-shadow-md">
-                      <div className="text-[9.5px] uppercase tracking-[0.24em] text-sand/80">March</div>
-                      <div className="font-display text-[20px] mt-0.5">Colours of Holi</div>
-                    </div>
+                    <MegaFeaturedSlide slides={FESTIVALS_SLIDES} />
                   </div>
                 </div>
               </div>
@@ -236,12 +206,7 @@ export function Header() {
                     </Link>
                   </div>
                   <div className="rounded-[14px] overflow-hidden relative min-h-[150px] bg-olive/10">
-                    <img src={FEATURED_IMAGES.destinations} alt="Destination India" className="absolute inset-0 w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
-                    <div className="absolute left-3.5 right-3.5 bottom-3 text-ivory z-10 drop-shadow-md">
-                      <div className="text-[9.5px] uppercase tracking-[0.24em] text-sand/80">North-West</div>
-                      <div className="font-display text-[20px] mt-0.5">Rajasthan</div>
-                    </div>
+                    <MegaFeaturedSlide slides={DESTINATIONS_SLIDES} />
                   </div>
                 </div>
               </div>
@@ -274,12 +239,7 @@ export function Header() {
                     </Link>
                   </div>
                   <div className="rounded-[14px] overflow-hidden relative min-h-[150px] bg-olive/10">
-                    <img src={FEATURED_IMAGES.journeys} alt="Signature Journey" className="absolute inset-0 w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
-                    <div className="absolute left-3.5 right-3.5 bottom-3 text-ivory z-10 drop-shadow-md">
-                      <div className="text-[9.5px] uppercase tracking-[0.24em] text-sand/80">Signature</div>
-                      <div className="font-display text-[20px] mt-0.5">Palaces of the North</div>
-                    </div>
+                    <MegaFeaturedSlide slides={JOURNEYS_SLIDES} />
                   </div>
                 </div>
               </div>
