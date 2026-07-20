@@ -29,7 +29,7 @@ export function MegaFeaturedSlide({ slides, interval = 2800 }: { slides: Slide[]
       onMouseLeave={() => setIsHovered(false)}
     >
       {slides.map((slide, index) => (
-        <Link key={index} href={slide.href} className={"absolute inset-0 transition-opacity duration-[1500ms] ease-in-out " + (index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0")}>
+        <Link key={index} href={slide.href} className={"absolute inset-0 transition-opacity duration-[1500ms] ease-in-out " + (index === currentIndex ? "opacity-100 z-10 pointer-events-auto" : "opacity-0 z-0 pointer-events-none")}>
           <img src={slide.image} alt={slide.label} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
           <div className="absolute left-3.5 right-3.5 bottom-3 text-ivory z-10 drop-shadow-md">

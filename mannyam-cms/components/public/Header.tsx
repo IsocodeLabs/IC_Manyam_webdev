@@ -131,27 +131,25 @@ export function Header() {
               Experiences
               <svg className={`w-[7px] h-[7px] transition-transform duration-200 ${openMega === "experiences" ? "rotate-180" : ""}`} viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
             </button>
-            {openMega === "experiences" && (
-              <div className="fixed top-[76px] left-4 right-4 max-w-[780px] bg-paper border border-gold/25 rounded-[18px] shadow-[0_18px_48px_-24px_rgba(30,35,25,.26)] p-5 z-50 animate-fade-in overflow-hidden">
-                <div className="grid grid-cols-[1fr_200px] gap-4">
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-                    {EXPERIENCES_ITEMS.map((item) => (
-                      <Link key={item.href} href={item.href} className="block px-2.5 py-2.5 rounded-[10px] transition-colors hover:bg-cream" onClick={() => setOpenMega(null)}>
-                        <div className="font-display text-[17px] text-olive">{item.title}</div>
-                        <div className="text-[11px] text-olive/50">{item.desc}</div>
-                      </Link>
-                    ))}
-                    <Link href="/experiences" className="block px-2.5 py-2.5 rounded-[10px] transition-colors hover:bg-cream" onClick={() => setOpenMega(null)}>
-                      <div className="font-display text-[17px] text-gold">View all</div>
-                      <div className="text-[11px] text-olive/50">See everything</div>
+            <div className={`fixed top-[76px] left-4 right-4 max-w-[780px] bg-paper border border-gold/25 rounded-[18px] shadow-[0_18px_48px_-24px_rgba(30,35,25,.26)] p-5 z-50 overflow-hidden transition-all duration-300 origin-top ${openMega === "experiences" ? "opacity-100 pointer-events-auto translate-y-0 scale-y-100 visible" : "opacity-0 pointer-events-none -translate-y-2 scale-y-95 invisible"}`}>
+              <div className="grid grid-cols-[1fr_200px] gap-4">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                  {EXPERIENCES_ITEMS.map((item) => (
+                    <Link key={item.href} href={item.href} className="block px-2.5 py-2.5 rounded-[10px] transition-colors hover:bg-cream" onClick={() => setOpenMega(null)}>
+                      <div className="font-display text-[17px] text-olive">{item.title}</div>
+                      <div className="text-[11px] text-olive/50">{item.desc}</div>
                     </Link>
-                  </div>
-                  <div className="rounded-[14px] overflow-hidden relative min-h-[150px] bg-olive/10">
-                    <MegaFeaturedSlide slides={EXPERIENCES_SLIDES} />
-                  </div>
+                  ))}
+                  <Link href="/experiences" className="block px-2.5 py-2.5 rounded-[10px] transition-colors hover:bg-cream" onClick={() => setOpenMega(null)}>
+                    <div className="font-display text-[17px] text-gold">View all</div>
+                    <div className="text-[11px] text-olive/50">See everything</div>
+                  </Link>
+                </div>
+                <div className="rounded-[14px] overflow-hidden relative min-h-[150px] bg-olive/10">
+                  <MegaFeaturedSlide slides={EXPERIENCES_SLIDES} />
                 </div>
               </div>
-            )}
+            </div>
           </div>
 
           {/* Festivals (mega) */}
@@ -164,27 +162,25 @@ export function Header() {
               Festivals
               <svg className={`w-[7px] h-[7px] transition-transform duration-200 ${openMega === "festivals" ? "rotate-180" : ""}`} viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
             </button>
-            {openMega === "festivals" && (
-              <div className="fixed top-[76px] left-4 right-4 max-w-[780px] bg-paper border border-gold/25 rounded-[18px] shadow-[0_18px_48px_-24px_rgba(30,35,25,.26)] p-5 z-50 animate-fade-in overflow-hidden">
-                <div className="grid grid-cols-[1fr_200px] gap-4">
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-                    {FESTIVALS_ITEMS.map((item) => (
-                      <Link key={item.href} href={item.href} className="block px-2.5 py-2.5 rounded-[10px] transition-colors hover:bg-cream" onClick={() => setOpenMega(null)}>
-                        <div className="font-display text-[17px] text-olive">{item.title}</div>
-                        <div className="text-[11px] text-olive/50">{item.desc}</div>
-                      </Link>
-                    ))}
-                    <Link href="/festivals" className="block px-2.5 py-2.5 rounded-[10px] transition-colors hover:bg-cream" onClick={() => setOpenMega(null)}>
-                      <div className="font-display text-[17px] text-gold">View all</div>
-                      <div className="text-[11px] text-olive/50">See everything</div>
+            <div className={`fixed top-[76px] left-4 right-4 max-w-[780px] bg-paper border border-gold/25 rounded-[18px] shadow-[0_18px_48px_-24px_rgba(30,35,25,.26)] p-5 z-50 overflow-hidden transition-all duration-300 origin-top ${openMega === "festivals" ? "opacity-100 pointer-events-auto translate-y-0 scale-y-100 visible" : "opacity-0 pointer-events-none -translate-y-2 scale-y-95 invisible"}`}>
+              <div className="grid grid-cols-[1fr_200px] gap-4">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                  {FESTIVALS_ITEMS.map((item) => (
+                    <Link key={item.href} href={item.href} className="block px-2.5 py-2.5 rounded-[10px] transition-colors hover:bg-cream" onClick={() => setOpenMega(null)}>
+                      <div className="font-display text-[17px] text-olive">{item.title}</div>
+                      <div className="text-[11px] text-olive/50">{item.desc}</div>
                     </Link>
-                  </div>
-                  <div className="rounded-[14px] overflow-hidden relative min-h-[150px] bg-olive/10">
-                    <MegaFeaturedSlide slides={FESTIVALS_SLIDES} />
-                  </div>
+                  ))}
+                  <Link href="/festivals" className="block px-2.5 py-2.5 rounded-[10px] transition-colors hover:bg-cream" onClick={() => setOpenMega(null)}>
+                    <div className="font-display text-[17px] text-gold">View all</div>
+                    <div className="text-[11px] text-olive/50">See everything</div>
+                  </Link>
+                </div>
+                <div className="rounded-[14px] overflow-hidden relative min-h-[150px] bg-olive/10">
+                  <MegaFeaturedSlide slides={FESTIVALS_SLIDES} />
                 </div>
               </div>
-            )}
+            </div>
           </div>
 
           {/* Destinations (mega) */}
@@ -197,27 +193,25 @@ export function Header() {
               Destinations
               <svg className={`w-[7px] h-[7px] transition-transform duration-200 ${openMega === "destinations" ? "rotate-180" : ""}`} viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
             </button>
-            {openMega === "destinations" && (
-              <div className="fixed top-[76px] left-4 right-4 max-w-[780px] bg-paper border border-gold/25 rounded-[18px] shadow-[0_18px_48px_-24px_rgba(30,35,25,.26)] p-5 z-50 animate-fade-in overflow-hidden">
-                <div className="grid grid-cols-[1fr_200px] gap-4">
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-                    {DESTINATIONS_ITEMS.map((item) => (
-                      <Link key={item.href} href={item.href} className="block px-2.5 py-2.5 rounded-[10px] transition-colors hover:bg-cream" onClick={() => setOpenMega(null)}>
-                        <div className="font-display text-[17px] text-olive">{item.title}</div>
-                        <div className="text-[11px] text-olive/50">{item.desc}</div>
-                      </Link>
-                    ))}
-                    <Link href="/destinations" className="block px-2.5 py-2.5 rounded-[10px] transition-colors hover:bg-cream" onClick={() => setOpenMega(null)}>
-                      <div className="font-display text-[17px] text-gold">View all</div>
-                      <div className="text-[11px] text-olive/50">See everything</div>
+            <div className={`fixed top-[76px] left-4 right-4 max-w-[780px] bg-paper border border-gold/25 rounded-[18px] shadow-[0_18px_48px_-24px_rgba(30,35,25,.26)] p-5 z-50 overflow-hidden transition-all duration-300 origin-top ${openMega === "destinations" ? "opacity-100 pointer-events-auto translate-y-0 scale-y-100 visible" : "opacity-0 pointer-events-none -translate-y-2 scale-y-95 invisible"}`}>
+              <div className="grid grid-cols-[1fr_200px] gap-4">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                  {DESTINATIONS_ITEMS.map((item) => (
+                    <Link key={item.href} href={item.href} className="block px-2.5 py-2.5 rounded-[10px] transition-colors hover:bg-cream" onClick={() => setOpenMega(null)}>
+                      <div className="font-display text-[17px] text-olive">{item.title}</div>
+                      <div className="text-[11px] text-olive/50">{item.desc}</div>
                     </Link>
-                  </div>
-                  <div className="rounded-[14px] overflow-hidden relative min-h-[150px] bg-olive/10">
-                    <MegaFeaturedSlide slides={DESTINATIONS_SLIDES} />
-                  </div>
+                  ))}
+                  <Link href="/destinations" className="block px-2.5 py-2.5 rounded-[10px] transition-colors hover:bg-cream" onClick={() => setOpenMega(null)}>
+                    <div className="font-display text-[17px] text-gold">View all</div>
+                    <div className="text-[11px] text-olive/50">See everything</div>
+                  </Link>
+                </div>
+                <div className="rounded-[14px] overflow-hidden relative min-h-[150px] bg-olive/10">
+                  <MegaFeaturedSlide slides={DESTINATIONS_SLIDES} />
                 </div>
               </div>
-            )}
+            </div>
           </div>
 
           {/* Journeys (mega) */}
@@ -230,27 +224,25 @@ export function Header() {
               Journeys
               <svg className={`w-[7px] h-[7px] transition-transform duration-200 ${openMega === "journeys" ? "rotate-180" : ""}`} viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
             </button>
-            {openMega === "journeys" && (
-              <div className="fixed top-[76px] left-4 right-4 max-w-[780px] bg-paper border border-gold/25 rounded-[18px] shadow-[0_18px_48px_-24px_rgba(30,35,25,.26)] p-5 z-50 animate-fade-in overflow-hidden">
-                <div className="grid grid-cols-[1fr_200px] gap-4">
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-                    {JOURNEYS_ITEMS.map((item) => (
-                      <Link key={item.href} href={item.href} className="block px-2.5 py-2.5 rounded-[10px] transition-colors hover:bg-cream" onClick={() => setOpenMega(null)}>
-                        <div className="font-display text-[17px] text-olive">{item.title}</div>
-                        <div className="text-[11px] text-olive/50">{item.desc}</div>
-                      </Link>
-                    ))}
-                    <Link href="/journeys" className="block px-2.5 py-2.5 rounded-[10px] transition-colors hover:bg-cream" onClick={() => setOpenMega(null)}>
-                      <div className="font-display text-[17px] text-gold">View all</div>
-                      <div className="text-[11px] text-olive/50">See everything</div>
+            <div className={`fixed top-[76px] left-4 right-4 max-w-[780px] bg-paper border border-gold/25 rounded-[18px] shadow-[0_18px_48px_-24px_rgba(30,35,25,.26)] p-5 z-50 overflow-hidden transition-all duration-300 origin-top ${openMega === "journeys" ? "opacity-100 pointer-events-auto translate-y-0 scale-y-100 visible" : "opacity-0 pointer-events-none -translate-y-2 scale-y-95 invisible"}`}>
+              <div className="grid grid-cols-[1fr_200px] gap-4">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                  {JOURNEYS_ITEMS.map((item) => (
+                    <Link key={item.href} href={item.href} className="block px-2.5 py-2.5 rounded-[10px] transition-colors hover:bg-cream" onClick={() => setOpenMega(null)}>
+                      <div className="font-display text-[17px] text-olive">{item.title}</div>
+                      <div className="text-[11px] text-olive/50">{item.desc}</div>
                     </Link>
-                  </div>
-                  <div className="rounded-[14px] overflow-hidden relative min-h-[150px] bg-olive/10">
-                    <MegaFeaturedSlide slides={JOURNEYS_SLIDES} />
-                  </div>
+                  ))}
+                  <Link href="/journeys" className="block px-2.5 py-2.5 rounded-[10px] transition-colors hover:bg-cream" onClick={() => setOpenMega(null)}>
+                    <div className="font-display text-[17px] text-gold">View all</div>
+                    <div className="text-[11px] text-olive/50">See everything</div>
+                  </Link>
+                </div>
+                <div className="rounded-[14px] overflow-hidden relative min-h-[150px] bg-olive/10">
+                  <MegaFeaturedSlide slides={JOURNEYS_SLIDES} />
                 </div>
               </div>
-            )}
+            </div>
           </div>
 
           {/* Plain links */}
