@@ -42,9 +42,9 @@ export function FooterLanguageSelector() {
           <button
             key={lang}
             onClick={() => handleSelect(lang.toLowerCase())}
-            className={\`transition-colors whitespace-nowrap \${
+            className={`transition-colors whitespace-nowrap ${
               currentLang === lang ? "text-gold" : "text-[#8d8f7d] hover:text-ivory"
-            }\`}
+            }`}
           >
             {lang}
           </button>
