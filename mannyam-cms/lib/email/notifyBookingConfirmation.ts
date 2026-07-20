@@ -80,6 +80,7 @@ export async function sendBookingConfirmationEmail(bookingId: string) {
               <!-- Brand Header -->
               <tr>
                 <td style="background-color: #1c2c1a; padding: 30px; text-align: center;">
+                  <img src="https://mannyam.in/logo-icon.png" alt="" width="48" height="48" style="display: block; margin: 0 auto 15px auto;" />
                   <h1 style="color: #c5a880; font-family: Georgia, serif; font-size: 26px; font-weight: 300; letter-spacing: 4px; margin: 0; text-transform: uppercase;">M A N N Y A M</h1>
                   <p style="color: #ffffff; font-size: 11px; letter-spacing: 2px; margin: 10px 0 0 0; text-transform: uppercase; opacity: 0.8;">Studio CMS Commerce</p>
                 </td>

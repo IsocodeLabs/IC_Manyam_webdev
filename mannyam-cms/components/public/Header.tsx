@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { LanguageSelector } from "./LanguageSelector";
 import { MegaFeaturedSlide } from "./MegaFeaturedSlide";
 
@@ -104,12 +105,8 @@ export function Header() {
 
         {/* Brand */}
         <Link href="/" className="flex flex-col select-none group">
-          <span className="font-display text-[23px] font-bold tracking-[0.18em] text-olive group-hover:text-gold transition-colors duration-300 uppercase">
-            MANNYAM
-          </span>
-          <span className="font-sans text-[7px] uppercase tracking-[0.3em] text-olive/55 mt-0.5 font-light">
-            The Story of India
-          </span>
+          <Image src="/logo.png" alt="MANNYAM - The Story of India" height={38} width={220} className="h-[38px] w-auto" />
+          <span className="sr-only">MANNYAM - The Story of India</span>
         </Link>
 
         {/* Desktop Nav */}
@@ -284,6 +281,7 @@ export function Header() {
       <div className={`lg:hidden fixed inset-0 z-[600] bg-[linear-gradient(180deg,#3f4630,#2a2e1d)] text-ivory flex flex-col transition-transform duration-[380ms] ease-[cubic-bezier(.2,.8,.2,1)] ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
         <div className="flex justify-between items-center px-5 py-4 border-b border-white/10">
           <div>
+            <Image src="/logo-icon.png" alt="MANNYAM" width={44} height={44} className="mb-2" />
             <div className="font-display text-[20px] tracking-[0.16em] font-bold">MANNYAM</div>
             <div className="text-[6.5px] tracking-[0.3em] uppercase text-sand mt-1">The Story of India</div>
           </div>

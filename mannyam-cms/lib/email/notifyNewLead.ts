@@ -14,6 +14,9 @@ export async function notifyNewLead(data: NewLeadEmailData) {
 
   const subject = `[New Lead] Submission from ${data.name} via ${data.source}`;
   const html = `
+    <div style="text-align: center; margin-bottom: 20px;">
+      <img src="https://mannyam.in/logo-icon.png" alt="MANNYAM" width="48" height="48" style="display: block; margin: 0 auto;" />
+    </div>
     <h1>New Lead Enquiry Received</h1>
     <p>A visitor has submitted a new inquiry through the CMS public API endpoint.</p>
     <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">

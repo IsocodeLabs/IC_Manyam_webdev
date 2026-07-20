@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface ChatMessage {
   id: string;
@@ -170,9 +171,7 @@ export function ChatWidget() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
           </svg>
         ) : (
-          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-          </svg>
+          <Image src="/logo-icon.png" alt="Ask MANNYAM" width={28} height={28} className="rounded-full" />
         )}
       </button>
 
@@ -189,7 +188,7 @@ export function ChatWidget() {
           <header className="bg-olive p-4 flex items-center justify-between shrink-0 rounded-t-[20px]">
             <div className="flex items-center gap-3">
               <div className="w-[33px] h-[33px] rounded-full bg-gold flex items-center justify-center text-ivory font-display text-lg">
-                M
+                <Image src="/logo-icon.png" alt="MANNYAM" width={33} height={33} className="rounded-full object-cover" />
               </div>
               <div className="flex flex-col">
                 <h3 className="font-display text-[17px] text-ivory leading-tight">

@@ -21,8 +21,11 @@ export const metadata: Metadata = {
   title: "MANNYAM Studio CMS",
   description: "Custom admin panel for MANNYAM Studio, supporting content categorisation and custom layouts.",
   icons: {
-    icon: "/icon.svg",
-    apple: "/icon.svg",
+    icon: [
+      { url: "/logo-icon.png", type: "image/png" },
+      { url: "/icon.svg", type: "image/svg+xml" }
+    ],
+    apple: "/logo-icon.png",
   },
 };
 

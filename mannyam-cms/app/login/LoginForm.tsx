@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useActionState } from "react";
+import Image from "next/image";
 import { loginAction } from "./actions";
 
 interface LoginFormProps {
@@ -14,7 +15,8 @@ export function LoginForm({ initialError = null }: LoginFormProps) {
 
   return (
     <div className="w-full max-w-md p-8 bg-paper rounded-lg shadow-md border border-ivory/40">
-      <div className="text-center mb-8">
+      <div className="text-center mb-8 flex flex-col items-center">
+        <Image src="/logo-icon.png" alt="" width={64} height={64} className="mb-4" />
         <h1 className="font-display text-4xl text-olive font-medium tracking-wide mb-2">
           MANNYAM Studio
         </h1>
