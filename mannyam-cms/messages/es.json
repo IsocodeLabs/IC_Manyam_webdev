@@ -1,0 +1,24 @@
+{
+  "nav": {
+    "experiences": "Experiencias",
+    "festivals": "Festivales",
+    "destinations": "Destinos",
+    "journeys": "Viajes",
+    "journal": "Diario",
+    "about": "Acerca de"
+  },
+  "header": {
+    "planMyJourney": "Planificar mi viaje",
+    "language": "ES"
+  },
+  "hero": {
+    "eyebrow": "La historia de la India",
+    "headline": "Cruza el umbral.",
+    "subtitle": "Viajes privados y sin prisas por la India...",
+    "cta1": "Planificar con nuestro conserje",
+    "cta2": "o buscar viajes ya preparados",
+    "trust1": "Viajes privados a medida",
+    "trust2": "Curadores locales en el terreno",
+    "trust3": "Soporte las 24 horas"
+  }
+}

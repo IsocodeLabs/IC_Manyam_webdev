@@ -1,0 +1,24 @@
+{
+  "nav": {
+    "experiences": "Ervaringen",
+    "festivals": "Festivals",
+    "destinations": "Bestemmingen",
+    "journeys": "Reizen",
+    "journal": "Journaal",
+    "about": "Over ons"
+  },
+  "header": {
+    "planMyJourney": "Plan mijn reis",
+    "language": "NL"
+  },
+  "hero": {
+    "eyebrow": "Het verhaal van India",
+    "headline": "Stap over de drempel.",
+    "subtitle": "Privé, onthaaste reizen door India...",
+    "cta1": "Plan met onze conciërge",
+    "cta2": "of blader door kant-en-klare reizen",
+    "trust1": "Privé, op maat gemaakte reizen",
+    "trust2": "Lokale curatoren ter plaatse",
+    "trust3": "Ondersteuning de klok rond"
+  }
+}

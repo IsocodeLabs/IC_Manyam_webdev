@@ -1,0 +1,24 @@
+{
+  "nav": {
+    "experiences": "Expériences",
+    "festivals": "Festivals",
+    "destinations": "Destinations",
+    "journeys": "Voyages",
+    "journal": "Journal",
+    "about": "À propos"
+  },
+  "header": {
+    "planMyJourney": "Planifier mon voyage",
+    "language": "FR"
+  },
+  "hero": {
+    "eyebrow": "L'histoire de l'Inde",
+    "headline": "Franchissez le seuil.",
+    "subtitle": "Voyages privés et sans hâte à travers l'Inde...",
+    "cta1": "Planifier avec notre concierge",
+    "cta2": "ou parcourir les voyages prêts à l'emploi",
+    "trust1": "Voyages privés sur mesure",
+    "trust2": "Curateurs locaux sur place",
+    "trust3": "Assistance 24 heures sur 24"
+  }
+}

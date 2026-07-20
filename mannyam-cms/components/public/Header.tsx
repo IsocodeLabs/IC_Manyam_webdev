@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { CurrencySelector } from "./CurrencySelector";
+import { LanguageSelector } from "./LanguageSelector";
 
 // ─── Mega-menu data matching frontend.html ───────────────────────────────────
 
@@ -297,7 +297,7 @@ export function Header() {
 
         {/* Right actions */}
         <div className="hidden lg:flex items-center gap-4">
-          <CurrencySelector />
+          <LanguageSelector />
           <Link
             href="/enquire"
             className="font-sans text-[11.5px] font-medium tracking-[0.16em] uppercase text-ivory bg-olive hover:bg-gold hover:text-ink px-[22px] py-[14px] rounded-full transition-all duration-250"

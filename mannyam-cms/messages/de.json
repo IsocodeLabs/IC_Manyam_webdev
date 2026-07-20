@@ -1,0 +1,24 @@
+{
+  "nav": {
+    "experiences": "Erlebnisse",
+    "festivals": "Festivals",
+    "destinations": "Reiseziele",
+    "journeys": "Reisen",
+    "journal": "Journal",
+    "about": "Über uns"
+  },
+  "header": {
+    "planMyJourney": "Meine Reise planen",
+    "language": "DE"
+  },
+  "hero": {
+    "eyebrow": "Die Geschichte Indiens",
+    "headline": "Treten Sie über die Schwelle.",
+    "subtitle": "Private, entspannte Reisen durch Indien...",
+    "cta1": "Planen Sie mit unserem Concierge",
+    "cta2": "oder durchsuchen Sie vorgefertigte Reisen",
+    "trust1": "Private, maßgeschneiderte Reisen",
+    "trust2": "Lokale Kuratoren vor Ort",
+    "trust3": "Unterstützung rund um die Uhr"
+  }
+}

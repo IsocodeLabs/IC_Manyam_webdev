@@ -1,0 +1,24 @@
+{
+  "nav": {
+    "experiences": "Esperienze",
+    "festivals": "Festival",
+    "destinations": "Destinazioni",
+    "journeys": "Viaggi",
+    "journal": "Diario",
+    "about": "Chi siamo"
+  },
+  "header": {
+    "planMyJourney": "Pianifica il mio viaggio",
+    "language": "IT"
+  },
+  "hero": {
+    "eyebrow": "La storia dell'India",
+    "headline": "Varca la soglia.",
+    "subtitle": "Viaggi privati e senza fretta attraverso l'India...",
+    "cta1": "Pianifica con il nostro concierge",
+    "cta2": "o sfoglia i viaggi già pronti",
+    "trust1": "Viaggi privati su misura",
+    "trust2": "Curatori locali sul posto",
+    "trust3": "Supporto 24 ore su 24"
+  }
+}

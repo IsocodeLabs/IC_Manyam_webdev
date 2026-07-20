@@ -1,0 +1,24 @@
+{
+  "nav": {
+    "experiences": "Experiências",
+    "festivals": "Festivais",
+    "destinations": "Destinos",
+    "journeys": "Jornadas",
+    "journal": "Diário",
+    "about": "Sobre"
+  },
+  "header": {
+    "planMyJourney": "Planejar minha viagem",
+    "language": "PT"
+  },
+  "hero": {
+    "eyebrow": "A História da Índia",
+    "headline": "Atravesse o limiar.",
+    "subtitle": "Viagens privadas e sem pressa pela Índia...",
+    "cta1": "Planeje com nosso concierge",
+    "cta2": "ou procure viagens prontas",
+    "trust1": "Viagens privadas sob medida",
+    "trust2": "Curadores locais no local",
+    "trust3": "Suporte 24 horas"
+  }
+}

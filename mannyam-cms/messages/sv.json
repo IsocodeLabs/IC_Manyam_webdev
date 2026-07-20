@@ -1,0 +1,24 @@
+{
+  "nav": {
+    "experiences": "Upplevelser",
+    "festivals": "Festivaler",
+    "destinations": "Destinationer",
+    "journeys": "Resor",
+    "journal": "Journal",
+    "about": "Om"
+  },
+  "header": {
+    "planMyJourney": "Planera min resa",
+    "language": "SV"
+  },
+  "hero": {
+    "eyebrow": "Berättelsen om Indien",
+    "headline": "Gå över tröskeln.",
+    "subtitle": "Privata, ostressade resor genom Indien...",
+    "cta1": "Planera med vår concierge",
+    "cta2": "eller bläddra bland färdiga resor",
+    "trust1": "Privata, skräddarsydda resor",
+    "trust2": "Lokala curatorer på plats",
+    "trust3": "Support dygnet runt"
+  }
+}
