@@ -35,6 +35,30 @@ const SLIDES = [
     smallLink: "/experience-wildlife",
     largeLabel: "The Himalayas",
     smallLabel: "Wildlife Safari"
+  },
+  {
+    large: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1200&q=75",
+    small: "https://images.unsplash.com/photo-1514222134-b57fbb8ce0ee?auto=format&fit=crop&w=600&q=75",
+    largeLink: "/destination-varanasi",
+    smallLink: "/experience-culture",
+    largeLabel: "Varanasi Ghats",
+    smallLabel: "Local Traditions"
+  },
+  {
+    large: "https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?auto=format&fit=crop&w=1200&q=75",
+    small: "https://images.unsplash.com/photo-1589301760014-d929f39ce9b1?auto=format&fit=crop&w=600&q=75",
+    largeLink: "/destination-tamil-nadu",
+    smallLink: "/experience-culinary",
+    largeLabel: "South Indian Temples",
+    smallLabel: "Culinary Stories"
+  },
+  {
+    large: "https://images.unsplash.com/photo-1576487248805-fcb0a43bb274?auto=format&fit=crop&w=1200&q=75",
+    small: "https://images.unsplash.com/photo-1582299778152-6ab5931215df?auto=format&fit=crop&w=600&q=75",
+    largeLink: "/festival-diwali",
+    smallLink: "/experience-wildlife",
+    largeLabel: "Diwali Lights",
+    smallLabel: "Bengal Tigers"
   }
 ];
 
@@ -46,7 +70,7 @@ export function HeroSlideshow() {
     if (isHovered) return;
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % SLIDES.length);
-    }, 5000);
+    }, 3200);
     return () => clearInterval(interval);
   }, [isHovered]);
 
@@ -59,7 +83,7 @@ export function HeroSlideshow() {
         onMouseLeave={() => setIsHovered(false)}
       >
         {SLIDES.map((slide, index) => (
-          <Link href={slide.largeLink} key={"large-" + index} className={"absolute inset-0 transition-opacity duration-1000 " + (index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0")}>
+          <Link href={slide.largeLink} key={"large-" + index} className={"absolute inset-0 transition-opacity duration-[1500ms] ease-in-out " + (index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0")}>
             <img src={slide.large} alt={slide.largeLabel} className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="absolute bottom-4 left-4 right-4 text-ivory opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -76,7 +100,7 @@ export function HeroSlideshow() {
         onMouseLeave={() => setIsHovered(false)}
       >
         {SLIDES.map((slide, index) => (
-          <Link href={slide.smallLink} key={"small-" + index} className={"absolute inset-0 transition-opacity duration-1000 " + (index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0")}>
+          <Link href={slide.smallLink} key={"small-" + index} className={"absolute inset-0 transition-opacity duration-[1500ms] ease-in-out " + (index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0")}>
             <img src={slide.small} alt={slide.smallLabel} className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="absolute bottom-4 left-4 right-4 text-ivory opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -94,7 +118,7 @@ export function HeroSlideshow() {
         className="absolute left-1/2 top-[34px] -translate-x-1/2 w-[74%] aspect-[100/124] rounded-[18px] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,.32)] md:hidden group"
       >
         {SLIDES.map((slide, index) => (
-          <Link href={slide.largeLink} key={"mobile-" + index} className={"absolute inset-0 transition-opacity duration-1000 " + (index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0")}>
+          <Link href={slide.largeLink} key={"mobile-" + index} className={"absolute inset-0 transition-opacity duration-[1500ms] ease-in-out " + (index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0")}>
             <img src={slide.large} alt={slide.largeLabel} className="w-full h-full object-cover" />
           </Link>
         ))}
