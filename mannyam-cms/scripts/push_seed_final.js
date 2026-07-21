@@ -2,6 +2,11 @@ const { createClient } = require('@supabase/supabase-js');
 const fs = require('fs');
 const path = require('path');
 
+// Polyfill WebSocket for Node < 22 to prevent Supabase realtime crash
+if (typeof global.WebSocket === 'undefined') {
+  global.WebSocket = class {};
+}
+
 const envPath = path.join(__dirname, '..', '.env.local');
 let supabaseUrl = '';
 let supabaseKey = '';
