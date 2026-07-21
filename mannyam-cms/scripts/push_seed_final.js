@@ -82,10 +82,21 @@ async function run() {
     return url;
   }
 
+  function getBestImage(title, category) {
+    const normalizedTitle = title.toLowerCase().replace(/[^a-z0-9]/g, '');
+    let match = mediaUrls.find(url => url.toLowerCase().replace(/[^a-z0-9]/g, '').includes(normalizedTitle));
+    if (match) return match;
+
+    match = mediaUrls.find(url => url.toLowerCase().includes(category.toLowerCase()));
+    if (match) return match;
+
+    return getNextMedia();
+  }
+
   const pagesToUpsert = [];
 
   EXPERIENCES.forEach((e, i) => {
-    const img = getNextMedia();
+    const img = getBestImage(e.h, "experience");
     const blocks = [
       { id: `e${i+1}-hero`, type: "Hero", data: { headline: e.h, subheadline: e.lede, backgroundImage: img, ctaText: "Plan This Experience", ctaLink: "/enquire" } },
       { id: `e${i+1}-tiles`, type: "Tiles", data: { heading: "What you might do", tiles: e.moments.map(m => ({ title: m[0], description: m[1] })) } },
@@ -104,7 +115,7 @@ async function run() {
   });
 
   FESTIVALS.forEach((f, i) => {
-    const img = getNextMedia();
+    const img = getBestImage(f.h, "festival");
     const blocks = [
       { id: `f${i+1}-hero`, type: "Hero", data: { headline: f.h, subheadline: f.lede, backgroundImage: img, ctaText: "Plan My Journey", ctaLink: "/enquire" } },
       { id: `f${i+1}-facts`, type: "Fact Bar", data: { facts: [{ label: "When", value: f.when }, { label: "Where", value: f.where }] } },
@@ -124,7 +135,7 @@ async function run() {
   });
 
   DESTINATIONS.forEach((d, i) => {
-    const img = getNextMedia();
+    const img = getBestImage(d.h, "destination");
     const blocks = [
       { id: `d${i+1}-hero`, type: "Hero", data: { headline: d.h, subheadline: d.lede, backgroundImage: img, ctaText: "Plan My Journey", ctaLink: "/enquire" } },
       { id: `d${i+1}-facts`, type: "Fact Bar", data: { facts: [{ label: "Best season", value: d.season }] } },
@@ -159,7 +170,7 @@ async function run() {
     
     const availability = { tag: j.tag, regions: j.regions, includes: j.incl };
     const itinerary = j.days.map((d, index) => ({ day: index + 1, title: d[0], description: d[1] }));
-    const img = getNextMedia();
+    const img = getBestImage(j.h, mappedType);
 
     const pkg = {
       title: j.h,
