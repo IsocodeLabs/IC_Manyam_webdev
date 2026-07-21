@@ -19,7 +19,7 @@ export default async function UsersSettingsPage() {
   }
 
   return (
-    <div className="space-y-6 font-sans max-w-5xl">
+    <div className="space-y-6 font-sans max-w-5xl mx-auto">
       <div className="border-b border-olive/10 pb-4 flex justify-between items-end">
         <div>
           <h1 className="font-display text-3xl font-semibold text-olive">Users & Team</h1>
