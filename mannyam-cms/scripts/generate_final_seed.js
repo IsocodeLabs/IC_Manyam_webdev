@@ -14,6 +14,7 @@ function extractArray(regex) {
 const EXPERIENCES = extractArray(/EXPERIENCES\s*=\s*(\[.*?\]);/s);
 const FESTIVALS = extractArray(/FESTIVALS\s*=\s*(\[.*?\]);/s);
 const DESTINATIONS = extractArray(/DESTINATIONS\s*=\s*(\[.*?\]);/s);
+const JOURNEYS = extractArray(/JOURNEYS\s*=\s*(\[.*?\]);/s);
 
 // Dynamic FAQ Generators
 function getExpFaqs(h) {
@@ -83,13 +84,24 @@ destSql += DESTINATIONS.map((d, i) => {
   return `('${d.h.replace(/'/g, "''")}', 'destination-${d.slug}', 'Category', 'Published',\n$$${JSON.stringify(blocks)}$$::jsonb,\n$$${JSON.stringify({title: `${d.h} Travel | MANNYAM`, description: d.lede, canonical_url: `https://mannyam.in/destination-${d.slug}`})}$\$::jsonb)`;
 }).join(",\n\n") + ";\n\n";
 
+let journeySql = `DELETE FROM public.packages;\n\n-- ─── JOURNEYS ────────────────────────────────────────────────────────────────\n\nINSERT INTO public.packages (title, slug, type, description, itinerary, availability, seo_meta, created_at) VALUES\n`;
+journeySql += JOURNEYS.map((j) => {
+  let mappedType = 'Destination';
+  if (j.type === 'festival' || j.slug.includes('holi') || j.slug.includes('diwali') || j.slug.includes('dussehra')) mappedType = 'Festival';
+  
+  const availability = { tag: j.tag, regions: j.regions, includes: j.incl };
+  const itinerary = j.days.map((d, index) => ({ day: index + 1, title: d[0], description: d[1] }));
+  
+  return `('${j.h.replace(/'/g, "''")}', '${j.slug}', '${mappedType}', '${j.intro.replace(/'/g, "''")}',\n$$${JSON.stringify(itinerary)}$$::jsonb,\n$$${JSON.stringify(availability)}$$::jsonb,\n$$${JSON.stringify({title: `${j.h} | MANNYAM Journey`, description: j.intro})}$\$::jsonb, NOW())`;
+}).join(",\n\n") + ";\n\n";
+
 const fullSql = `
 -- ============================================================================
 -- MANNYAM CMS - Final Content Seed with Dynamic FAQs
 -- Run AFTER seed_content.sql. Uses $$ dollar-quoting.
 -- ============================================================================
 
-` + expSql + festSql + destSql;
+` + expSql + festSql + destSql + journeySql;
 
 fs.writeFileSync(sqlPath, fullSql, 'utf8');
 console.log("Successfully generated supabase/seed_final.sql!");
