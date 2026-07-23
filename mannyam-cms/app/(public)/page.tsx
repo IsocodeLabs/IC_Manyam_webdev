@@ -180,6 +180,14 @@ export default async function PublicHomePage() {
         <HomeConcierge />
       </div>
 
+      {/* ═══ FAQ SECTION ═══ */}
+      <ListingFaq
+        heading="Questions, answered simply"
+        subtitle="New to MANNYAM, or to India? Here are honest answers to the questions we hear most."
+        items={HOME_FAQ}
+        showCta={false}
+      />
+
       {/* ═══ FESTIVAL SCROLL RAIL ═══ */}
       <section className="py-12 md:py-20">
         <div className="max-w-7xl mx-auto px-6">
@@ -341,14 +349,6 @@ export default async function PublicHomePage() {
           <Button href="/journal" variant="ghost">Read the journal</Button>
         </div>
       </section>
-
-      {/* ═══ FAQ SECTION ═══ */}
-      <ListingFaq
-        heading="Questions, answered simply"
-        subtitle="New to MANNYAM, or to India? Here are honest answers to the questions we hear most."
-        items={HOME_FAQ}
-        showCta={false}
-      />
 
       <ClosingCta />
     </div>
