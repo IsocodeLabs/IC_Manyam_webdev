@@ -9,16 +9,12 @@ export function Footer() {
     <footer className="bg-ink text-[#c9cbba] pt-10 md:pt-[60px] pb-7 md:pb-[34px] px-5 md:px-10 font-sans text-[13px]">
       <div className="max-w-[1200px] mx-auto">
 
-        {/* Logo centred at top */}
-        <div className="flex justify-center mb-10">
-          <Image src="/logo.png" alt="MANNYAM" height={120} width={120} className="w-auto h-[120px] brightness-[1.4] drop-shadow-[0_0_12px_rgba(186,136,56,0.35)]" />
-        </div>
-
         {/* Main grid: left (brand + newsletter) + right (link columns) */}
         <div className="grid grid-cols-1 md:grid-cols-[1.2fr_1.8fr] gap-12 md:gap-12 items-start">
 
-          {/* Left: desc + newsletter */}
+          {/* Left: Brand + desc + newsletter */}
           <div>
+            <Image src="/logo.png" alt="MANNYAM" height={120} width={120} className="mb-4 w-auto h-[120px] ml-8 brightness-[1.4] drop-shadow-[0_0_10px_rgba(186,136,56,0.35)]" />
             <p className="mt-3 text-[12.5px] text-[#a7a995] leading-relaxed max-w-[34em] font-light">
               Private, thoughtfully planned journeys that reveal the real spirit of India through its festivals, living traditions and the people who make them unforgettable.
             </p>
