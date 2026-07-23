@@ -6,9 +6,11 @@ interface ListingFaqProps {
   heading: string;
   subtitle: string;
   items: { question: string; answer: string }[];
+  ctaSubtitle?: string;
+  showCta?: boolean;
 }
 
-export function ListingFaq({ heading, subtitle, items }: ListingFaqProps) {
+export function ListingFaq({ heading, subtitle, items, ctaSubtitle, showCta = true }: ListingFaqProps) {
   const [openIndex, setOpenIndex] = useState<number>(0);
 
   if (!items || items.length === 0) return null;
@@ -57,14 +59,16 @@ export function ListingFaq({ heading, subtitle, items }: ListingFaqProps) {
         </div>
 
         {/* CTA Section below FAQ */}
-        <div className="mt-16 flex flex-col items-center justify-center text-center">
-          <p className="font-display italic text-olive/80 text-[19px] mb-6">
-            Make the celebration the heart of your trip.
-          </p>
-          <a href="/enquire" className="bg-[#3a4430] hover:bg-gold text-ivory px-7 py-3 rounded-full font-sans text-[11px] font-bold tracking-[0.2em] uppercase transition-colors flex items-center gap-2">
-            Plan my journey <span className="font-normal">&rarr;</span>
-          </a>
-        </div>
+        {showCta && (
+          <div className="mt-16 flex flex-col items-center justify-center text-center">
+            <p className="font-display italic text-olive/80 text-[19px] mb-6">
+              {ctaSubtitle || "Make the celebration the heart of your trip."}
+            </p>
+            <a href="/enquire" className="bg-[#3a4430] hover:bg-gold text-ivory px-7 py-3 rounded-full font-sans text-[11px] font-bold tracking-[0.2em] uppercase transition-colors flex items-center gap-2">
+              Plan my journey <span className="font-normal">&rarr;</span>
+            </a>
+          </div>
+        )}
       </div>
     </section>
   );

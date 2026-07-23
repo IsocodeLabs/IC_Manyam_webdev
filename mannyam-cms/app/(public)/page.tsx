@@ -10,6 +10,7 @@ import { HomeConcierge } from "@/components/public/HomeConcierge";
 import { HomeTestimonials } from "@/components/public/HomeTestimonials";
 import { HeroSlideshow } from "@/components/public/HeroSlideshow";
 import { ClosingCta } from "@/components/public/ClosingCta";
+import { ListingFaq } from "@/components/public/ListingFaq";
 
 export const revalidate = 3600;
 
@@ -68,6 +69,33 @@ const STEPS = [
   { title: "You live it", desc: "Land in India and let go. Your host and ground team carry every detail." },
 ];
 
+const HOME_FAQ = [
+  {
+    question: "What does MANNYAM do?",
+    answer: "MANNYAM plans private, tailor-made journeys across India for travellers who want comfort and authenticity together. Every India trip is designed around you, from festivals and palaces to backwaters, wildlife and quiet time, and is planned end to end.",
+  },
+  {
+    question: "How does planning a trip with MANNYAM work?",
+    answer: "Tell our concierge or a curator what you are dreaming of. Within a day you receive a tailored outline of your India journey, which you reshape with us until it feels right. Then you travel, and we handle every detail.",
+  },
+  {
+    question: "How much does a private India journey cost?",
+    answer: "Because every journey is bespoke, there is no fixed price list. We shape each India trip around your wishes, your dates and your budget, then send a clear, itemised quotation with your outline. Share a rough budget and we will advise honestly on what is possible.",
+  },
+  {
+    question: "Is India safe to travel, and is MANNYAM safe to book with?",
+    answer: "Yes. We use vetted drivers, carefully chosen stays and trusted local hosts, with support around the clock. Your details are encrypted, used only to plan your trip, and never sold, so both your journey and your privacy are looked after.",
+  },
+  {
+    question: "When is the best time to visit India?",
+    answer: "Broadly, October to March suits most of the country, while the Himalayas are best from May to September. The ideal time depends on the regions and festivals in your trip, and your curator will confirm the best dates for you.",
+  },
+  {
+    question: "Who does MANNYAM plan journeys for?",
+    answer: "We plan private India tours for couples, honeymooners, families and small groups, and for companies planning a retreat, mainly travelling from Europe, the United Kingdom, the United States and beyond. Whoever you are, the pace is set around you.",
+  },
+];
+
 export default async function PublicHomePage() {
   const [packages, posts] = await Promise.all([
     getPublishedPackages(undefined, 10),
@@ -80,6 +108,19 @@ export default async function PublicHomePage() {
     name: "MANNYAM",
     url: "https://mannyam.in",
     description: "Private, unhurried journeys across India, shaped around you and planned end to end.",
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: HOME_FAQ.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
   };
 
   const slides = [];
@@ -104,6 +145,7 @@ export default async function PublicHomePage() {
   return (
     <div className="font-sans bg-ivory text-ink selection:bg-gold/20">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       {/* ═══ HERO ═══ */}
       <section className="relative min-h-[100svh] flex items-end pb-10 md:items-center md:pb-0 overflow-hidden bg-[radial-gradient(130%_92%_at_80%_20%,#5d6747,#3a4128_46%,#23270f)]">
@@ -299,6 +341,14 @@ export default async function PublicHomePage() {
           <Button href="/journal" variant="ghost">Read the journal</Button>
         </div>
       </section>
+
+      {/* ═══ FAQ SECTION ═══ */}
+      <ListingFaq
+        heading="Questions, answered simply"
+        subtitle="New to MANNYAM, or to India? Here are honest answers to the questions we hear most."
+        items={HOME_FAQ}
+        showCta={false}
+      />
 
       <ClosingCta />
     </div>
