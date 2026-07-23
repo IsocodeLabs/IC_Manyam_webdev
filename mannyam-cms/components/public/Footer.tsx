@@ -12,26 +12,12 @@ export function Footer() {
         {/* Main grid: left (brand + newsletter) + right (link columns) */}
         <div className="grid grid-cols-1 md:grid-cols-[1.2fr_1.8fr] gap-12 md:gap-12 items-start">
 
-          {/* Left: Brand + desc + newsletter */}
+          {/* Left: Brand + desc */}
           <div>
             <Image src="/logo.png" alt="MANNYAM" height={140} width={140} className="mb-4 w-auto h-[140px] mx-auto brightness-[1.4] drop-shadow-[0_0_10px_rgba(186,136,56,0.35)]" />
             <p className="mt-3 text-[12.5px] text-[#a7a995] leading-relaxed max-w-[34em] font-light">
               Private, thoughtfully planned journeys that reveal the real spirit of India through its festivals, living traditions and the people who make them unforgettable.
             </p>
-            <form className="flex gap-2 mt-3.5 w-full max-w-[480px] mx-auto">
-              <input
-                type="email"
-                placeholder="Your email for the journal"
-                className="flex-1 bg-[rgba(255,255,255,.06)] border border-[rgba(255,255,255,.16)] rounded-full px-5 py-3.5 text-ivory text-[13px] font-sans outline-none placeholder:text-[#8d8f7d] focus:border-gold/50"
-                required
-              />
-              <button
-                type="submit"
-                className="bg-gold text-ink border-0 rounded-full px-[22px] py-3.5 font-sans font-medium text-[10.5px] tracking-[0.13em] uppercase cursor-pointer hover:bg-gold/90 transition-colors whitespace-nowrap"
-              >
-                Join
-              </button>
-            </form>
           </div>
 
           {/* Right: 4 link columns */}
@@ -86,7 +72,25 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 md:mt-16 mb-4 md:mb-6 flex justify-center w-full">
+        {/* Newsletter - centred above language selector */}
+        <div className="mt-10 md:mt-14 flex justify-center">
+          <form className="flex gap-2 w-full max-w-[500px]">
+            <input
+              type="email"
+              placeholder="Your email for the journal"
+              className="flex-1 bg-[rgba(255,255,255,.06)] border border-[rgba(255,255,255,.16)] rounded-full px-5 py-3.5 text-ivory text-[13px] font-sans outline-none placeholder:text-[#8d8f7d] focus:border-gold/50"
+              required
+            />
+            <button
+              type="submit"
+              className="bg-gold text-ink border-0 rounded-full px-[22px] py-3.5 font-sans font-medium text-[10.5px] tracking-[0.13em] uppercase cursor-pointer hover:bg-gold/90 transition-colors whitespace-nowrap"
+            >
+              Join
+            </button>
+          </form>
+        </div>
+
+        <div className="mt-6 md:mt-8 mb-4 md:mb-6 flex justify-center w-full">
           <FooterLanguageSelector />
         </div>
 
