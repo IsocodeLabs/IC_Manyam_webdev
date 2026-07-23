@@ -18,16 +18,16 @@ export function Footer() {
             <p className="mt-3 text-[12.5px] text-[#a7a995] leading-relaxed max-w-[34em] font-light">
               Private, thoughtfully planned journeys that reveal the real spirit of India through its festivals, living traditions and the people who make them unforgettable.
             </p>
-            <form className="flex gap-2 mt-3.5 max-w-[400px]">
+            <form className="flex gap-2 mt-3.5 w-full max-w-[480px] mx-auto">
               <input
                 type="email"
                 placeholder="Your email for the journal"
-                className="flex-1 bg-[rgba(255,255,255,.06)] border border-[rgba(255,255,255,.16)] rounded-full px-4 py-3 text-ivory text-[12.5px] font-sans outline-none placeholder:text-[#8d8f7d] focus:border-gold/50"
+                className="flex-1 bg-[rgba(255,255,255,.06)] border border-[rgba(255,255,255,.16)] rounded-full px-5 py-3.5 text-ivory text-[13px] font-sans outline-none placeholder:text-[#8d8f7d] focus:border-gold/50"
                 required
               />
               <button
                 type="submit"
-                className="bg-gold text-ink border-0 rounded-full px-[18px] py-3 font-sans font-medium text-[10.5px] tracking-[0.13em] uppercase cursor-pointer hover:bg-gold/90 transition-colors whitespace-nowrap"
+                className="bg-gold text-ink border-0 rounded-full px-[22px] py-3.5 font-sans font-medium text-[10.5px] tracking-[0.13em] uppercase cursor-pointer hover:bg-gold/90 transition-colors whitespace-nowrap"
               >
                 Join
               </button>
