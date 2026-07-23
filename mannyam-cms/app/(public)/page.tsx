@@ -180,14 +180,6 @@ export default async function PublicHomePage() {
         <HomeConcierge />
       </div>
 
-      {/* ═══ FAQ SECTION ═══ */}
-      <ListingFaq
-        heading="Questions, answered simply"
-        subtitle="New to MANNYAM, or to India? Here are honest answers to the questions we hear most."
-        items={HOME_FAQ}
-        showCta={false}
-      />
-
       {/* ═══ FESTIVAL SCROLL RAIL ═══ */}
       <section className="py-12 md:py-20">
         <div className="max-w-7xl mx-auto px-6">
@@ -349,6 +341,20 @@ export default async function PublicHomePage() {
           <Button href="/journal" variant="ghost">Read the journal</Button>
         </div>
       </section>
+
+      {/* ═══ FAQ SECTION ═══ */}
+      <ListingFaq
+        heading="Questions, answered simply"
+        subtitle="New to MANNYAM, or to India? Here are honest answers to the questions we hear most."
+        items={[
+          { question: "What does MANNYAM do?", answer: "MANNYAM plans private, tailor-made journeys across India for travellers who want comfort and authenticity together. Every India trip is designed around you, from festivals and palaces to backwaters, wildlife and quiet time, and is planned end to end." },
+          { question: "How does planning a trip with MANNYAM work?", answer: "Tell our concierge or a curator what you are dreaming of. Within a day you receive a tailored outline of your India journey, which you reshape with us until it feels right. Then you travel, and we handle every detail." },
+          { question: "How much does a private India journey cost?", answer: "Because every journey is bespoke, there is no fixed price list. We shape each India trip around your wishes, your dates and your budget, then send a clear, itemised quotation with your outline. Share a rough budget and we will advise honestly on what is possible." },
+          { question: "Is India safe to travel, and is MANNYAM safe to book with?", answer: "Yes. We use vetted drivers, carefully chosen stays and trusted local hosts, with support around the clock. Your details are encrypted, used only to plan your trip, and never sold, so both your journey and your privacy are looked after." },
+          { question: "When is the best time to visit India?", answer: "Broadly, October to March suits most of the country, while the Himalayas are best from May to September. The ideal time depends on the regions and festivals in your trip, and your curator will confirm the best dates for you." },
+          { question: "Who does MANNYAM plan journeys for?", answer: "We plan private India tours for couples, honeymooners, families and small groups, and for companies planning a retreat, mainly travelling from Europe, the United Kingdom, the United States and beyond. Whoever you are, the pace is set around you." },
+        ]}
+      />
 
       <ClosingCta />
     </div>
