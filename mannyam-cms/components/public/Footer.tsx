@@ -14,7 +14,7 @@ export function Footer() {
 
           {/* Left: Brand + desc */}
           <div className="text-center md:text-left">
-            <Image src="/logo.png" alt="MANNYAM" height={140} width={140} className="mb-4 w-auto h-[100px] md:h-[140px] mx-auto md:mx-0 brightness-[1.4] drop-shadow-[0_0_10px_rgba(186,136,56,0.35)]" />
+            <Image src="/footer-logo.png" alt="MANNYAM" height={140} width={140} className="mb-4 w-auto h-[100px] md:h-[140px] mx-auto md:mx-0 brightness-[1.4] drop-shadow-[0_0_10px_rgba(186,136,56,0.35)]" />
             <p className="mt-3 text-[12.5px] text-[#a7a995] leading-relaxed max-w-[34em] font-light mx-auto md:mx-0">
               Private, thoughtfully planned journeys that reveal the real spirit of India through its festivals, living traditions and the people who make them unforgettable.
             </p>
