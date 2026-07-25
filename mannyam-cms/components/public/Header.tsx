@@ -237,15 +237,29 @@ export function Header({ experiences, festivals, destinations, journeys }: Heade
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-6">
-          {/* Mobile Experiences Accordion */}
-          <MobileAccordion title="Experiences" items={experiences?.items || []} onClose={() => setIsMobileMenuOpen(false)} />
-          <MobileAccordion title="Festivals" items={festivals?.items || []} onClose={() => setIsMobileMenuOpen(false)} />
-          <MobileAccordion title="Destinations" items={destinations?.items || []} onClose={() => setIsMobileMenuOpen(false)} />
-          <MobileAccordion title="Journeys" items={journeys?.items || []} onClose={() => setIsMobileMenuOpen(false)} />
-
-          <Link href="/journal" onClick={() => setIsMobileMenuOpen(false)} className="block font-display text-[21px] py-3 border-t border-white/10">Journal</Link>
-          <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="block font-display text-[21px] py-3 border-t border-white/10">About</Link>
+        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-1">
+          {/* Direct navigation links - always visible */}
+          <Link href="/experiences" onClick={() => setIsMobileMenuOpen(false)} className="block font-display text-[21px] py-3 border-b border-white/10">
+            Experiences
+          </Link>
+          <Link href="/festivals" onClick={() => setIsMobileMenuOpen(false)} className="block font-display text-[21px] py-3 border-b border-white/10">
+            Festivals
+          </Link>
+          <Link href="/destinations" onClick={() => setIsMobileMenuOpen(false)} className="block font-display text-[21px] py-3 border-b border-white/10">
+            Destinations
+          </Link>
+          <Link href="/journeys" onClick={() => setIsMobileMenuOpen(false)} className="block font-display text-[21px] py-3 border-b border-white/10">
+            Journeys
+          </Link>
+          <Link href="/journal" onClick={() => setIsMobileMenuOpen(false)} className="block font-display text-[21px] py-3 border-b border-white/10">
+            Journal
+          </Link>
+          <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="block font-display text-[21px] py-3 border-b border-white/10">
+            About
+          </Link>
+          <Link href="/enquire" onClick={() => setIsMobileMenuOpen(false)} className="block font-display text-[21px] py-3 border-b border-white/10 text-gold">
+            Contact
+          </Link>
         </div>
 
         <div className="px-5 py-4 border-t border-white/12 flex gap-2.5">
