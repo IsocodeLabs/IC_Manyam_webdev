@@ -226,36 +226,31 @@ export function Header({ experiences, festivals, destinations, journeys }: Heade
 
       {/* Mobile Drawer */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden fixed top-0 left-0 right-0 bottom-0 z-[9999]" style={{ backgroundColor: '#1e2214' }}>
-          {/* Header */}
-          <div className="flex justify-between items-center px-5 py-4 border-b border-white/10">
-            <div>
-              <Image src="/logo-icon.png" alt="MANNYAM" width={36} height={36} className="mb-1" />
-              <div className="font-display text-[18px] tracking-[0.16em] font-bold text-ivory">MANNYAM</div>
-              <div className="text-[6px] tracking-[0.3em] uppercase text-sand mt-0.5">The Story of India</div>
-            </div>
-            <button onClick={() => setIsMobileMenuOpen(false)} className="w-[36px] h-[36px] rounded-full bg-white/10 flex items-center justify-center text-ivory" aria-label="Close menu">
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        <div className="lg:hidden fixed inset-0 z-[9999] flex flex-col" onClick={() => setIsMobileMenuOpen(false)}>
+          {/* Dark overlay */}
+          <div className="absolute inset-0 bg-black/60" />
+          
+          {/* Menu panel - drops down from top */}
+          <div className="relative bg-[#2c3120] rounded-b-2xl shadow-2xl mx-0 pt-5 pb-6 px-6" onClick={(e) => e.stopPropagation()}>
+            {/* Close button */}
+            <button onClick={() => setIsMobileMenuOpen(false)} className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-ivory" aria-label="Close menu">
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
             </button>
-          </div>
 
-          {/* Navigation */}
-          <div className="px-6 py-8">
-            <nav className="grid grid-cols-2 gap-x-6 gap-y-6">
-              <Link href="/experiences" onClick={() => setIsMobileMenuOpen(false)} className="font-display text-[22px] text-ivory">Experiences</Link>
-              <Link href="/festivals" onClick={() => setIsMobileMenuOpen(false)} className="font-display text-[22px] text-ivory">Festivals</Link>
-              <Link href="/destinations" onClick={() => setIsMobileMenuOpen(false)} className="font-display text-[22px] text-ivory">Destinations</Link>
-              <Link href="/journeys" onClick={() => setIsMobileMenuOpen(false)} className="font-display text-[22px] text-ivory">Journeys</Link>
-              <Link href="/journal" onClick={() => setIsMobileMenuOpen(false)} className="font-display text-[22px] text-ivory">Journal</Link>
-              <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="font-display text-[22px] text-ivory">About</Link>
-              <Link href="/enquire" onClick={() => setIsMobileMenuOpen(false)} className="font-display text-[22px] text-gold">Contact Us</Link>
-              <Link href="/account" onClick={() => setIsMobileMenuOpen(false)} className="font-display text-[22px] text-ivory/70">My Account</Link>
+            {/* Navigation links */}
+            <nav className="grid grid-cols-2 gap-x-8 gap-y-5 mt-2 mb-6">
+              <Link href="/experiences" onClick={() => setIsMobileMenuOpen(false)} className="font-display text-[20px] text-ivory">Experiences</Link>
+              <Link href="/festivals" onClick={() => setIsMobileMenuOpen(false)} className="font-display text-[20px] text-ivory">Festivals</Link>
+              <Link href="/destinations" onClick={() => setIsMobileMenuOpen(false)} className="font-display text-[20px] text-ivory">Destinations</Link>
+              <Link href="/journeys" onClick={() => setIsMobileMenuOpen(false)} className="font-display text-[20px] text-ivory">Journeys</Link>
+              <Link href="/journal" onClick={() => setIsMobileMenuOpen(false)} className="font-display text-[20px] text-ivory">Journal</Link>
+              <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="font-display text-[20px] text-ivory">About</Link>
+              <Link href="/enquire" onClick={() => setIsMobileMenuOpen(false)} className="font-display text-[20px] text-gold">Contact</Link>
+              <Link href="/account" onClick={() => setIsMobileMenuOpen(false)} className="font-display text-[20px] text-ivory/60">Account</Link>
             </nav>
-          </div>
 
-          {/* CTA */}
-          <div className="absolute bottom-8 left-5 right-5">
-            <Link href="/enquire" onClick={() => setIsMobileMenuOpen(false)} className="block w-full text-center font-sans text-[12px] font-medium tracking-[0.16em] uppercase bg-gold text-ink py-4 rounded-full">
+            {/* CTA button */}
+            <Link href="/enquire" onClick={() => setIsMobileMenuOpen(false)} className="block w-full text-center font-sans text-[11px] font-semibold tracking-[0.18em] uppercase bg-gold text-ink py-3.5 rounded-full">
               Plan my journey
             </Link>
           </div>
