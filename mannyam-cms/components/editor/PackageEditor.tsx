@@ -22,6 +22,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 
 import { BlockTipTapEditor } from "./BlockTipTapEditor";
+import { AiAssistButton } from "./AiAssistButton";
 import { checkSlugUnique, createPackage, updatePackage, savePricing, type PackageInput } from "@/app/packages/actions";
 import { SeoPanel, type SeoMeta } from "@/components/seo/SeoPanel";
 
@@ -555,7 +556,16 @@ export function PackageEditor({
 
           {/* Description Block */}
           <div className="space-y-2">
-            <h2 className="font-display text-2xl font-semibold">Description</h2>
+            <div className="flex items-center gap-3">
+              <h2 className="font-display text-2xl font-semibold">Description</h2>
+              <AiAssistButton
+                field="description"
+                context={title}
+                currentValue={description}
+                onResult={(text) => setDescription(text)}
+                promptHint="Generate journey description"
+              />
+            </div>
             <BlockTipTapEditor
               content={description}
               onChange={setDescription}

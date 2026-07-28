@@ -259,17 +259,19 @@ export default async function PublicHomePage() {
       </section>
 
       {/* ═══ THE MANNYAM DIFFERENCE ═══ */}
-      <section className="py-12 md:py-20 max-w-7xl mx-auto px-6">
-        <SectionHeading eyebrow="The MANNYAM difference" heading="Effortless for you. Rooted for real." intro="The two things our guests ask for most are complete ease and the genuine thing. We refuse to trade one for the other." />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-6">
+      <section className="py-12 md:py-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <SectionHeading eyebrow="The MANNYAM difference" heading="Effortless for you. Rooted for real." intro="The two things our guests ask for most are complete ease and the genuine thing. We refuse to trade one for the other." />
+        </div>
+        <AutoScrollRail speed={0.3} className="gap-3 mt-6 px-6 pb-4 md:max-w-7xl md:mx-auto">
           {DIFF.map((d, i) => (
-            <div key={i} className="bg-paper border border-olive/8 rounded-[14px] p-5 transition-all duration-300 hover:border-gold/30 hover:translate-y-[-3px] hover:shadow-lg">
+            <div key={i} className="flex-shrink-0 w-[75%] sm:w-[45%] lg:w-[31%] bg-paper border border-olive/8 rounded-[14px] p-5 transition-all duration-300 hover:border-gold/30 hover:shadow-lg">
               <svg className="w-[34px] h-[34px] text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d={d.icon} /></svg>
               <h3 className="font-display text-[19px] mt-3">{d.h}</h3>
               <p className="font-sans text-[13px] text-olive/65 mt-1.5 leading-relaxed font-light">{d.p}</p>
             </div>
           ))}
-        </div>
+        </AutoScrollRail>
       </section>
 
       {/* ═══ HOW IT WORKS ═══ */}
@@ -322,14 +324,18 @@ export default async function PublicHomePage() {
       <HomeTestimonials />
 
       {/* ═══ JOURNAL SECTION ═══ */}
-      <section className="py-12 md:py-20 max-w-7xl mx-auto px-6">
-        <SectionHeading eyebrow="The journal" heading="Field notes from the road." intro="Slow reading for the curious traveller, on the festivals, rituals and quieter corners of India." />
+      <section className="py-12 md:py-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <SectionHeading eyebrow="The journal" heading="Field notes from the road." intro="Slow reading for the curious traveller, on the festivals, rituals and quieter corners of India." />
+        </div>
         {posts.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+          <AutoScrollRail speed={0.35} className="gap-5 mt-6 px-6 pb-4">
             {posts.map((post) => (
-              <PostCard key={post.id} post={post as Post & { categories: { name: string; slug: string } | null }} />
+              <div key={post.id} className="flex-shrink-0 w-[80%] sm:w-[45%] md:w-[30%]">
+                <PostCard post={post as Post & { categories: { name: string; slug: string } | null }} />
+              </div>
             ))}
-          </div>
+          </AutoScrollRail>
         )}
         <div className="mt-7 text-center">
           <Button href="/journal" variant="ghost">Read the journal</Button>
