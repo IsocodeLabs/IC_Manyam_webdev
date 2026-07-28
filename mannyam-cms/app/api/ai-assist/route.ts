@@ -91,16 +91,15 @@ Output ONLY the generated text. No explanations, no prefixes, no markdown format
 
       if (!response.ok) {
         const errText = await response.text();
-        console.error("Vertex AI error:", errText);
-        throw new Error("Vertex AI request failed");
+        console.error("Vertex AI error:", response.status, errText);
+        return NextResponse.json({ text: `[Vertex AI Error ${response.status}] ${errText.slice(0, 200)}` });
       }
 
       const data = await response.json();
       text = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
     } catch (vertexError) {
-      console.error("Vertex AI unavailable, using fallback:", vertexError);
-      // Fallback: generate simple placeholder text
-      text = generateFallback(prompt, field, context);
+      console.error("Vertex AI unavailable:", vertexError);
+      return NextResponse.json({ text: `[Error] ${vertexError instanceof Error ? vertexError.message : "Unknown error connecting to Vertex AI"}` });
     }
 
     return NextResponse.json({ text: text.trim() });
