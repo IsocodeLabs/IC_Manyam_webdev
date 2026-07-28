@@ -1,6 +1,53 @@
 import { NextRequest, NextResponse } from "next/server";
+import { SignJWT, importPKCS8 } from "jose";
 
-const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+const GCP_PROJECT_ID = "mannyam";
+const VERTEX_LOCATION = "us-central1";
+const VERTEX_MODEL = "gemini-2.0-flash-001";
+
+/**
+ * Generate a short-lived access token using the GCP service account credentials.
+ */
+async function getAccessToken(): Promise<string> {
+  const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  const privateKeyRaw = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY;
+
+  if (!email || !privateKeyRaw) {
+    throw new Error("GCP service account credentials not configured.");
+  }
+
+  const privateKey = privateKeyRaw.replace(/\\n/g, "\n");
+  const key = await importPKCS8(privateKey, "RS256");
+
+  const now = Math.floor(Date.now() / 1000);
+  const jwt = await new SignJWT({
+    iss: email,
+    sub: email,
+    aud: "https://oauth2.googleapis.com/token",
+    iat: now,
+    exp: now + 3600,
+    scope: "https://www.googleapis.com/auth/cloud-platform",
+  })
+    .setProtectedHeader({ alg: "RS256", typ: "JWT" })
+    .sign(key);
+
+  const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+      assertion: jwt,
+    }),
+  });
+
+  if (!tokenRes.ok) {
+    const err = await tokenRes.text();
+    throw new Error(`Token exchange failed: ${err}`);
+  }
+
+  const tokenData = await tokenRes.json();
+  return tokenData.access_token;
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,10 +57,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Prompt is required" }, { status: 400 });
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      return NextResponse.json({ error: "Gemini API key not configured" }, { status: 500 });
-    }
+    const accessToken = await getAccessToken();
 
     const systemPrompt = `You are an AI writing assistant for MANNYAM, a luxury private travel company in India serving foreign clients. 
 Your tone is: warm, British English, unhurried, elegant, no em dashes, no pricing or currency symbols.
@@ -23,9 +67,14 @@ ${context ? `Additional context: ${context}` : ""}
 
 Respond with ONLY the generated text, no explanations or prefixes.`;
 
-    const response = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
+    const vertexUrl = `https://${VERTEX_LOCATION}-aiplatform.googleapis.com/v1/projects/${GCP_PROJECT_ID}/locations/${VERTEX_LOCATION}/publishers/google/models/${VERTEX_MODEL}:generateContent`;
+
+    const response = await fetch(vertexUrl, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
       body: JSON.stringify({
         contents: [
           { role: "user", parts: [{ text: systemPrompt + "\n\n" + prompt }] }
@@ -39,7 +88,7 @@ Respond with ONLY the generated text, no explanations or prefixes.`;
 
     if (!response.ok) {
       const error = await response.text();
-      console.error("Gemini API error:", error);
+      console.error("Vertex AI error:", error);
       return NextResponse.json({ error: "AI generation failed" }, { status: 500 });
     }
 
@@ -49,6 +98,6 @@ Respond with ONLY the generated text, no explanations or prefixes.`;
     return NextResponse.json({ text: text.trim() });
   } catch (error) {
     console.error("AI assist error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : "Internal server error" }, { status: 500 });
   }
 }
