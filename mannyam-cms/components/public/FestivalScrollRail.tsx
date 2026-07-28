@@ -14,17 +14,10 @@ interface FestivalItem {
 export function FestivalScrollRail({ items }: { items: FestivalItem[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
-  const initialised = useRef(false);
 
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
-
-    // Start scrolled to the end so we can scroll leftward
-    if (!initialised.current) {
-      container.scrollLeft = container.scrollWidth - container.clientWidth;
-      initialised.current = true;
-    }
 
     let animationId: number;
 
@@ -32,11 +25,10 @@ export function FestivalScrollRail({ items }: { items: FestivalItem[] }) {
       if (!container) return;
 
       if (!isPaused) {
-        container.scrollLeft -= 0.6;
+        container.scrollLeft += 0.6;
 
-        // When we reach the start, jump back to the end
-        if (container.scrollLeft <= 0) {
-          container.scrollLeft = container.scrollWidth - container.clientWidth;
+        if (container.scrollLeft >= container.scrollWidth - container.clientWidth) {
+          container.scrollLeft = 0;
         }
       }
 

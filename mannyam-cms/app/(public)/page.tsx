@@ -198,7 +198,7 @@ export default async function PublicHomePage() {
         <div className="max-w-7xl mx-auto px-6">
           <SectionHeading eyebrow="Experiences" heading="Travel by the feeling you are after." intro="From food walks to royal evenings, choose the kind of moments you want, and we will weave them into a journey." />
         </div>
-        <AutoScrollRail speed={0.4} direction="right" className="gap-4 mt-6 px-6 pb-4">
+        <AutoScrollRail speed={0.4} className="gap-4 mt-6 px-6 pb-4">
           {EXPERIENCES_CARDS.map((e) => (
             <Link key={e.slug} href={`/${e.slug}`} className="group cursor-pointer flex-shrink-0 w-[70%] sm:w-[30%] snap-start">
               <div className="relative rounded-[18px] overflow-hidden aspect-[100/124]">
@@ -221,7 +221,7 @@ export default async function PublicHomePage() {
         <div className="max-w-7xl mx-auto px-6">
           <SectionHeading eyebrow="Destinations" heading="Choose where to begin." intro="A different India in every direction. Pick a region, and we will pair it with the right experiences." />
         </div>
-        <AutoScrollRail speed={0.4} direction="left" className="gap-4 mt-6 px-6 pb-4">
+        <AutoScrollRail speed={0.4} className="gap-4 mt-6 px-6 pb-4">
           {DESTINATIONS_CARDS.map((d) => (
             <Link key={d.slug} href={`/${d.slug}`} className="group cursor-pointer relative flex-shrink-0 w-[70%] sm:w-[30%] snap-start">
               <div className="relative rounded-[18px] overflow-hidden aspect-[100/124]">
@@ -245,7 +245,7 @@ export default async function PublicHomePage() {
           <SectionHeading eyebrow="Signature journeys" heading="Stories we have already written." intro="Take them as they are, or treat them as a first chapter and reshape them with us." />
         </div>
         {packages.length > 0 && (
-          <AutoScrollRail speed={0.35} direction="right" className="gap-4 mt-6 px-6 pb-4">
+          <AutoScrollRail speed={0.35} className="gap-4 mt-6 px-6 pb-4">
             {packages.map((pkg) => (
               <div key={pkg.id} className="flex-shrink-0 w-[85%] sm:w-[45%] lg:w-[48%]">
                 <PackageCard pkg={pkg} />

@@ -5,26 +5,16 @@ import { useEffect, useRef, useState } from "react";
 interface AutoScrollRailProps {
   children: React.ReactNode;
   speed?: number;
-  direction?: "left" | "right";
   className?: string;
 }
 
-export function AutoScrollRail({ children, speed = 0.5, direction = "left", className = "" }: AutoScrollRailProps) {
+export function AutoScrollRail({ children, speed = 0.5, className = "" }: AutoScrollRailProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
-  const initialised = useRef(false);
 
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
-
-    // If scrolling left, start at the end
-    if (!initialised.current) {
-      if (direction === "left") {
-        container.scrollLeft = container.scrollWidth - container.clientWidth;
-      }
-      initialised.current = true;
-    }
 
     let animationId: number;
 
@@ -32,18 +22,10 @@ export function AutoScrollRail({ children, speed = 0.5, direction = "left", clas
       if (!container) return;
 
       if (!isPaused) {
-        const maxScroll = container.scrollWidth - container.clientWidth;
+        container.scrollLeft += speed;
 
-        if (direction === "left") {
-          container.scrollLeft -= speed;
-          if (container.scrollLeft <= 0) {
-            container.scrollLeft = maxScroll;
-          }
-        } else {
-          container.scrollLeft += speed;
-          if (container.scrollLeft >= maxScroll) {
-            container.scrollLeft = 0;
-          }
+        if (container.scrollLeft >= container.scrollWidth - container.clientWidth) {
+          container.scrollLeft = 0;
         }
       }
 
@@ -52,7 +34,7 @@ export function AutoScrollRail({ children, speed = 0.5, direction = "left", clas
 
     animationId = requestAnimationFrame(step);
     return () => cancelAnimationFrame(animationId);
-  }, [isPaused, speed, direction]);
+  }, [isPaused, speed]);
 
   return (
     <div
