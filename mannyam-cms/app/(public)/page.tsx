@@ -198,9 +198,26 @@ export default async function PublicHomePage() {
         <div className="max-w-7xl mx-auto px-6">
           <SectionHeading eyebrow="Experiences" heading="Travel by the feeling you are after." intro="From food walks to royal evenings, choose the kind of moments you want, and we will weave them into a journey." />
         </div>
-        <AutoScrollRail speed={0.4} className="gap-4 mt-6 px-6 pb-4">
-          {EXPERIENCES_CARDS.map((e) => (
-            <Link key={e.slug} href={`/${e.slug}`} className="group cursor-pointer flex-shrink-0 w-[70%] sm:w-[30%] snap-start">
+        {/* Mobile: autoscroll */}
+        <div className="md:hidden">
+          <AutoScrollRail speed={0.4} className="gap-4 mt-6 px-6 pb-4">
+            {EXPERIENCES_CARDS.map((e) => (
+              <Link key={e.slug} href={`/${e.slug}`} className="group cursor-pointer flex-shrink-0 w-[70%]">
+                <div className="relative rounded-[18px] overflow-hidden aspect-[100/124]">
+                  <img src={e.img} alt={e.h} className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.07] transition-transform duration-1000" />
+                </div>
+                <div className="pt-2.5 px-0.5">
+                  <div className="text-[8.5px] uppercase tracking-[0.24em] text-gold font-medium">{e.k}</div>
+                  <h3 className="font-display text-[18px] mt-1">{e.h}</h3>
+                </div>
+              </Link>
+            ))}
+          </AutoScrollRail>
+        </div>
+        {/* Desktop: 3-col grid */}
+        <div className="hidden md:grid grid-cols-3 gap-6 mt-6 max-w-7xl mx-auto px-6">
+          {EXPERIENCES_CARDS.slice(0, 3).map((e) => (
+            <Link key={e.slug} href={`/${e.slug}`} className="group cursor-pointer">
               <div className="relative rounded-[18px] overflow-hidden aspect-[100/124]">
                 <img src={e.img} alt={e.h} className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.07] transition-transform duration-1000" />
               </div>
@@ -210,7 +227,7 @@ export default async function PublicHomePage() {
               </div>
             </Link>
           ))}
-        </AutoScrollRail>
+        </div>
         <div className="mt-7 text-center px-6">
           <Button href="/experiences" variant="ghost">Explore all experiences</Button>
         </div>
@@ -221,9 +238,26 @@ export default async function PublicHomePage() {
         <div className="max-w-7xl mx-auto px-6">
           <SectionHeading eyebrow="Destinations" heading="Choose where to begin." intro="A different India in every direction. Pick a region, and we will pair it with the right experiences." />
         </div>
-        <AutoScrollRail speed={0.4} className="gap-4 mt-6 px-6 pb-4">
-          {DESTINATIONS_CARDS.map((d) => (
-            <Link key={d.slug} href={`/${d.slug}`} className="group cursor-pointer relative flex-shrink-0 w-[70%] sm:w-[30%] snap-start">
+        {/* Mobile: autoscroll */}
+        <div className="md:hidden">
+          <AutoScrollRail speed={0.4} className="gap-4 mt-6 px-6 pb-4">
+            {DESTINATIONS_CARDS.map((d) => (
+              <Link key={d.slug} href={`/${d.slug}`} className="group cursor-pointer relative flex-shrink-0 w-[70%]">
+                <div className="relative rounded-[18px] overflow-hidden aspect-[100/124]">
+                  <img src={d.img} alt={d.h} className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.07] transition-transform duration-1000" />
+                  <span className="absolute top-2.5 left-2.5 text-[8.5px] uppercase tracking-[0.14em] bg-ivory/90 rounded-full px-2.5 py-1 font-medium text-ink">{d.k}</span>
+                </div>
+                <div className="pt-2.5 px-0.5">
+                  <h3 className="font-display text-[18px]">{d.h}</h3>
+                </div>
+              </Link>
+            ))}
+          </AutoScrollRail>
+        </div>
+        {/* Desktop: 3-col grid */}
+        <div className="hidden md:grid grid-cols-3 gap-6 mt-6 max-w-7xl mx-auto px-6">
+          {DESTINATIONS_CARDS.slice(0, 3).map((d) => (
+            <Link key={d.slug} href={`/${d.slug}`} className="group cursor-pointer relative">
               <div className="relative rounded-[18px] overflow-hidden aspect-[100/124]">
                 <img src={d.img} alt={d.h} className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.07] transition-transform duration-1000" />
                 <span className="absolute top-2.5 left-2.5 text-[8.5px] uppercase tracking-[0.14em] bg-ivory/90 rounded-full px-2.5 py-1 font-medium text-ink">{d.k}</span>
@@ -233,7 +267,7 @@ export default async function PublicHomePage() {
               </div>
             </Link>
           ))}
-        </AutoScrollRail>
+        </div>
         <div className="mt-7 text-center px-6">
           <Button href="/destinations" variant="ghost">Browse all destinations</Button>
         </div>
@@ -245,13 +279,24 @@ export default async function PublicHomePage() {
           <SectionHeading eyebrow="Signature journeys" heading="Stories we have already written." intro="Take them as they are, or treat them as a first chapter and reshape them with us." />
         </div>
         {packages.length > 0 && (
-          <AutoScrollRail speed={0.35} className="gap-4 mt-6 px-6 pb-4">
-            {packages.map((pkg) => (
-              <div key={pkg.id} className="flex-shrink-0 w-[85%] sm:w-[45%] lg:w-[48%]">
-                <PackageCard pkg={pkg} />
-              </div>
-            ))}
-          </AutoScrollRail>
+          <>
+            {/* Mobile: autoscroll */}
+            <div className="md:hidden">
+              <AutoScrollRail speed={0.35} className="gap-4 mt-6 px-6 pb-4">
+                {packages.map((pkg) => (
+                  <div key={pkg.id} className="flex-shrink-0 w-[85%]">
+                    <PackageCard pkg={pkg} />
+                  </div>
+                ))}
+              </AutoScrollRail>
+            </div>
+            {/* Desktop: 2-col grid, first 4 */}
+            <div className="hidden md:grid grid-cols-2 gap-4 mt-6 max-w-7xl mx-auto px-6">
+              {packages.slice(0, 4).map((pkg) => (
+                <PackageCard key={pkg.id} pkg={pkg} />
+              ))}
+            </div>
+          </>
         )}
         <div className="mt-7 text-center px-6">
           <Button href="/journeys" variant="ghost">See all journeys</Button>
@@ -263,15 +308,28 @@ export default async function PublicHomePage() {
         <div className="max-w-7xl mx-auto px-6">
           <SectionHeading eyebrow="The MANNYAM difference" heading="Effortless for you. Rooted for real." intro="The two things our guests ask for most are complete ease and the genuine thing. We refuse to trade one for the other." />
         </div>
-        <AutoScrollRail speed={0.3} className="gap-3 mt-6 px-6 pb-4 md:max-w-7xl md:mx-auto">
+        {/* Mobile: autoscroll */}
+        <div className="md:hidden">
+          <AutoScrollRail speed={0.3} className="gap-3 mt-6 px-6 pb-4">
+            {DIFF.map((d, i) => (
+              <div key={i} className="flex-shrink-0 w-[75%] bg-paper border border-olive/8 rounded-[14px] p-5">
+                <svg className="w-[34px] h-[34px] text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d={d.icon} /></svg>
+                <h3 className="font-display text-[19px] mt-3">{d.h}</h3>
+                <p className="font-sans text-[13px] text-olive/65 mt-1.5 leading-relaxed font-light">{d.p}</p>
+              </div>
+            ))}
+          </AutoScrollRail>
+        </div>
+        {/* Desktop: 3-col grid */}
+        <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-3 mt-6 max-w-7xl mx-auto px-6">
           {DIFF.map((d, i) => (
-            <div key={i} className="flex-shrink-0 w-[75%] sm:w-[45%] lg:w-[31%] bg-paper border border-olive/8 rounded-[14px] p-5 transition-all duration-300 hover:border-gold/30 hover:shadow-lg">
+            <div key={i} className="bg-paper border border-olive/8 rounded-[14px] p-5 transition-all duration-300 hover:border-gold/30 hover:translate-y-[-3px] hover:shadow-lg">
               <svg className="w-[34px] h-[34px] text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d={d.icon} /></svg>
               <h3 className="font-display text-[19px] mt-3">{d.h}</h3>
               <p className="font-sans text-[13px] text-olive/65 mt-1.5 leading-relaxed font-light">{d.p}</p>
             </div>
           ))}
-        </AutoScrollRail>
+        </div>
       </section>
 
       {/* ═══ HOW IT WORKS ═══ */}
@@ -329,13 +387,24 @@ export default async function PublicHomePage() {
           <SectionHeading eyebrow="The journal" heading="Field notes from the road." intro="Slow reading for the curious traveller, on the festivals, rituals and quieter corners of India." />
         </div>
         {posts.length > 0 && (
-          <AutoScrollRail speed={0.35} className="gap-5 mt-6 px-6 pb-4">
-            {posts.map((post) => (
-              <div key={post.id} className="flex-shrink-0 w-[80%] sm:w-[45%] md:w-[30%]">
-                <PostCard post={post as Post & { categories: { name: string; slug: string } | null }} />
-              </div>
-            ))}
-          </AutoScrollRail>
+          <>
+            {/* Mobile: autoscroll */}
+            <div className="md:hidden">
+              <AutoScrollRail speed={0.35} className="gap-5 mt-6 px-6 pb-4">
+                {posts.map((post) => (
+                  <div key={post.id} className="flex-shrink-0 w-[80%]">
+                    <PostCard post={post as Post & { categories: { name: string; slug: string } | null }} />
+                  </div>
+                ))}
+              </AutoScrollRail>
+            </div>
+            {/* Desktop: 3-col grid */}
+            <div className="hidden md:grid grid-cols-3 gap-6 mt-6 max-w-7xl mx-auto px-6">
+              {posts.slice(0, 3).map((post) => (
+                <PostCard key={post.id} post={post as Post & { categories: { name: string; slug: string } | null }} />
+              ))}
+            </div>
+          </>
         )}
         <div className="mt-7 text-center">
           <Button href="/journal" variant="ghost">Read the journal</Button>
