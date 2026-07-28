@@ -561,9 +561,7 @@ export function PackageEditor({
               <AiAssistButton
                 field="description"
                 context={title}
-                currentValue={description}
                 onResult={(text) => setDescription(text)}
-                promptHint="Generate journey description"
               />
             </div>
             <BlockTipTapEditor

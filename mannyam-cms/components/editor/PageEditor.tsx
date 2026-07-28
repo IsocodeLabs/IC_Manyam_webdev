@@ -661,9 +661,7 @@ export function PageEditor({ page, media }: { page: EditorPage; media: MediaItem
               <AiAssistButton
                 field="content"
                 context={title}
-                currentValue={title}
                 onResult={(text) => {
-                  // Add generated text as a new Text Block
                   const newBlock = {
                     id: Math.random().toString(36).substr(2, 9),
                     type: "Text Block" as const,
@@ -671,7 +669,6 @@ export function PageEditor({ page, media }: { page: EditorPage; media: MediaItem
                   };
                   setBlocks((prev) => [...prev, newBlock]);
                 }}
-                promptHint="Generate page content"
               />
             </div>
             

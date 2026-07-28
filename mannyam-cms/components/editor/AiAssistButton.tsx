@@ -1,112 +1,97 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 interface AiAssistButtonProps {
   field: string;
   context?: string;
-  currentValue?: string;
   onResult: (text: string) => void;
-  promptHint?: string;
 }
 
-export function AiAssistButton({ field, context, currentValue, onResult, promptHint }: AiAssistButtonProps) {
+export function AiAssistButton({ field, context, onResult }: AiAssistButtonProps) {
+  const [open, setOpen] = useState(false);
+  const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showPrompt, setShowPrompt] = useState(false);
-  const [customPrompt, setCustomPrompt] = useState("");
+  const [error, setError] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  async function handleGenerate(prompt: string) {
+  useEffect(() => {
+    if (open && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [open]);
+
+  async function handleGenerate() {
+    if (!prompt.trim()) return;
     setLoading(true);
-    setShowPrompt(false);
+    setError("");
+
     try {
       const res = await fetch("/api/ai-assist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          prompt,
-          context: context || currentValue || "",
-          field,
-        }),
+        body: JSON.stringify({ prompt: prompt.trim(), context: context || "", field }),
       });
+
       const data = await res.json();
-      if (data.text) {
+
+      if (data.error) {
+        setError(data.error);
+      } else if (data.text) {
         onResult(data.text);
+        setPrompt("");
+        setOpen(false);
       }
-    } catch (err) {
-      console.error("AI assist failed:", err);
+    } catch {
+      setError("Failed to connect to AI service.");
     } finally {
       setLoading(false);
-      setCustomPrompt("");
     }
   }
 
-  const defaultPrompts: Record<string, string> = {
-    title: "Generate a compelling title for this travel page/package",
-    description: `Improve and expand this description for a luxury India travel listing${currentValue ? `: "${currentValue.slice(0, 200)}"` : ""}`,
-    seo_title: `Write an SEO-optimised page title (max 60 chars) for: ${context || currentValue || "this travel page"}`,
-    seo_description: `Write an SEO meta description (max 155 chars) for: ${context || currentValue || "this travel page"}`,
-    content: "Write engaging travel content for this section",
-    itinerary: `Write a vivid one-line description for this itinerary day${currentValue ? ` about: ${currentValue}` : ""}`,
-    alt_text: `Write descriptive alt text for this travel image${context ? ` showing: ${context}` : ""}`,
-  };
-
-  return (
-    <div className="relative inline-block">
+  if (!open) {
+    return (
       <button
         type="button"
-        onClick={() => setShowPrompt(!showPrompt)}
-        disabled={loading}
-        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-gold border border-gold/30 rounded-md hover:bg-gold/10 hover:border-gold/50 transition-all disabled:opacity-50"
-        title="AI Assist"
+        onClick={() => setOpen(true)}
+        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-gold border border-gold/30 rounded-full hover:bg-gold/10 hover:border-gold/50 transition-all"
       >
-        {loading ? (
-          <svg className="w-3.5 h-3.5 animate-spin" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="32" strokeLinecap="round"/></svg>
-        ) : (
-          <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-        )}
-        AI
+        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+        Generate with AI
       </button>
+    );
+  }
 
-      {showPrompt && (
-        <div className="absolute top-full left-0 mt-2 z-50 bg-paper border border-olive/15 rounded-lg shadow-xl p-3 w-[280px] space-y-2">
-          <button
-            type="button"
-            onClick={() => handleGenerate(defaultPrompts[field] || defaultPrompts.content)}
-            className="w-full text-left px-3 py-2 text-xs text-olive rounded-md hover:bg-cream transition-colors"
-          >
-            {promptHint || `Auto-generate ${field}`}
-          </button>
-          <div className="border-t border-olive/10 pt-2">
-            <input
-              type="text"
-              value={customPrompt}
-              onChange={(e) => setCustomPrompt(e.target.value)}
-              placeholder="Or type a custom instruction..."
-              className="w-full text-xs bg-cream border border-olive/10 rounded-md px-3 py-2 focus:outline-none focus:border-gold"
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && customPrompt.trim()) {
-                  handleGenerate(customPrompt);
-                }
-              }}
-            />
-            <button
-              type="button"
-              onClick={() => customPrompt.trim() && handleGenerate(customPrompt)}
-              disabled={!customPrompt.trim()}
-              className="mt-1.5 w-full text-[10px] font-semibold uppercase tracking-wider text-cream bg-olive hover:bg-gold hover:text-ink py-2 rounded-md transition-all disabled:opacity-40"
-            >
-              Generate
-            </button>
-          </div>
-          <button
-            type="button"
-            onClick={() => setShowPrompt(false)}
-            className="absolute top-2 right-2 text-olive/40 hover:text-olive text-sm"
-          >
-            &times;
-          </button>
-        </div>
-      )}
+  return (
+    <div className="flex items-center gap-2 p-2 bg-cream/50 border border-gold/20 rounded-lg w-full max-w-xl">
+      <input
+        ref={inputRef}
+        type="text"
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        onKeyDown={(e) => { if (e.key === "Enter") handleGenerate(); }}
+        placeholder="Tell AI what to write, e.g. 'Write a description for a Kerala backwater journey'"
+        className="flex-1 bg-transparent text-sm text-olive outline-none placeholder:text-olive/40 px-2 py-1.5"
+        disabled={loading}
+      />
+      <button
+        type="button"
+        onClick={handleGenerate}
+        disabled={loading || !prompt.trim()}
+        className="px-3 py-1.5 bg-gold text-ink text-[10px] font-bold uppercase tracking-wider rounded-full hover:bg-gold/90 transition-all disabled:opacity-40 whitespace-nowrap"
+      >
+        {loading ? "Generating..." : "Generate"}
+      </button>
+      <button
+        type="button"
+        onClick={() => { setOpen(false); setError(""); }}
+        className="text-olive/40 hover:text-olive text-lg leading-none px-1"
+      >
+        &times;
+      </button>
+      {error && <span className="text-[10px] text-red-600 absolute -bottom-5 left-2">{error}</span>}
     </div>
   );
 }
