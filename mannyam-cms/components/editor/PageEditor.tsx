@@ -22,6 +22,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 
 import { BlockTipTapEditor } from "./BlockTipTapEditor";
+import { AiAssistButton } from "./AiAssistButton";
 import { checkSlugUnique, createPage, updatePage, type PageInput } from "@/app/pages-cms/actions";
 import { SeoPanel } from "@/components/seo/SeoPanel";
 
@@ -655,7 +656,24 @@ export function PageEditor({ page, media }: { page: EditorPage; media: MediaItem
 
           {/* Draggable Blocks Container */}
           <div className="space-y-4">
-            <h2 className="font-display text-2xl text-olive font-semibold">Content Blocks</h2>
+            <div className="flex items-center gap-3">
+              <h2 className="font-display text-2xl text-olive font-semibold">Content Blocks</h2>
+              <AiAssistButton
+                field="content"
+                context={title}
+                currentValue={title}
+                onResult={(text) => {
+                  // Add generated text as a new Text Block
+                  const newBlock = {
+                    id: Math.random().toString(36).substr(2, 9),
+                    type: "Text Block" as const,
+                    data: { content: text },
+                  };
+                  setBlocks((prev) => [...prev, newBlock]);
+                }}
+                promptHint="Generate page content"
+              />
+            </div>
             
             {blocks.length === 0 ? (
               <div className="rounded-lg border-2 border-dashed border-olive/20 p-10 text-center font-sans text-olive/60">
