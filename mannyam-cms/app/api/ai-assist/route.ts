@@ -3,7 +3,7 @@ import { SignJWT, importPKCS8 } from "jose";
 
 const GCP_PROJECT_ID = "mannyam";
 const VERTEX_LOCATION = "us-central1";
-const VERTEX_MODEL = "gemini-2.0-flash-001";
+const VERTEX_MODEL = "gemini-1.5-flash-001";
 
 /**
  * Gets an access token from the GCP service account using JWT assertion.
