@@ -12,6 +12,7 @@ import { HeroSlideshow } from "@/components/public/HeroSlideshow";
 import { ClosingCta } from "@/components/public/ClosingCta";
 import { ListingFaq } from "@/components/public/ListingFaq";
 import { FestivalScrollRail } from "@/components/public/FestivalScrollRail";
+import { AutoScrollRail } from "@/components/public/AutoScrollRail";
 
 export const revalidate = 3600;
 
@@ -197,9 +198,9 @@ export default async function PublicHomePage() {
         <div className="max-w-7xl mx-auto px-6">
           <SectionHeading eyebrow="Experiences" heading="Travel by the feeling you are after." intro="From food walks to royal evenings, choose the kind of moments you want, and we will weave them into a journey." />
         </div>
-        <div className="flex overflow-x-auto gap-4 mt-6 px-6 pb-4 snap-x snap-mandatory scrollbar-hide sm:max-w-7xl sm:mx-auto sm:grid sm:grid-cols-3 sm:gap-6 sm:overflow-visible sm:pb-0">
-          {EXPERIENCES_CARDS.slice(0, 3).map((e) => (
-            <Link key={e.slug} href={`/${e.slug}`} className="group cursor-pointer flex-shrink-0 w-[70%] snap-start sm:w-auto">
+        <AutoScrollRail speed={0.4} direction="right" className="gap-4 mt-6 px-6 pb-4">
+          {EXPERIENCES_CARDS.map((e) => (
+            <Link key={e.slug} href={`/${e.slug}`} className="group cursor-pointer flex-shrink-0 w-[70%] sm:w-[30%] snap-start">
               <div className="relative rounded-[18px] overflow-hidden aspect-[100/124]">
                 <img src={e.img} alt={e.h} className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.07] transition-transform duration-1000" />
               </div>
@@ -209,7 +210,7 @@ export default async function PublicHomePage() {
               </div>
             </Link>
           ))}
-        </div>
+        </AutoScrollRail>
         <div className="mt-7 text-center px-6">
           <Button href="/experiences" variant="ghost">Explore all experiences</Button>
         </div>
@@ -220,9 +221,9 @@ export default async function PublicHomePage() {
         <div className="max-w-7xl mx-auto px-6">
           <SectionHeading eyebrow="Destinations" heading="Choose where to begin." intro="A different India in every direction. Pick a region, and we will pair it with the right experiences." />
         </div>
-        <div className="flex overflow-x-auto gap-4 mt-6 px-6 pb-4 snap-x snap-mandatory scrollbar-hide sm:max-w-7xl sm:mx-auto sm:grid sm:grid-cols-3 sm:gap-6 sm:overflow-visible sm:pb-0">
-          {DESTINATIONS_CARDS.slice(0, 3).map((d) => (
-            <Link key={d.slug} href={`/${d.slug}`} className="group cursor-pointer relative flex-shrink-0 w-[70%] snap-start sm:w-auto">
+        <AutoScrollRail speed={0.4} direction="left" className="gap-4 mt-6 px-6 pb-4">
+          {DESTINATIONS_CARDS.map((d) => (
+            <Link key={d.slug} href={`/${d.slug}`} className="group cursor-pointer relative flex-shrink-0 w-[70%] sm:w-[30%] snap-start">
               <div className="relative rounded-[18px] overflow-hidden aspect-[100/124]">
                 <img src={d.img} alt={d.h} className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.07] transition-transform duration-1000" />
                 <span className="absolute top-2.5 left-2.5 text-[8.5px] uppercase tracking-[0.14em] bg-ivory/90 rounded-full px-2.5 py-1 font-medium text-ink">{d.k}</span>
@@ -232,7 +233,7 @@ export default async function PublicHomePage() {
               </div>
             </Link>
           ))}
-        </div>
+        </AutoScrollRail>
         <div className="mt-7 text-center px-6">
           <Button href="/destinations" variant="ghost">Browse all destinations</Button>
         </div>
@@ -244,13 +245,13 @@ export default async function PublicHomePage() {
           <SectionHeading eyebrow="Signature journeys" heading="Stories we have already written." intro="Take them as they are, or treat them as a first chapter and reshape them with us." />
         </div>
         {packages.length > 0 && (
-          <div className="flex overflow-x-auto gap-4 mt-6 px-6 pb-4 snap-x snap-mandatory scrollbar-hide md:max-w-7xl md:mx-auto md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:pb-0">
-            {packages.slice(0, 4).map((pkg) => (
-              <div key={pkg.id} className="flex-shrink-0 w-[85%] snap-start md:w-auto">
+          <AutoScrollRail speed={0.35} direction="right" className="gap-4 mt-6 px-6 pb-4">
+            {packages.map((pkg) => (
+              <div key={pkg.id} className="flex-shrink-0 w-[85%] sm:w-[45%] lg:w-[48%]">
                 <PackageCard pkg={pkg} />
               </div>
             ))}
-          </div>
+          </AutoScrollRail>
         )}
         <div className="mt-7 text-center px-6">
           <Button href="/journeys" variant="ghost">See all journeys</Button>
