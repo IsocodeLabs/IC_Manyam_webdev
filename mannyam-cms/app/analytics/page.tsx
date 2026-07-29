@@ -2,7 +2,8 @@ import React from "react";
 import Link from "next/link";
 import { requireRole } from "@/lib/rbac/requireRole";
 import { createClient } from "@/lib/supabase/server";
-import { getSearchConsoleData } from "@/lib/analytics/searchConsole";
+import { getSearchConsoleData, getSearchConsoleDailyData } from "@/lib/analytics/searchConsole";
+import { AnalyticsChart } from "@/components/analytics/AnalyticsChart";
 
 export const dynamic = "force-dynamic";
 
@@ -77,11 +78,13 @@ export default async function AnalyticsPage(props: {
   );
 
   let data = null;
+  let dailyData: { date: string; clicks: number; impressions: number }[] = [];
   let errorMsg = null;
 
   if (isConfigured) {
     try {
       data = await getSearchConsoleData(range);
+      dailyData = await getSearchConsoleDailyData(range);
     } catch (err) {
       const error = err as Error;
       console.error("GSC API connection error:", error);
@@ -376,6 +379,15 @@ export default async function AnalyticsPage(props: {
             <span className="text-[10px] text-olive/40 font-medium">vs previous period</span>
           </div>
         </div>
+      </div>
+
+      {/* Performance Chart */}
+      <div className="rounded-xl border border-olive/10 bg-paper p-5 shadow-sm">
+        <div className="mb-4">
+          <h2 className="font-display text-lg font-semibold text-olive">Performance Over Time</h2>
+          <p className="text-xs text-olive/60">Daily clicks and impressions from Google Search Console.</p>
+        </div>
+        <AnalyticsChart data={dailyData} />
       </div>
 
       {/* Tables Grid */}

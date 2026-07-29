@@ -154,3 +154,49 @@ export async function getSearchConsoleData(
     comparisonTotals,
   };
 }
+
+
+/**
+ * Fetches daily time-series data from Search Console for charting.
+ */
+export async function getSearchConsoleDailyData(
+  dateRange: "7d" | "28d" | "90d"
+): Promise<{ date: string; clicks: number; impressions: number }[]> {
+  const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  const privateKeyRaw = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY;
+  const siteUrl = process.env.GSC_SITE_URL;
+
+  if (!email || !privateKeyRaw || !siteUrl) {
+    throw new Error("GSC credentials or site URL not configured.");
+  }
+
+  const privateKey = privateKeyRaw.replace(/\\n/g, "\n");
+
+  const auth = new google.auth.JWT({
+    email,
+    key: privateKey,
+    scopes: ["https://www.googleapis.com/auth/webmasters.readonly"],
+  });
+
+  const searchconsole = google.searchconsole({ version: "v1", auth });
+  const { current } = getDatesForRange(dateRange);
+
+  const response = await searchconsole.searchanalytics.query({
+    siteUrl,
+    requestBody: {
+      startDate: current.startDate,
+      endDate: current.endDate,
+      dimensions: ["date"],
+      rowLimit: 500,
+    },
+  });
+
+  const rows = response.data.rows || [];
+  return rows
+    .map((r) => ({
+      date: r.keys?.[0] || "",
+      clicks: Number(r.clicks || 0),
+      impressions: Number(r.impressions || 0),
+    }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
