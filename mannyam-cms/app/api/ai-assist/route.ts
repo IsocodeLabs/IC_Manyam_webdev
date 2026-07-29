@@ -66,9 +66,15 @@ Rules:
 - Be concise and evocative
 - Make readers feel the place
 - Field you are writing for: ${field || "general content"}
+- FORMAT YOUR OUTPUT AS HTML using these tags: <h2>, <h3>, <p>, <strong>, <em>, <ul>, <li>, <ol>, <blockquote>
+- Structure content with headings, paragraphs, bullet points and emphasis for readability
+- Use <h2> for main section headings, <h3> for sub-sections
+- Use <strong> for key phrases and <em> for evocative words
+- Use <ul><li> for lists of highlights or features
+- Wrap every paragraph in <p> tags
 ${context ? `Context: ${context}` : ""}
 
-Output ONLY the generated text. No explanations, no prefixes, no markdown formatting.`;
+Output ONLY valid HTML content. No markdown, no code fences, no explanations.`;
 
     let text = "";
 
