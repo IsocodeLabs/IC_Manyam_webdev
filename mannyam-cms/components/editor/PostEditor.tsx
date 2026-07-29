@@ -10,6 +10,7 @@ import TipTapLink from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import { checkSlugUnique, createPost, updatePost, type PostInput } from "@/app/dashboard/journal/actions";
 import { SeoPanel } from "@/components/seo/SeoPanel";
+import { AiAssistButton } from "./AiAssistButton";
 
 type EditorPost = {
   id: string;
@@ -193,6 +194,12 @@ export function PostEditor({ post, categories, tags, media, revisions }: {
               <ToolbarButton onClick={() => { const href = window.prompt("Link URL"); if (href) editor?.chain().focus().extendMarkRange("link").setLink({ href }).run(); }}>Link</ToolbarButton>
               <ToolbarButton onClick={() => { setMediaPurpose("content"); setShowMedia(true); }}>Image</ToolbarButton>
               <ToolbarButton onClick={() => editor?.chain().focus().setHorizontalRule().run()}>Horizontal rule</ToolbarButton>
+              <AiAssistButton
+                field="content"
+                context={title}
+                size="sm"
+                onResult={(text) => editor?.chain().focus().insertContent(text).run()}
+              />
             </div>
             <EditorContent editor={editor} />
           </div>
