@@ -135,7 +135,11 @@ function SortableBlockItem({
       <div className="space-y-4 font-sans text-sm text-olive">
         {block.type === "Hero" && (
           <div className="grid gap-3">
-            <label className="block text-xs font-semibold uppercase tracking-wide">Headline
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold uppercase tracking-wide">Headline</span>
+                <AiAssistButton field="title" context="hero headline for travel page" size="sm" onResult={(text) => onUpdateData({ ...block.data, headline: text })} />
+              </div>
               <input
                 type="text"
                 value={block.data.headline || ""}
@@ -143,8 +147,12 @@ function SortableBlockItem({
                 placeholder="Enter hero headline"
                 className="mt-1 w-full rounded border border-olive/20 px-3 py-2 bg-cream/10"
               />
-            </label>
-            <label className="block text-xs font-semibold uppercase tracking-wide">Subheadline
+            </div>
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold uppercase tracking-wide">Subheadline</span>
+                <AiAssistButton field="description" context={block.data.headline || "travel page"} size="sm" onResult={(text) => onUpdateData({ ...block.data, subheadline: text })} />
+              </div>
               <input
                 type="text"
                 value={block.data.subheadline || ""}
@@ -152,7 +160,7 @@ function SortableBlockItem({
                 placeholder="Enter subheadline"
                 className="mt-1 w-full rounded border border-olive/20 px-3 py-2 bg-cream/10"
               />
-            </label>
+            </div>
             <div>
               <p className="text-xs font-semibold uppercase tracking-wide">Background Image</p>
               {block.data.backgroundImage && (
@@ -190,10 +198,20 @@ function SortableBlockItem({
         )}
 
         {block.type === "Text Block" && (
-          <BlockTipTapEditor
-            content={block.data.content || ""}
-            onChange={(html) => onUpdateData({ ...block.data, content: html })}
-          />
+          <div className="space-y-2">
+            <div className="flex justify-end">
+              <AiAssistButton
+                field="content"
+                context={block.data.content || ""}
+                size="sm"
+                onResult={(text) => onUpdateData({ ...block.data, content: text })}
+              />
+            </div>
+            <BlockTipTapEditor
+              content={block.data.content || ""}
+              onChange={(html) => onUpdateData({ ...block.data, content: html })}
+            />
+          </div>
         )}
 
         {block.type === "Feature Grid" && (
@@ -656,21 +674,7 @@ export function PageEditor({ page, media }: { page: EditorPage; media: MediaItem
 
           {/* Draggable Blocks Container */}
           <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <h2 className="font-display text-2xl text-olive font-semibold">Content Blocks</h2>
-              <AiAssistButton
-                field="content"
-                context={title}
-                onResult={(text) => {
-                  const newBlock = {
-                    id: Math.random().toString(36).substr(2, 9),
-                    type: "Text Block" as const,
-                    data: { content: text },
-                  };
-                  setBlocks((prev) => [...prev, newBlock]);
-                }}
-              />
-            </div>
+            <h2 className="font-display text-2xl text-olive font-semibold">Content Blocks</h2>
             
             {blocks.length === 0 ? (
               <div className="rounded-lg border-2 border-dashed border-olive/20 p-10 text-center font-sans text-olive/60">

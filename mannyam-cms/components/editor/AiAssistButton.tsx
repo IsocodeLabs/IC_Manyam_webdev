@@ -6,9 +6,10 @@ interface AiAssistButtonProps {
   field: string;
   context?: string;
   onResult: (text: string) => void;
+  size?: "sm" | "md";
 }
 
-export function AiAssistButton({ field, context, onResult }: AiAssistButtonProps) {
+export function AiAssistButton({ field, context, onResult, size = "md" }: AiAssistButtonProps) {
   const [open, setOpen] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
@@ -49,49 +50,49 @@ export function AiAssistButton({ field, context, onResult }: AiAssistButtonProps
     }
   }
 
+  const btnClass = size === "sm"
+    ? "inline-flex items-center gap-1 px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-gold border border-gold/25 rounded hover:bg-gold/10 hover:border-gold/40 transition-all"
+    : "inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-gold border border-gold/30 rounded-full hover:bg-gold/10 hover:border-gold/50 transition-all";
+
   if (!open) {
     return (
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-gold border border-gold/30 rounded-full hover:bg-gold/10 hover:border-gold/50 transition-all"
-      >
-        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <button type="button" onClick={() => setOpen(true)} className={btnClass} title="Generate with AI">
+        <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
         </svg>
-        Generate with AI
+        AI
       </button>
     );
   }
 
   return (
-    <div className="flex items-center gap-2 p-2 bg-cream/50 border border-gold/20 rounded-lg w-full max-w-xl">
+    <div className="flex items-center gap-2 p-1.5 bg-cream/60 border border-gold/20 rounded-lg w-full">
       <input
         ref={inputRef}
         type="text"
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
-        onKeyDown={(e) => { if (e.key === "Enter") handleGenerate(); }}
-        placeholder="Tell AI what to write, e.g. 'Write a description for a Kerala backwater journey'"
-        className="flex-1 bg-transparent text-sm text-olive outline-none placeholder:text-olive/40 px-2 py-1.5"
+        onKeyDown={(e) => { if (e.key === "Enter") handleGenerate(); if (e.key === "Escape") setOpen(false); }}
+        placeholder="What should AI write here?"
+        className="flex-1 bg-transparent text-xs text-olive outline-none placeholder:text-olive/40 px-2 py-1 min-w-0"
         disabled={loading}
       />
       <button
         type="button"
         onClick={handleGenerate}
         disabled={loading || !prompt.trim()}
-        className="px-3 py-1.5 bg-gold text-ink text-[10px] font-bold uppercase tracking-wider rounded-full hover:bg-gold/90 transition-all disabled:opacity-40 whitespace-nowrap"
+        className="px-2.5 py-1 bg-gold text-ink text-[9px] font-bold uppercase tracking-wider rounded hover:bg-gold/90 transition-all disabled:opacity-40 whitespace-nowrap"
       >
-        {loading ? "Generating..." : "Generate"}
+        {loading ? "..." : "Go"}
       </button>
       <button
         type="button"
-        onClick={() => { setOpen(false); setError(""); }}
-        className="text-olive/40 hover:text-olive text-lg leading-none px-1"
+        onClick={() => { setOpen(false); setError(""); setPrompt(""); }}
+        className="text-olive/40 hover:text-olive text-sm leading-none px-0.5"
       >
         &times;
       </button>
-      {error && <span className="text-[10px] text-red-600 absolute -bottom-5 left-2">{error}</span>}
+      {error && <span className="text-[9px] text-red-600">{error}</span>}
     </div>
   );
 }
