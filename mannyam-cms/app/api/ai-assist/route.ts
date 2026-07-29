@@ -85,7 +85,7 @@ Output ONLY the generated text. No explanations, no prefixes, no markdown format
         },
         body: JSON.stringify({
           contents: [{ role: "user", parts: [{ text: systemInstruction + "\n\nUser request: " + prompt }] }],
-          generationConfig: { temperature: 0.7, maxOutputTokens: 600 },
+          generationConfig: { temperature: 0.7, maxOutputTokens: 2048 },
         }),
       });
 
