@@ -1,4 +1,5 @@
 export const PERMISSIONS = {
+  'overview':   { Admin: true,  ContentManager: true,  Marketer: true  },
   'pages':      { Admin: true,  ContentManager: true,  Marketer: false },
   'journal':    { Admin: true,  ContentManager: true,  Marketer: false },
   'packages':   { Admin: true,  ContentManager: true,  Marketer: false },

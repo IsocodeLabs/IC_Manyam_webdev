@@ -6,8 +6,6 @@ import {
   CheckCircle2,
   Link2,
   TrendingUp,
-  TrendingDown,
-  ArrowRight,
   Plus,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
