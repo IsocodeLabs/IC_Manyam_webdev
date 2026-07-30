@@ -59,7 +59,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en-GB" className={`${cormorantGaramond.variable} ${jost.variable}`}>
-      <body className="font-sans bg-cream text-olive min-h-screen antialiased overflow-x-hidden">
+      <body className="font-sans bg-bg text-ink min-h-screen antialiased overflow-x-hidden">
         <GoogleTranslate />
         {content}
       </body>

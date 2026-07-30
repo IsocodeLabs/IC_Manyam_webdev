@@ -8,10 +8,153 @@ html, body {
   max-width: 100vw;
 }
 
+/* CSS custom properties matching the MANNYAM Studio design system */
+:root {
+  --ink: #2c3120;
+  --olive: #393e29;
+  --olive-2: #31351f;
+  --gold: #ba8838;
+  --gold-deep: #8a6320;
+  --sand: #c39657;
+  --sand-soft: #d8c19a;
+  --ivory: #f6ede3;
+  --cream: #fbf7f0;
+  --paper: #fffdf9;
+  --bg: #eee7da;
+  --line: rgba(57, 62, 41, 0.16);
+  --line-2: rgba(57, 62, 41, 0.09);
+  --line-gold: rgba(186, 136, 56, 0.5);
+  --ok: #3f7d4e;
+  --warn: #c08a2b;
+  --bad: #b4552f;
+  --info: #3a6ea5;
+  --shadow: 0 20px 50px -26px rgba(44, 49, 32, 0.5);
+  --shadow-sm: 0 6px 18px -10px rgba(44, 49, 32, 0.4);
+}
+
 /* Base styles using the custom colour palette */
 body {
-  background-color: #fbf7f0; /* cream */
-  color: #393e29; /* olive */
+  background-color: var(--bg);
+  color: var(--ink);
+}
+
+/* ===== Utility classes matching the reference design ===== */
+
+/* Pills / status badges */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  font-weight: 500;
+  padding: 4px 9px;
+  border-radius: 30px;
+  letter-spacing: 0.02em;
+}
+.pill .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.pill-new { background: rgba(58, 110, 165, 0.12); color: var(--info); }
+.pill-new .dot { background: var(--info); }
+.pill-contacted { background: rgba(192, 138, 43, 0.14); color: var(--warn); }
+.pill-contacted .dot { background: var(--warn); }
+.pill-proposal { background: rgba(186, 136, 56, 0.16); color: var(--gold-deep); }
+.pill-proposal .dot { background: var(--gold); }
+.pill-won { background: rgba(63, 125, 78, 0.14); color: var(--ok); }
+.pill-won .dot { background: var(--ok); }
+.pill-lost { background: rgba(180, 85, 47, 0.12); color: var(--bad); }
+.pill-lost .dot { background: var(--bad); }
+.pill-published, .pill-live { background: rgba(63, 125, 78, 0.14); color: var(--ok); }
+.pill-published .dot, .pill-live .dot { background: var(--ok); }
+.pill-draft { background: rgba(57, 62, 41, 0.1); color: #6f7261; }
+.pill-draft .dot { background: #9a9c86; }
+.pill-scheduled { background: rgba(58, 110, 165, 0.12); color: var(--info); }
+.pill-scheduled .dot { background: var(--info); }
+
+/* Card panel */
+.panel {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px;
+}
+
+/* KPI cards */
+.kpi-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+/* Tag chip */
+.tag {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--cream);
+  border: 1px solid var(--line-2);
+  color: #6f7261;
+}
+
+/* Chip */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 30px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+
+/* Button styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  padding: 9px 15px;
+  border-radius: 9px;
+  transition: 0.15s;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.btn:hover { border-color: var(--gold); }
+.btn-primary {
+  background: var(--olive);
+  color: var(--ivory);
+  border-color: var(--olive);
+}
+.btn-primary:hover {
+  background: var(--gold);
+  color: var(--ink);
+  border-color: var(--gold);
+}
+.btn-gold {
+  background: var(--gold);
+  color: var(--ink);
+  border-color: var(--gold);
+}
+.btn-gold:hover { background: #cf9a44; }
+.btn-sm { padding: 6px 11px; font-size: 11.5px; }
+.btn-ghost { background: transparent; }
+
+/* Table wrapper */
+.table-wrap {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
 }
 
 /* Tiptap Rich Text Editor styles to override Tailwind resets */
@@ -52,18 +195,37 @@ body {
   margin-bottom: 0.25rem !important;
 }
 .ProseMirror a {
-  color: #ba8838 !important; /* gold */
+  color: var(--gold) !important;
   text-decoration: underline !important;
 }
 .ProseMirror hr {
   border: 0 !important;
-  border-top: 1px solid rgba(57, 62, 41, 0.15) !important;
+  border-top: 1px solid var(--line) !important;
   margin: 1.5rem 0 !important;
 }
 .ProseMirror p.is-editor-empty::before {
   content: attr(data-placeholder);
   float: left;
-  color: #adb5bd;
+  color: #9a9c86;
   pointer-events: none;
   height: 0;
+}
+
+/* Eyebrow label */
+.eyebrow {
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  font-weight: 500;
+}
+
+/* Muted helper text */
+.muted {
+  color: #6f7261;
+}
+
+/* Mono utility */
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }

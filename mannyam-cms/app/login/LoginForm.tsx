@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useActionState } from "react";
-import Image from "next/image";
 import { loginAction } from "./actions";
 
 interface LoginFormProps {
@@ -14,68 +13,84 @@ export function LoginForm({ initialError = null }: LoginFormProps) {
   });
 
   return (
-    <div className="w-full max-w-md p-8 bg-paper rounded-lg shadow-md border border-ivory/40">
-      <div className="text-center mb-8 flex flex-col items-center">
-        <Image src="/logo-icon.png" alt="" width={64} height={64} className="mb-4" />
-        <h1 className="font-display text-4xl text-olive font-medium tracking-wide mb-2">
-          MANNYAM Studio
-        </h1>
-        <p className="font-sans text-xs text-olive/60 uppercase tracking-widest">
-          Content Management System
-        </p>
+    <div
+      className="w-full max-w-[410px] rounded-[22px] p-[30px_28px]"
+      style={{
+        background: "var(--paper)",
+        border: "1px solid rgba(186, 136, 56, 0.5)",
+        boxShadow: "0 20px 50px -26px rgba(44, 49, 32, 0.5)",
+      }}
+    >
+      {/* Brand */}
+      <div className="flex flex-col items-center gap-[3px] mb-1.5">
+        <img src="/logo.png" alt="MANNYAM" className="w-[48px] h-[48px] object-contain" />
+        <span className="font-display font-semibold text-[23px] tracking-[0.2em] text-ink">
+          MANNYAM
+        </span>
+        <span className="text-[8px] tracking-[0.34em] uppercase text-gold-deep">
+          Studio
+        </span>
       </div>
 
-      <form action={formAction} className="space-y-6">
-        <div>
-          <label
-            htmlFor="email"
-            className="block font-sans text-xs font-semibold text-olive/80 uppercase tracking-wider mb-2"
-          >
-            Email Address
+      <h1 className="font-display text-[24px] font-semibold text-center mt-4 text-ink">
+        Sign in to your workspace
+      </h1>
+      <p className="text-center text-[#6f7261] text-[13px] mt-1.5">
+        Manage content, SEO and enquiries for mannyam.in
+      </p>
+
+      {state?.error && (
+        <div
+          className="mt-3.5 rounded-[9px] p-[10px_12px] text-[12.5px]"
+          style={{
+            background: "rgba(180, 85, 47, 0.1)",
+            border: "1px solid rgba(180, 85, 47, 0.3)",
+            color: "var(--bad)",
+          }}
+        >
+          {state.error}
+        </div>
+      )}
+
+      <form action={formAction} className="mt-4">
+        <div className="mb-[15px]">
+          <label className="block text-[10px] tracking-[0.16em] uppercase text-gold-deep font-medium mb-1.5">
+            Email
           </label>
           <input
-            id="email"
             name="email"
             type="email"
             required
             autoComplete="email"
             disabled={isPending}
-            className="w-full px-4 py-3 bg-cream/30 border border-ivory/80 text-olive rounded-md focus:outline-none focus:border-gold/80 transition-colors font-sans text-sm"
-            placeholder="name@mannyam.in"
+            placeholder="you@mannyam.in"
+            className="w-full border rounded-[10px] px-[13px] py-3 text-[14px] bg-white font-light focus:border-gold focus:outline-none"
+            style={{ borderColor: "rgba(57, 62, 41, 0.16)" }}
           />
         </div>
 
-        <div>
-          <label
-            htmlFor="password"
-            className="block font-sans text-xs font-semibold text-olive/80 uppercase tracking-wider mb-2"
-          >
+        <div className="mb-[15px]">
+          <label className="block text-[10px] tracking-[0.16em] uppercase text-gold-deep font-medium mb-1.5">
             Password
           </label>
           <input
-            id="password"
             name="password"
             type="password"
             required
             autoComplete="current-password"
             disabled={isPending}
-            className="w-full px-4 py-3 bg-cream/30 border border-ivory/80 text-olive rounded-md focus:outline-none focus:border-gold/80 transition-colors font-sans text-sm"
-            placeholder="Enter your password"
+            placeholder="Your password"
+            className="w-full border rounded-[10px] px-[13px] py-3 text-[14px] bg-white font-light focus:border-gold focus:outline-none"
+            style={{ borderColor: "rgba(57, 62, 41, 0.16)" }}
           />
         </div>
-
-        {state?.error && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded text-red-700 text-xs font-sans">
-            {state.error}
-          </div>
-        )}
 
         <button
           type="submit"
           disabled={isPending}
-          className="w-full py-3 bg-gradient-to-r from-gold to-[#c8933e] text-paper font-display text-lg font-medium tracking-wide rounded-md shadow-sm hover:from-[#a0742d] hover:to-[#ba8838] focus:outline-none focus:ring-2 focus:ring-gold/50 disabled:opacity-75 disabled:cursor-not-allowed transition-all"
+          className="btn btn-primary w-full mt-4 py-[13px] text-[13px]"
         >
-          {isPending ? "Signing in..." : "Sign In"}
+          {isPending ? "Signing in..." : "Sign in"}
         </button>
       </form>
     </div>

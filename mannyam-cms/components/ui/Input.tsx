@@ -2,11 +2,11 @@ import React from "react";
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
-// Reusable text input component styled with custom design system parameters
 export function Input({ className = "", ...props }: InputProps) {
   return (
     <input
-      className={`px-3 py-2 bg-paper border border-ivory text-olive rounded focus:outline-none focus:border-gold font-sans ${className}`}
+      className={`w-full border rounded-[9px] px-3 py-[10px] text-[13.5px] bg-white font-light focus:border-gold focus:outline-none ${className}`}
+      style={{ borderColor: "rgba(57, 62, 41, 0.16)" }}
       {...props}
     />
   );

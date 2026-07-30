@@ -1,4 +1,7 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
+import { Search, Globe } from "lucide-react";
 
 export interface TopBarProps {
   title: string;
@@ -7,60 +10,47 @@ export interface TopBarProps {
 }
 
 export function TopBar({ title, userName, role }: TopBarProps) {
-  // Avatar initials helper
-  const getInitials = (name: string) => {
-    if (!name) return "U";
-    const parts = name.trim().split(/\s+/);
-    if (parts.length >= 2) {
-      return `${parts[0].charAt(0)}${parts[1].charAt(0)}`.toUpperCase();
-    }
-    return parts[0].substring(0, 2).toUpperCase();
-  };
-
-  // Role badge styling selector
-  const getRoleBadgeStyle = (userRole: typeof role) => {
-    switch (userRole) {
-      case "Admin":
-        return "bg-gold text-paper";
-      case "Content Manager":
-        return "bg-olive text-paper";
-      case "Marketer":
-        return "bg-blue-600 text-paper";
-      default:
-        return "bg-gray-500 text-paper";
-    }
-  };
+  const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <header className="h-[56px] bg-paper border-b border-olive/[0.12] px-6 flex items-center justify-between w-full select-none">
-      {/* Page Title */}
-      <div>
-        <h2 className="font-display text-xl text-olive font-semibold tracking-wide">
-          {title}
-        </h2>
+    <header
+      className="sticky top-0 z-50 border-b border-line flex items-center gap-3.5 px-[22px] py-[12px]"
+      style={{
+        background: "rgba(246, 237, 227, 0.92)",
+        backdropFilter: "blur(10px)",
+        borderBottomColor: "rgba(57, 62, 41, 0.16)",
+      }}
+    >
+      {/* Search */}
+      <div className="flex-1 max-w-[420px] relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-[15px] h-[15px] text-[#8b8d76]" />
+        <input
+          type="text"
+          placeholder="Search pages, posts, leads..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full border border-line rounded-[9px] py-[9px] pl-[34px] pr-3 text-[13px] bg-paper font-light focus:border-gold focus:outline-none"
+          style={{ borderColor: "rgba(57, 62, 41, 0.16)" }}
+          autoComplete="off"
+        />
       </div>
 
-      {/* Profile Details & Avatar */}
-      <div className="flex items-center gap-4">
-        {/* User Role Badge */}
-        <span
-          className={`px-2.5 py-0.5 rounded-full text-[10px] font-semibold font-sans uppercase tracking-wider ${getRoleBadgeStyle(
-            role
-          )}`}
-        >
-          {role}
-        </span>
+      {/* Spacer */}
+      <div className="flex-1" />
 
-        {/* User Name & Initials Avatar */}
-        <div className="flex items-center gap-2">
-          <span className="font-sans text-sm font-medium text-olive/80 hidden sm:inline">
-            {userName}
-          </span>
-          <div className="w-8 h-8 rounded-full bg-gold/15 border border-gold/30 text-gold flex items-center justify-center font-sans text-xs font-bold shadow-sm">
-            {getInitials(userName)}
-          </div>
-        </div>
+      {/* Role badge */}
+      <div className="flex items-center gap-2 text-[11.5px] text-[#6f7261]">
+        <span className="hidden sm:inline">{role}</span>
       </div>
+
+      {/* Globe / preview site button */}
+      <button
+        className="w-9 h-9 rounded-[9px] border border-line bg-paper grid place-items-center text-ink hover:border-gold transition-[0.15s]"
+        style={{ borderColor: "rgba(57, 62, 41, 0.16)" }}
+        title="Preview the live site"
+      >
+        <Globe className="w-4 h-4" />
+      </button>
     </header>
   );
 }
