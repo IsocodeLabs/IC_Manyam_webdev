@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Jost } from "next/font/google";
-import { headers } from "next/headers";
-import { AdminShell } from "@/components/layout/AdminShell";
 import { GoogleTranslate } from "@/components/public/GoogleTranslate";
 import "./globals.css";
 
@@ -29,39 +27,16 @@ export const metadata: Metadata = {
   },
 };
 
-const protectedSiblingRoutes = [
-  "/pages-cms",
-  "/packages",
-  "/media",
-  "/seo",
-  "/redirects",
-  "/clusters",
-  "/analytics",
-  "/leads",
-  "/settings",
-];
-
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const headerList = await headers();
-  const pathname = headerList.get("x-pathname") || "/";
-  const needsAdminShell = protectedSiblingRoutes.some(
-    (route) => pathname === route || pathname.startsWith(`${route}/`)
-  );
-  const content = needsAdminShell ? (
-    <AdminShell pathname={pathname}>{children}</AdminShell>
-  ) : (
-    children
-  );
-
   return (
     <html lang="en-GB" className={`${cormorantGaramond.variable} ${jost.variable}`}>
       <body className="font-sans bg-bg text-ink min-h-screen antialiased overflow-x-hidden">
         <GoogleTranslate />
-        {content}
+        {children}
       </body>
     </html>
   );
