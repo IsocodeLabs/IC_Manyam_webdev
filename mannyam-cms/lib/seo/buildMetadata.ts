@@ -48,6 +48,10 @@ export function buildMetadata({
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mannyam.in";
   
+  // Default OG image when none provided
+  const defaultOgImage = `${siteUrl.replace(/\/$/, "")}/og-default.png`;
+  const ogImage = image || defaultOgImage;
+  
   // Enforce canonical URL using NEXT_PUBLIC_SITE_URL or the database-provided canonical_url
   const canonicalUrl = meta.canonical_url || `${siteUrl.replace(/\/$/, "")}/${path.replace(/^\//, "")}`;
 
@@ -60,7 +64,7 @@ export function buildMetadata({
     openGraph: {
       title: meta.og_title || title,
       description: meta.og_description || description,
-      images: image ? [{ url: image }] : [],
+      images: ogImage ? [{ url: ogImage, width: 1200, height: 630, alt: meta.og_title || title }] : [],
       type,
       url: canonicalUrl,
       siteName: "MANNYAM",
@@ -69,7 +73,7 @@ export function buildMetadata({
       card: "summary_large_image",
       title: meta.og_title || title,
       description: meta.og_description || description,
-      images: image ? [image] : [],
+      images: ogImage ? [ogImage] : [],
     },
   };
 }
