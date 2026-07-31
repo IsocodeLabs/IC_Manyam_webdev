@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import type { GA4Data } from "@/lib/analytics/ga4";
 
 function formatNumber(num: number): string {
@@ -21,39 +20,77 @@ interface GA4SectionProps {
   ga4Error: string | null;
   isGA4Configured: boolean;
   range: string;
+  gtmContainerId?: string;
 }
 
-export function GA4Section({ ga4Data, ga4Error, isGA4Configured, range }: GA4SectionProps) {
+export function GA4Section({ ga4Data, ga4Error, isGA4Configured, range, gtmContainerId }: GA4SectionProps) {
+  // GTM direct link button (always show)
+  const gtmButton = (
+    <a
+      href="https://tagmanager.google.com"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="btn flex items-center gap-[7px] text-[12px]"
+    >
+      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+        <path d="M14 5h5v5M19 5l-8 8M12 5H6v13h13v-6" />
+      </svg>
+      Open Google Tag Manager
+    </a>
+  );
+
+  const ga4Button = (
+    <a
+      href="https://analytics.google.com"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="btn flex items-center gap-[7px] text-[12px]"
+    >
+      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+        <path d="M14 5h5v5M19 5l-8 8M12 5H6v13h13v-6" />
+      </svg>
+      Open Google Analytics
+    </a>
+  );
+
   if (!isGA4Configured) {
     return (
-      <div className="rounded-xl border border-dashed border-line-gold bg-cream/40 p-8 text-center mt-6">
-        <h3 className="font-display text-[18px] font-semibold text-ink">
-          Google Analytics 4 not connected
-        </h3>
-        <p className="text-[12.5px] text-[#6f7261] mt-2 max-w-md mx-auto">
-          Add your GA4 Property ID to the environment variables to see traffic, sessions, and user data here.
-          The property ID is a numeric value found in GA4 &gt; Admin &gt; Property Settings.
-        </p>
-        <p className="text-[11px] text-[#8b8d76] mt-3 font-mono">
-          GA4_PROPERTY_ID=123456789
-        </p>
-        <Link href="/settings/analytics" className="btn btn-primary mt-4 inline-flex">
-          Go to Settings
-        </Link>
+      <div className="mt-8 space-y-5">
+        <div className="flex items-center justify-between">
+          <h2 className="font-display text-[22px] font-semibold text-ink">Google Analytics 4</h2>
+          <div className="flex gap-[9px]">{ga4Button}{gtmButton}</div>
+        </div>
+        <div className="rounded-[14px] border border-dashed border-line-gold bg-cream/40 p-8 text-center">
+          <h3 className="font-display text-[16px] font-semibold text-ink">
+            GA4 data not available
+          </h3>
+          <p className="text-[12.5px] text-[#6f7261] mt-2 max-w-md mx-auto">
+            {ga4Error || "Add GA4_PROPERTY_ID to your .env.local file and rebuild to see sessions, users, and traffic data here."}
+          </p>
+          <p className="text-[11px] text-[#8b8d76] mt-3 font-mono">
+            GA4_PROPERTY_ID=123456789
+          </p>
+        </div>
       </div>
     );
   }
 
   if (ga4Error) {
     return (
-      <div className="rounded-xl border border-bad/30 bg-[rgba(180,85,47,0.06)] p-6 mt-6">
-        <h3 className="font-display text-[16px] font-semibold text-bad">
-          GA4 connection error
-        </h3>
-        <p className="text-[12.5px] text-bad/80 mt-1">{ga4Error}</p>
-        <p className="text-[11px] text-[#6f7261] mt-2">
-          Ensure the service account email has Viewer access to your GA4 property.
-        </p>
+      <div className="mt-8 space-y-5">
+        <div className="flex items-center justify-between">
+          <h2 className="font-display text-[22px] font-semibold text-ink">Google Analytics 4</h2>
+          <div className="flex gap-[9px]">{ga4Button}{gtmButton}</div>
+        </div>
+        <div className="rounded-[14px] border border-bad/30 bg-[rgba(180,85,47,0.06)] p-6">
+          <h3 className="font-display text-[16px] font-semibold text-bad">
+            GA4 connection error
+          </h3>
+          <p className="text-[12.5px] text-bad/80 mt-1">{ga4Error}</p>
+          <p className="text-[11px] text-[#6f7261] mt-2">
+            Ensure the service account email has Viewer access to your GA4 property, and that GA4_PROPERTY_ID is the correct numeric property ID.
+          </p>
+        </div>
       </div>
     );
   }
@@ -67,7 +104,7 @@ export function GA4Section({ ga4Data, ga4Error, isGA4Configured, range }: GA4Sec
   return (
     <div className="mt-8 space-y-5">
       {/* Section header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h2 className="font-display text-[22px] font-semibold text-ink">
             Google Analytics 4
@@ -76,9 +113,13 @@ export function GA4Section({ ga4Data, ga4Error, isGA4Configured, range }: GA4Sec
             Site traffic, sessions, and visitor behaviour from GA4.
           </p>
         </div>
-        <span className="pill pill-published">
-          <span className="dot" /> Connected
-        </span>
+        <div className="flex items-center gap-[9px]">
+          <span className="pill pill-published">
+            <span className="dot" /> Connected
+          </span>
+          {ga4Button}
+          {gtmButton}
+        </div>
       </div>
 
       {/* GA4 KPI tiles */}

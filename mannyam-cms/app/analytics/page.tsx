@@ -108,7 +108,18 @@ export default async function AnalyticsPage(props: {
       console.error("GA4 API connection error:", error);
       ga4Error = error.message || "Failed to fetch GA4 data.";
     }
+  } else {
+    ga4Error = ga4PropertyId ? null : "GA4_PROPERTY_ID environment variable is not set. Add it to .env.local and rebuild.";
   }
+
+  // 4. Get GTM container ID for the direct link button
+  const { data: gtmSetting } = await supabase
+    .from("site_settings")
+    .select("value")
+    .eq("key", "gtm_container_id")
+    .limit(1)
+    .maybeSingle();
+  const gtmContainerId = gtmSetting?.value || "";
 
   // Not Connected State
   if (!isConfigured) {
@@ -500,7 +511,7 @@ export default async function AnalyticsPage(props: {
       </div>
 
       {/* GA4 Section */}
-      <GA4Section ga4Data={ga4Data} ga4Error={ga4Error} isGA4Configured={isGA4Configured} range={range} />
+      <GA4Section ga4Data={ga4Data} ga4Error={ga4Error} isGA4Configured={isGA4Configured} range={range} gtmContainerId={gtmContainerId} />
     </div>
   );
 }
