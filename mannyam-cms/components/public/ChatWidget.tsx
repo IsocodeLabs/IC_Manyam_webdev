@@ -171,7 +171,7 @@ export function ChatWidget() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
           </svg>
         ) : (
-          <Image src="/logo-icon.png" alt="Ask MANNYAM" width={22} height={22} className="rounded-none object-contain" />
+          <Image src="/chat-icon.png" alt="Ask MANNYAM" width={36} height={36} className="rounded-full object-cover" />
         )}
       </button>
 
