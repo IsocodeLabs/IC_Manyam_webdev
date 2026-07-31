@@ -52,7 +52,7 @@ export function Header({ experiences, festivals, destinations, journeys }: Heade
 
         {/* Brand */}
         <Link href="/" className="flex flex-col select-none group">
-          <Image src="/logo.png" alt="MANNYAM - The Story of India" height={72} width={72} className="h-[72px] w-auto object-contain" />
+          <Image src="/logo.png" alt="MANNYAM - The Story of India" height={86} width={86} className="h-[86px] w-auto object-contain" />
           <span className="sr-only">MANNYAM - The Story of India</span>
         </Link>
 
