@@ -21,6 +21,7 @@ import {
   Percent,
   Lock,
   Plug,
+  FolderOpen,
 } from "lucide-react";
 
 import { canAccess } from "@/lib/rbac/permissions";
@@ -30,7 +31,7 @@ export interface SidebarProps {
   userName: string;
 }
 
-// Navigation structure grouped by section (matching the reference design)
+// Navigation structure matching the reference design exactly
 const NAV_GROUPS = [
   {
     label: "Workspace",
@@ -42,8 +43,8 @@ const NAV_GROUPS = [
     label: "Content",
     items: [
       { key: "pages", name: "Pages", href: "/pages-cms", icon: FileText },
-      { key: "journal", name: "Journal", href: "/dashboard/journal", icon: BookOpen },
       { key: "packages", name: "Packages", href: "/packages", icon: Package },
+      { key: "journal", name: "Journal", href: "/dashboard/journal", icon: BookOpen },
       { key: "media", name: "Media library", href: "/media", icon: Image },
     ],
   },
@@ -53,7 +54,7 @@ const NAV_GROUPS = [
       { key: "seo", name: "SEO and technical", href: "/seo", icon: Search },
       { key: "redirects", name: "Redirects", href: "/redirects", icon: ArrowRightLeft },
       { key: "clusters", name: "Clusters", href: "/clusters", icon: Network },
-      { key: "analytics", name: "Analytics", href: "/analytics", icon: BarChart2 },
+      { key: "analytics", name: "Analytics and search", href: "/analytics", icon: BarChart2 },
     ],
   },
   {
@@ -74,25 +75,19 @@ const NAV_GROUPS = [
 
 export function Sidebar({ role, userName }: SidebarProps) {
   const pathname = usePathname();
-  const [brokenCount, setBrokenCount] = useState<number | null>(null);
-
-  useEffect(() => {
-    const fetchCount = async () => {
-      try {
-        const res = await fetch("/api/scan-links", { method: "POST" });
-        if (res.ok) {
-          const data = await res.json();
-          setBrokenCount(data.broken?.length || 0);
-        }
-      } catch {
-        setBrokenCount(0);
-      }
-    };
-    fetchCount();
-  }, [pathname]);
 
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(`${href}/`);
+
+  // Count for leads badge
+  const [leadsCount, setLeadsCount] = useState<number>(0);
+  useEffect(() => {
+    // Lightweight fetch for new leads count
+    fetch("/api/leads?count_only=true")
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => { if (d?.count) setLeadsCount(d.count); })
+      .catch(() => {});
+  }, [pathname]);
 
   return (
     <aside
@@ -100,23 +95,23 @@ export function Sidebar({ role, userName }: SidebarProps) {
       style={{ background: "linear-gradient(180deg, #3f4630, #23270f)" }}
     >
       {/* Brand */}
-      <div className="flex items-center gap-2.5 px-5 pt-5 pb-4">
-        <img src="/logo.png" alt="MANNYAM" className="w-[34px] h-[34px] object-contain" />
+      <a href="/dashboard" className="flex items-center gap-[10px] px-5 pt-4 pb-[14px]">
+        <img src="/logo.png" alt="MANNYAM" className="w-[32px] h-[32px] object-contain rounded" />
         <span>
           <span className="font-display font-semibold text-[19px] tracking-[0.16em] text-ivory">
             MANNYAM
           </span>
           <span className="block text-[6.5px] tracking-[0.3em] uppercase text-sand mt-px">
-            Studio
+            Studio &middot; CMS and SEO
           </span>
         </span>
-      </div>
+      </a>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-2">
+      <nav className="flex-1 px-3 py-1">
         {NAV_GROUPS.map((group) => (
           <div key={group.label}>
-            <span className="block px-3 pt-4 pb-1.5 text-[9px] tracking-[0.2em] uppercase text-[#8b8d76]">
+            <span className="block px-[10px] pt-[14px] pb-[6px] text-[9px] tracking-[0.2em] uppercase text-[#8b8d76]">
               {group.label}
             </span>
             {group.items.map((item) => {
@@ -154,10 +149,10 @@ export function Sidebar({ role, userName }: SidebarProps) {
                   )}
                   <Icon className="w-[17px] h-[17px] opacity-90" />
                   <span>{item.name}</span>
-                  {/* Badge for broken links on clusters */}
-                  {item.key === "clusters" && brokenCount !== null && brokenCount > 0 && (
+                  {/* Badge for new leads count */}
+                  {item.key === "leads" && leadsCount > 0 && (
                     <span className="ml-auto text-[10px] bg-[rgba(255,255,255,0.1)] rounded-[20px] px-[7px] py-px text-[#e7decf]">
-                      {brokenCount}
+                      {leadsCount}
                     </span>
                   )}
                 </Link>
@@ -169,7 +164,7 @@ export function Sidebar({ role, userName }: SidebarProps) {
 
       {/* Footer */}
       <div className="mt-auto px-3 py-3 border-t border-[rgba(255,255,255,0.1)]">
-        <div className="flex items-center gap-2.5 px-2 py-2">
+        <div className="flex items-center gap-[10px] px-2 py-2">
           <div className="w-[34px] h-[34px] rounded-full bg-gold text-ink flex items-center justify-center font-display font-semibold text-[15px]">
             {userName ? userName.charAt(0).toUpperCase() : "M"}
           </div>
@@ -181,7 +176,7 @@ export function Sidebar({ role, userName }: SidebarProps) {
         <form action="/api/logout" method="POST">
           <button
             type="submit"
-            className="w-full mt-2.5 flex items-center justify-center gap-2 px-4 py-2 bg-transparent text-[#cfd2bf] border border-[rgba(255,255,255,0.16)] rounded-[9px] text-[11.5px] font-sans transition-[0.15s] hover:border-gold hover:text-white"
+            className="w-full mt-[10px] flex items-center justify-center gap-2 px-4 py-2 bg-transparent text-[#cfd2bf] border border-[rgba(255,255,255,0.16)] rounded-[9px] text-[11.5px] font-sans transition-[0.15s] hover:border-gold hover:text-white"
           >
             <LogOut className="w-3.5 h-3.5" />
             Sign out
