@@ -3,7 +3,9 @@ import Link from "next/link";
 import { requireRole } from "@/lib/rbac/requireRole";
 import { createClient } from "@/lib/supabase/server";
 import { getSearchConsoleData, getSearchConsoleDailyData } from "@/lib/analytics/searchConsole";
+import { getGA4Data, type GA4Data } from "@/lib/analytics/ga4";
 import { AnalyticsChart } from "@/components/analytics/AnalyticsChart";
+import { GA4Section } from "@/components/analytics/GA4Section";
 
 export const dynamic = "force-dynamic";
 
@@ -89,6 +91,22 @@ export default async function AnalyticsPage(props: {
       const error = err as Error;
       console.error("GSC API connection error:", error);
       errorMsg = error.message || "Failed to fetch Search Console data.";
+    }
+  }
+
+  // 3. Fetch GA4 data if property ID is configured
+  const ga4PropertyId = process.env.GA4_PROPERTY_ID || "";
+  const isGA4Configured = !!(ga4PropertyId && process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL && process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY);
+  let ga4Data: GA4Data | null = null;
+  let ga4Error: string | null = null;
+
+  if (isGA4Configured) {
+    try {
+      ga4Data = await getGA4Data(range);
+    } catch (err) {
+      const error = err as Error;
+      console.error("GA4 API connection error:", error);
+      ga4Error = error.message || "Failed to fetch GA4 data.";
     }
   }
 
@@ -480,6 +498,9 @@ export default async function AnalyticsPage(props: {
           </div>
         </div>
       </div>
+
+      {/* GA4 Section */}
+      <GA4Section ga4Data={ga4Data} ga4Error={ga4Error} isGA4Configured={isGA4Configured} range={range} />
     </div>
   );
 }
